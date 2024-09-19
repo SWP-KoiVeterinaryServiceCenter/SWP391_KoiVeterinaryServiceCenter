@@ -18,13 +18,30 @@ namespace Application.Service.Abstraction
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly AppConfiguration _appConfiguration;
-        private ICurrentTime _currentTime;
-        public AccountService(IUnitOfWork unitOfWork,IMapper mapper,AppConfiguration appConfiguration,ICurrentTime currentTime)
+        private readonly ICurrentTime _currentTime;
+        private readonly IClaimService _claimsService;
+        public AccountService(IUnitOfWork unitOfWork,IMapper mapper,AppConfiguration appConfiguration,ICurrentTime currentTime,IClaimService claimService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _appConfiguration = appConfiguration;
             _currentTime = currentTime;
+            _claimsService = claimService;
+        }
+
+        public async Task<CurrentUserModel> GetCurrentLoginUserAsync()
+        {
+            var loginUser = await _unitOfWork.AccountRepository.GetByIdAsync(_claimsService.GetCurrentUserId, x => x.Role);
+            var currentUser = new CurrentUserModel
+            {
+                AccountId=loginUser.Id,
+                Email=loginUser.Email,
+                Role=loginUser.Role.RoleName,
+                Username=loginUser.Username,
+                Location=loginUser.Location,
+                ContactLink=loginUser.ContactLink,
+            };
+            return currentUser;
         }
 
         public async Task<Token> LoginAsync(LoginModel loginModel)

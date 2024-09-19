@@ -11,5 +11,6 @@ namespace Application.IService.Abstraction
     {
         Task<bool> RegisterAsync(RegisterModel model);
         Task<Token> LoginAsync(LoginModel loginModel);
+        Task<CurrentUserModel> GetCurrentLoginUserAsync();
     }
 }
