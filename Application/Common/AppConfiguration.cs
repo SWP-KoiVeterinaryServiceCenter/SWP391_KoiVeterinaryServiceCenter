@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Application.Common
 {
-    internal class AppConfiguration
+    public class AppConfiguration
     {
+        public string DatabaseConnection {  get; set; }
+        public string JwtSecretKey { get; set; }
     }
 }

@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Application;
+using Application.IRepository;
+using Infrastructure.Repository;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -11,7 +14,9 @@ namespace Infrastructure
     {
         public static IServiceCollection AddInfratructureService(this IServiceCollection services, string databaseConnection)
         {
-            services.AddDbContext<AppDbContext>(options => options.UseNpgsql(databaseConnection).EnableSensitiveDataLogging());
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(databaseConnection).EnableSensitiveDataLogging());
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IUnitOfWork,UnitOfWork>();
             return services;
         }
     }
