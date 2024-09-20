@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240920034041_FixRelationship")]
+    partial class FixRelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,9 +130,6 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
-                    b.Property<Guid?>("KoiId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid?>("MedicalRecordId")
                         .HasColumnType("uniqueidentifier");
 
@@ -146,8 +146,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("KoiId");
 
                     b.HasIndex("ServiceId")
                         .IsUnique()
@@ -507,6 +505,9 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
+                    b.Property<Guid?>("MedicalRecordId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("ModificationBy")
                         .HasColumnType("uniqueidentifier");
 
@@ -529,6 +530,8 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CenterTankId");
+
+                    b.HasIndex("MedicalRecordId");
 
                     b.HasIndex("ServiceTypeId");
 
@@ -680,15 +683,9 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Appointment", b =>
                 {
-                    b.HasOne("Domain.Entities.Koi", "Koi")
-                        .WithMany("AppointmentLists")
-                        .HasForeignKey("KoiId");
-
                     b.HasOne("Domain.Entities.Service", "Service")
                         .WithOne("Appointment")
                         .HasForeignKey("Domain.Entities.Appointment", "ServiceId");
-
-                    b.Navigation("Koi");
 
                     b.Navigation("Service");
                 });
@@ -758,11 +755,17 @@ namespace Infrastructure.Migrations
                         .WithMany("ServiceList")
                         .HasForeignKey("CenterTankId");
 
+                    b.HasOne("Domain.Entities.MedicalRecord", "MedicalRecord")
+                        .WithMany()
+                        .HasForeignKey("MedicalRecordId");
+
                     b.HasOne("Domain.Entities.ServiceType", "ServiceType")
                         .WithMany()
                         .HasForeignKey("ServiceTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MedicalRecord");
 
                     b.Navigation("ServiceType");
                 });
@@ -796,11 +799,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.CenterTank", b =>
                 {
                     b.Navigation("ServiceList");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Koi", b =>
-                {
-                    b.Navigation("AppointmentLists");
                 });
 
             modelBuilder.Entity("Domain.Entities.MedicalRecord", b =>

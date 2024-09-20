@@ -19,6 +19,8 @@ namespace Domain.Entities
         public Rating Rating { get; set; }
         public Guid? FeedbackId { get; set; }
         public Feedback Feedback { get; set; }
+        public Guid? KoiId { get; set; }
+        public Koi Koi { get; set; }
         public Guid? CreatedBy { get; set; }
         public DateTime? CreationDate { get; set; }
         public Guid? ModificationBy { get; set; }

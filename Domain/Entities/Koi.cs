@@ -25,5 +25,6 @@ namespace Domain.Entities
         public bool IsDelete { get; set; }
         public Guid? DeletedBy { get; set; }
         public DateTime? DeletionDate { get; set; }
+        public ICollection<Appointment> AppointmentLists { get; set; }
     }
 }

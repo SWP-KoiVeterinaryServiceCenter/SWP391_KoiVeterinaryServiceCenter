@@ -14,6 +14,7 @@ namespace Infrastructure.EntityConfiguration
         public void Configure(EntityTypeBuilder<Appointment> builder)
         {
             builder.HasOne(x => x.Service).WithOne(ser => ser.Appointment).HasForeignKey<Appointment>(x => x.ServiceId);
+            builder.HasOne(x => x.MedicalRecord).WithOne(rec => rec.Appointment).HasForeignKey<Appointment>(x => x.MedicalRecordId);
         }
     }
 }

@@ -19,8 +19,6 @@ namespace Domain.Entities
         public ServiceType ServiceType { get; set; }
         public Guid? AppointmentId { get; set; }
         public Appointment Appointment { get; set; }
-        public Guid? MedicalRecordId { get; set; }
-        public MedicalRecord MedicalRecord { get; set; }
         public Guid? CreatedBy { get; set; }
         public DateTime? CreationDate { get; set; }
         public Guid? ModificationBy { get; set; }
