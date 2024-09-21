@@ -53,11 +53,10 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowAll", policy =>
     {
         policy
-            .AllowAnyOrigin() // Use this if you do not need credentials
-                              // .SetIsOriginAllowed((host) => true) // Use this if you need to allow specific origins
+            .SetIsOriginAllowed((host) => true)
             .AllowAnyMethod()
-            .AllowAnyHeader();
-        // .AllowCredentials(); // Only use this if you have a specific need
+            .AllowAnyHeader()
+            .AllowCredentials();
     });
 });
 var app = builder.Build();
