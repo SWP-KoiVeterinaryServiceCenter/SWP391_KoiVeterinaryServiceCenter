@@ -68,6 +68,11 @@ namespace Application.Service.Abstraction
 
         public async Task<bool> RegisterAsync(RegisterModel model)
         {
+            var findUser = await _unitOfWork.AccountRepository.FindAccountByEmail(model.Email);
+            if (findUser != null)
+            {
+                throw new Exception("Email already exist");
+            }
             var newAccount = _mapper.Map<Account>(model);
             newAccount.PasswordHash = StringUtil.Hash(model.Password);
             newAccount.RoleId = 4;

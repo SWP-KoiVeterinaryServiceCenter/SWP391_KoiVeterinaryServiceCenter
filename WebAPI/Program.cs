@@ -4,6 +4,7 @@ using Infrastructure.Mappers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using WebAPI;
+using WebAPI.Middleware;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -84,7 +85,7 @@ if (app.Environment.IsProduction())
 }
 
 app.UseHttpsRedirection();
-
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseAuthorization();
 app.UseCors("AllowAll");
 app.MapControllers();
