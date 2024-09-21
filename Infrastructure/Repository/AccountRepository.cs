@@ -21,7 +21,7 @@ namespace Infrastructure.Repository
 
         public async Task<Account> FindAccountByEmail(string email)
         {
-           return await _appDbContext.Accounts.Where(x=>x.Email==email).Include(x=>x.Role).SingleAsync();  
+           return await _appDbContext.Accounts.Where(x=>x.Email==email).Include(x=>x.Role).SingleOrDefaultAsync();  
         }
     }
 }
