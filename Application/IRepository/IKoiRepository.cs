@@ -7,15 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.IRepository
 {
-    public interface IKoiRepository
+    public interface IKoiRepository : IGenericRepository<Koi>
     {
-        // Thêm mới một Koi vào cơ sở dữ liệu
-        Task<bool> AddAsync(Koi koi);
-
-        // Cập nhật thông tin Koi trong cơ sở dữ liệu
-        Task<bool> UpdateAsync(Koi koi);
-
-        // Lấy tất cả các Koi từ cơ sở dữ liệu
-        Task<IEnumerable<Koi>> GetAllAsync();
     }
 }

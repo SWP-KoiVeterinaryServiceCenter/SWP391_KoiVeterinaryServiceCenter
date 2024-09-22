@@ -10,16 +10,12 @@ namespace Application.IService.Abstraction
 {
     public interface IKoiService
     {
-        // Tạo mới một cá Koi
-        Task<bool> CreateKoiAsync(CreateKoi model);
+        Task<bool> AddKoiAsync(AddKoiRequest addKoiRequest);
+        Task<IEnumerable<KoiResponse>> GetAllKoiAsync();
+        Task<KoiResponse> GetKoiByIdAsync(Guid id);
+        Task<IEnumerable<KoiResponse>> GetAllKoiByAccountIdAsync(Guid accountId);
+        Task<bool> UpdateKoiAsync(Guid id, UpdateKoiRequest koiRequest);
+        Task<bool> DeleteKoiAsync(Guid id, Guid deletedBy);
 
-        // Cập nhật thông tin của cá Koi theo Id
-        Task<bool> UpdateKoiAsync(UpdateKoi model);
-
-        // Lấy danh sách tất cả các cá Koi
-        Task<IEnumerable<Koi>> GetAllKoiAsync();
-
-        
-        
     }
 }

@@ -13,57 +13,118 @@ namespace Application.Service.Abstraction
 {
     public class KoiService : IKoiService
     {
-        private readonly IMapper _mapper;
-        private readonly IKoiRepository _koiRepository; 
-
-        public KoiService(IMapper mapper, IKoiRepository koiRepository)
+        private readonly IUnitOfWork _unitOfWork;
+        public KoiService(IUnitOfWork unitOfWork)
         {
-            _mapper = mapper;
-            _koiRepository = koiRepository;
+            _unitOfWork = unitOfWork;
         }
 
-        // Tạo mới một cá Koi
-        public async Task<bool> CreateKoiAsync(CreateKoi model)
+        public async Task<bool> AddKoiAsync(AddKoiRequest koiRequest)
         {
-            // Ánh xạ CreateKoiModel sang thực thể Koi
-            var koiEntity = _mapper.Map<Koi>(model);
-            koiEntity.CreationDate = DateTime.UtcNow; // Gán ngày tạo
-            koiEntity.IsDelete = false; // Mặc định chưa bị xóa
-
-            // Gọi repository để lưu Koi vào database
-            bool isCreated = await _koiRepository.AddAsync(koiEntity);
-            return isCreated;
-        }
-
-        // Cập nhật thông tin cá Koi theo Id
-        public async Task<bool> UpdateKoiAsync(Guid id, UpdateKoi model)
-        {
-            // Lấy cá Koi từ database theo Id
-            var existingKoi = await _koiRepository.GetByIdAsync(id);
-            if (existingKoi == null)
+            var koi = new Koi
             {
-                return false; // Trả về false nếu không tìm thấy cá Koi
+                KoiName = koiRequest.KoiName,
+                Weight = koiRequest.Weight,
+                Age = koiRequest.Age,
+                Gender = koiRequest.Gender,
+                Varieties = koiRequest.Varieties,
+                AccountId = koiRequest.AccountId
+            };
+
+            await _unitOfWork.KoiRepository.AddAsync(koi);
+            return await _unitOfWork.SaveChangeAsync() > 0;
+        }
+
+        public async Task<IEnumerable<KoiResponse>> GetAllKoiAsync()
+        {
+            var koiList = await _unitOfWork.KoiRepository.GetAllAsync();
+
+            var koiResponseList = koiList.Select(koi => new KoiResponse
+            {
+                Id = koi.Id,
+                KoiName = koi.KoiName,
+                Weight = koi.Weight,
+                Age = koi.Age,
+                Gender = koi.Gender,
+                Varieties = koi.Varieties
+            }).ToList();
+
+            return koiResponseList;
+        }
+
+
+        public async Task<KoiResponse> GetKoiByIdAsync(Guid id)
+        {
+            var koi = await _unitOfWork.KoiRepository.GetByIdAsync(id);
+            if (koi == null)
+            {
+                throw new Exception("Koi not found");
             }
 
-            // Ánh xạ thông tin từ UpdateKoiModel sang thực thể Koi đã có
-            _mapper.Map(model, existingKoi);
-            existingKoi.ModificationDate = DateTime.UtcNow; // Gán ngày cập nhật
-
-            // Gọi repository để cập nhật Koi trong database
-            bool isUpdated = await _koiRepository.UpdateAsync(existingKoi);
-            return isUpdated;
+            return new KoiResponse
+            {
+                KoiName = koi.KoiName,
+                Weight = koi.Weight,
+                Age = koi.Age,
+                Gender = koi.Gender,
+                Varieties = koi.Varieties
+            };
         }
 
-        // Lấy danh sách tất cả các cá Koi
-        public async Task<IEnumerable<Koi>> GetAllKoiAsync()
+        public async Task<IEnumerable<KoiResponse>> GetAllKoiByAccountIdAsync(Guid accountId)
         {
-            // Gọi repository để lấy danh sách cá Koi từ database
-            var koiList = await _koiRepository.GetAllAsync();
-            return koiList;
+            var koiList = await _unitOfWork.KoiRepository.FindAsync(k => k.AccountId == accountId);
+
+            var koiResponseList = new List<KoiResponse>();
+            foreach (var koi in koiList)
+            {
+                koiResponseList.Add(new KoiResponse
+                {
+                    KoiName = koi.KoiName,
+                    Weight = koi.Weight,
+                    Age = koi.Age,
+                    Gender = koi.Gender,
+                    Varieties = koi.Varieties
+                });
+            }
+
+            return koiResponseList;
         }
 
-       
-        
+        public async Task<bool> UpdateKoiAsync(Guid id, UpdateKoiRequest koiRequest)
+        {
+            var existingKoi = await _unitOfWork.KoiRepository.GetByIdAsync(id);
+            if (existingKoi == null)
+            {
+                throw new Exception("Koi not found");
+            }
+
+            existingKoi.KoiName = koiRequest.KoiName;
+            existingKoi.Weight = koiRequest.Weight;
+            existingKoi.Age = koiRequest.Age;
+            existingKoi.Gender = koiRequest.Gender;
+            existingKoi.Varieties = koiRequest.Varieties;
+            existingKoi.ModificationDate = DateTime.Now;
+
+            _unitOfWork.KoiRepository.Update(existingKoi);
+            return await _unitOfWork.SaveChangeAsync() > 0;
+        }
+
+        public async Task<bool> DeleteKoiAsync(Guid id, Guid deletedBy)
+        {
+            var koi = await _unitOfWork.KoiRepository.GetByIdAsync(id);
+            if (koi == null)
+            {
+                throw new Exception("Koi not found");
+            }
+
+            koi.IsDelete = true;
+            koi.DeletedBy = deletedBy;
+            koi.DeletionDate = DateTime.Now;
+
+            _unitOfWork.KoiRepository.Update(koi);
+            return await _unitOfWork.SaveChangeAsync() > 0;
+        }
     }
 
 }

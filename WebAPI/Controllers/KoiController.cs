@@ -1,4 +1,5 @@
-﻿using Application.Model.KoiModel;
+﻿using Application.IService.Abstraction;
+using Application.Model.KoiModel;
 using AutoMapper;
 using MassTransit.JobService;
 using Microsoft.AspNetCore.Authorization;
@@ -8,8 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+
     public class KoiController : BaseController
     {
         private readonly IKoiService _koiService;
@@ -19,54 +19,109 @@ namespace WebAPI.Controllers
             _koiService = koiService;
         }
 
-        // API để tạo mới Koi
-        [HttpPost]
-        public async Task<IActionResult> CreateKoi(CreateKoi model)
+        // GET: api/v1/koi/GetKoiById/{id}
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetKoiById(Guid id)
         {
-            bool isCreated = await _koiService.CreateKoiAsync(model);
-            if (isCreated)
+            try
             {
-                return Ok();
+                var koi = await _koiService.GetKoiByIdAsync(id);
+                if (koi == null)
+                {
+                    return NotFound(new { message = "Koi not found" });
+                }
+                return Ok(koi);
             }
-            return BadRequest();
+            catch (Exception ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
         }
 
-        // API để cập nhật Koi
-        [HttpPut]
-        public async Task<IActionResult> UpdateKoi(UpdateKoi model)
-        {
-            bool isUpdated = await _koiService.UpdateKoiAsync();
-            if (isUpdated)
-            {
-                return Ok();
-            }
-            return BadRequest();
-        }
-
-        // API để lấy danh sách các Koi hiện có
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllKoi()
         {
-            var koiList = await _koiService.GetAllKoiAsync();
-            if (koiList == null)
+            try
             {
-                return BadRequest();
+                var koiList = await _koiService.GetAllKoiAsync();
+                return Ok(koiList);
             }
-            return Ok(koiList);
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
-        // API để lấy thông tin chi tiết của một con Koi
-        [Authorize]
-        [HttpGet]
-        public async Task<IActionResult> GetKoi()
+        // GET: api/v1/koi/GetKoiByAccountId/{accountId}
+        [HttpGet("{accountId}")]
+        public async Task<IActionResult> GetKoiByAccountId(Guid accountId)
         {
-            var koi = await _koiService.GetKoiByIdAsync();
-            if (koi == null)
+            try
             {
-                return NotFound();
+                var koiList = await _koiService.GetAllKoiByAccountIdAsync(accountId);
+                return Ok(koiList);
             }
-            return Ok(koi);
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        // POST: api/v1/koi/AddKoi
+        [HttpPost]
+        public async Task<IActionResult> AddKoi([FromBody] AddKoiRequest koiRequest)
+        {
+            try
+            {
+                var result = await _koiService.AddKoiAsync(koiRequest);
+                if (result)
+                {
+                    return Ok(new { message = "Koi added successfully." });
+                }
+                return BadRequest("Failed to add koi.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        // PUT: api/v1/koi/UpdateKoi/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateKoi(Guid id, [FromBody] UpdateKoiRequest koiRequest)
+        {
+            try
+            {
+                var result = await _koiService.UpdateKoiAsync(id, koiRequest);
+                if (result)
+                {
+                    return NoContent();
+                }
+                return NotFound(new { message = "Koi not found." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        // DELETE: api/v1/koi/DeleteKoi/{id}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteKoi(Guid id)
+        {
+            try
+            {
+                var result = await _koiService.DeleteKoiAsync(id, Guid.NewGuid()); // Assume DeletedBy comes from authenticated user
+                if (result)
+                {
+                    return NoContent();
+                }
+                return NotFound(new { message = "Koi not found." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
     }
 }

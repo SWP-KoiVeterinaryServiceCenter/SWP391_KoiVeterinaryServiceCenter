@@ -12,13 +12,17 @@ namespace Infrastructure
     {
         private readonly AppDbContext _dbContext;
         private readonly IAccountRepository _accountRepository;
-        public UnitOfWork(AppDbContext dbContext, IAccountRepository accountRepository)
+        private readonly IKoiRepository _koiRepository;
+
+        public UnitOfWork(AppDbContext dbContext, IAccountRepository accountRepository, IKoiRepository koiRepository)
         {
             _dbContext = dbContext;
             _accountRepository = accountRepository;
+            _koiRepository = koiRepository;
         }
 
-        public IAccountRepository AccountRepository =>_accountRepository;
+        public IAccountRepository AccountRepository => _accountRepository;
+        public IKoiRepository KoiRepository => _koiRepository;
 
         public async Task<int> SaveChangeAsync()
         {

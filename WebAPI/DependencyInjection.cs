@@ -18,6 +18,7 @@ namespace WebAPI
             services.AddScoped<IClaimService, ClaimService>();
             services.AddScoped<ICurrentTime, CurrentTime>();
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IKoiService, KoiService>();
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
