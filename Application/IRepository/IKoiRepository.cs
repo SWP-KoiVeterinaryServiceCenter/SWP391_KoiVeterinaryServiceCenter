@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Application.IRepository
 {
-    internal interface IKoiRepository
+    public interface IKoiRepository
     {
         // Thêm mới một Koi vào cơ sở dữ liệu
         Task<bool> AddAsync(Koi koi);

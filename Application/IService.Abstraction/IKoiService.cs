@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application.IService.Abstraction
 {
-    internal interface IKoiService
+    public interface IKoiService
     {
         // Tạo mới một cá Koi
         Task<bool> CreateKoiAsync(CreateKoi model);
