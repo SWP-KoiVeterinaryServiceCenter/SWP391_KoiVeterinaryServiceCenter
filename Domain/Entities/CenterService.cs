@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class Service : BaseEntity, ICreatedBy, IModificationBy, IDeletedBy
+    public class CenterService : BaseEntity, ICreatedBy, IModificationBy, IDeletedBy
     {
         public string ServiceName { get; set; }
         public string Description { get; set; }
@@ -19,6 +19,8 @@ namespace Domain.Entities
         public ServiceType ServiceType { get; set; }
         public Guid? AppointmentId { get; set; }
         public Appointment Appointment { get; set; }
+        public Guid? TankId { get; set; }
+        public CenterTank Tank { get; set; }
         public Guid? CreatedBy { get; set; }
         public DateTime? CreationDate { get; set; }
         public Guid? ModificationBy { get; set; }

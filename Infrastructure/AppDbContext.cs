@@ -18,7 +18,7 @@ namespace Infrastructure
         public DbSet<MedicalRecord> MedicalRecords { get; set; }
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<Service> Services { get; set; }
+        public DbSet<CenterService> CenterServices { get; set; }
         public DbSet<ServiceType> ServiceTypes { get; set; }
         public DbSet<TravelExpense> TravelExpenses { get; set; }
         public DbSet<WorkingSchedule> WorkingSchedules { get; set; }

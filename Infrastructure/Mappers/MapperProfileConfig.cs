@@ -1,5 +1,8 @@
 ﻿using Application.Model.AccountModel;
 using Application.Model.KoiModel;
+using Application.Model.KoiServiceModel;
+using Application.Model.ServiceTypeModel;
+using Application.Model.TankModel;
 using AutoMapper;
 using Domain.Entities;
 using System;
@@ -15,43 +18,30 @@ namespace Infrastructure.Mappers
         public MapperProfileConfig()
         {
             CreateAccountMap();
+            CreateServiceTypeMap();
+            CreateCenterServiceMap();
+            CreateCenterTankMap();
         }
         internal void CreateAccountMap()
         {
             CreateMap<RegisterModel, Account>().ReverseMap();
         }
-    }
-    public class MapperProfileKoi : Profile
-    {
-        public MapperProfileKoi()
+        internal void CreateServiceTypeMap()
         {
-            //CreateKoiMap();  // Ánh xạ cho CreateKoiModel
-            //UpdateKoiMap();  // Ánh xạ cho UpdateKoiModel
+            CreateMap<CreateServiceTypeModel, ServiceType>()
+                .ForMember(scr => scr.TypeName, dest => dest.MapFrom(model => model.TypeName)).ReverseMap();
         }
-
-        //internal void CreateKoiMap()
-        //{
-        //    // Tạo ánh xạ giữa CreateKoiModel và Koi
-        //    CreateMap<CreateKoi, Koi>()
-        //        .ForMember(dest => dest.KoiName, opt => opt.MapFrom(src => src.KoiName))
-        //        .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => src.Weight))
-        //        .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.Age))
-        //        .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender))
-        //        .ForMember(dest => dest.Varieties, opt => opt.MapFrom(src => src.Varieties))
-        //        .ForMember(dest => dest.IsDelete, opt => opt.MapFrom(src => false)) // Giá trị mặc định là chưa bị xóa
-        //        .ReverseMap(); // Cho phép ánh xạ ngược
-        //}
-
-        //internal void UpdateKoiMap()
-        //{
-        //    // Tạo ánh xạ giữa UpdateKoiModel và Koi
-        //    CreateMap<UpdateKoi, Koi>()
-        //        .ForMember(dest => dest.KoiName, opt => opt.MapFrom(src => src.KoiName))
-        //        .ForMember(dest => dest.Weight, opt => opt.MapFrom(src => src.Weight))
-        //        .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.Age))
-        //        .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender))
-        //        .ForMember(dest => dest.Varieties, opt => opt.MapFrom(src => src.Varieties))
-        //        .ReverseMap(); // Cho phép ánh xạ ngược
-        //}
+        internal void CreateCenterServiceMap()
+        {
+            CreateMap<CreateServiceModel, CenterService>()
+                .ForMember(scr => scr.TankId, dest => dest.MapFrom(model => model.TankId))
+                .ForMember(scr => scr.TypeId, dest => dest.MapFrom(model => model.TypeId)).ReverseMap();
+        }
+        internal void CreateCenterTankMap()
+        {
+            CreateMap<CreateTankModel, CenterTank>()
+                .ReverseMap();
+        }
     }
 }
+

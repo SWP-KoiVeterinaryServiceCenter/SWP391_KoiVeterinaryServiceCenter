@@ -11,6 +11,9 @@ namespace Application
     {
         public IAccountRepository AccountRepository { get; }
         public IKoiRepository KoiRepository { get; }
+        public ICenterTankRepository CenterTankRepository { get; }
+        public ICenterServiceRepository CenterServiceRepository { get; }
+        public IServiceTypeRepository ServiceTypeRepository { get; }
         public Task<int> SaveChangeAsync();
     }
 }
