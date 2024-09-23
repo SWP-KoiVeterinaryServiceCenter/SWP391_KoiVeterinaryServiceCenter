@@ -34,6 +34,7 @@ namespace Infrastructure.Mappers
         internal void CreateCenterServiceMap()
         {
             CreateMap<CreateServiceModel, CenterService>()
+                .ForMember(src=>src.ServiceName,dest=>dest.MapFrom(model=>model.Name))
                 .ForMember(scr => scr.TankId, dest => dest.MapFrom(model => model.TankId))
                 .ForMember(scr => scr.TypeId, dest => dest.MapFrom(model => model.TypeId)).ReverseMap();
         }

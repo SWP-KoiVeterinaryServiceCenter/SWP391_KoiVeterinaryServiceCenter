@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240923123146_FixForeignKeyError")]
+    partial class FixForeignKeyError
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,14 +100,14 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("1de7660a-5288-440c-af13-9914662f155c"),
+                            Id = new Guid("7cbe09ca-5ca2-4c89-9ef7-f2ae4b387e94"),
                             ContactLink = "",
-                            CreationDate = new DateTime(2024, 9, 23, 12, 34, 26, 856, DateTimeKind.Utc).AddTicks(9663),
+                            CreationDate = new DateTime(2024, 9, 23, 12, 31, 46, 19, DateTimeKind.Utc).AddTicks(1279),
                             Email = "admin@gmail.com",
                             Fullname = "Admin",
                             IsDelete = false,
                             Location = "",
-                            PasswordHash = "$2a$11$V29u1wJQ/dbZ3V2dxwWA0uUoB8M4ipnUhMEOsKz/BoGR6aRPWSouO",
+                            PasswordHash = "$2a$11$jHSQVLCbyDRLFbVHZ0D/Z.mPS9PIKtGNaWOqeff6wMG34VbyWsZCC",
                             Phonenumber = "",
                             RoleId = 1,
                             Username = "Admin"
