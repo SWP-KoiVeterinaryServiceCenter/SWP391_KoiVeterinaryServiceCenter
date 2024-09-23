@@ -14,7 +14,7 @@ namespace Infrastructure.Migrations
             migrationBuilder.DeleteData(
                 table: "Accounts",
                 keyColumn: "Id",
-                keyValue: new Guid("E8390000-4208-30D0-EBBC-08DCDBA9B31F"));
+                keyValue: new Guid("EC340000-4208-30D0-0B8D-08DCDBA75CE7"));
 
             migrationBuilder.InsertData(
                 table: "Accounts",
