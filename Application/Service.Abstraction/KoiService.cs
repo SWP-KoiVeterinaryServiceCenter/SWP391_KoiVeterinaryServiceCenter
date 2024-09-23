@@ -1,4 +1,5 @@
 ﻿using Application.IService.Abstraction;
+using Application.IService.Common;
 using Application.Model.KoiModel;
 using AutoMapper;
 using Domain.Entities;
@@ -14,9 +15,11 @@ namespace Application.Service.Abstraction
     public class KoiService : IKoiService
     {
         private readonly IUnitOfWork _unitOfWork;
-        public KoiService(IUnitOfWork unitOfWork)
+        private readonly IClaimService _claimService;
+        public KoiService(IUnitOfWork unitOfWork,IClaimService claimService)
         {
             _unitOfWork = unitOfWork;
+            _claimService = claimService;
         }
 
         public async Task<bool> AddKoiAsync(AddKoiRequest koiRequest)
@@ -28,7 +31,7 @@ namespace Application.Service.Abstraction
                 Age = koiRequest.Age,
                 Gender = koiRequest.Gender,
                 Varieties = koiRequest.Varieties,
-                AccountId = koiRequest.AccountId
+                AccountId = _claimService.GetCurrentUserId
             };
 
             await _unitOfWork.KoiRepository.AddAsync(koi);

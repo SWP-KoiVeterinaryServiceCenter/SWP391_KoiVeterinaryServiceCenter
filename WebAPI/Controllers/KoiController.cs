@@ -68,6 +68,7 @@ namespace WebAPI.Controllers
         }
 
         // POST: api/v1/koi/AddKoi
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddKoi([FromBody] AddKoiRequest koiRequest)
         {
