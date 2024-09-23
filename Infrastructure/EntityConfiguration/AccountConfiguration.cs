@@ -19,7 +19,7 @@ namespace Infrastructure.EntityConfiguration
            builder.HasIndex(x=>x.Email).IsUnique();
             builder.HasData(new Account
             {
-                Id=Guid.NewGuid(),
+                Id=Guid.Parse("1de7660a-5288-440c-af13-9914662f155c"),
                 Email = "admin@gmail.com",
                 PasswordHash = new string("Admin@123").Hash(),
                 CreationDate= DateTime.UtcNow,
