@@ -29,7 +29,21 @@ namespace Infrastructure.EntityConfiguration
                 Username="Admin",
                 Location="",
                 Phonenumber="",
-            }) ;
+            },
+            new Account
+            {
+                Id=Guid.Parse("dc699c6a-3980-42dd-be75-d10ae89c82b3"),
+                Email = "staff@gmail.com",
+                PasswordHash = new string("Staff@123").Hash(),
+                CreationDate = DateTime.UtcNow,
+                ContactLink = "",
+                Fullname = "Staff",
+                RoleId = 1,
+                Username = "Staff",
+                Location = "",
+                Phonenumber = "",
+            }
+            ) ;
         }
     }
 }
