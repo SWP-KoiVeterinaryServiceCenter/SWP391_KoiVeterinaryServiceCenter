@@ -26,5 +26,16 @@ namespace Application.Service.Abstraction
             await _unitOfWork.ServiceTypeRepository.AddAsync(newServiceType);
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
+
+        public async Task<List<ServiceTypeListViewModel>> GetAllServiceTypeAsync()
+        {
+            var serviceTypeList = await _unitOfWork.ServiceTypeRepository.GetAllAsync();
+            var serviceTypeListModel = serviceTypeList.Select(x => new ServiceTypeListViewModel
+            {
+                TypeId=x.Id,
+                TypeName=x.TypeName
+            }).ToList();
+            return serviceTypeListModel;
+        }
     }
 }

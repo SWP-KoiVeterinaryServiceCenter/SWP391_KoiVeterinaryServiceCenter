@@ -49,7 +49,8 @@ namespace Application.Service.Abstraction
                 Weight = koi.Weight,
                 Age = koi.Age,
                 Gender = koi.Gender,
-                Varieties = koi.Varieties
+                Varieties = koi.Varieties,
+                AccountId=koi.AccountId
             }).ToList();
 
             return koiResponseList;
@@ -70,7 +71,8 @@ namespace Application.Service.Abstraction
                 Weight = koi.Weight,
                 Age = koi.Age,
                 Gender = koi.Gender,
-                Varieties = koi.Varieties
+                Varieties = koi.Varieties,
+                AccountId = koi.AccountId
             };
         }
 
@@ -87,7 +89,8 @@ namespace Application.Service.Abstraction
                     Weight = koi.Weight,
                     Age = koi.Age,
                     Gender = koi.Gender,
-                    Varieties = koi.Varieties
+                    Varieties = koi.Varieties,
+                    AccountId=koi.AccountId
                 });
             }
 

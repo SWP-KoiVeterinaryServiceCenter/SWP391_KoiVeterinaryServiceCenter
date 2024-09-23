@@ -18,8 +18,4 @@
     <PackageReference Include="System.ServiceModel.Primitives" Version="8.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Model\ServiceTypeModel\" />
-  </ItemGroup>
-
 </Project>

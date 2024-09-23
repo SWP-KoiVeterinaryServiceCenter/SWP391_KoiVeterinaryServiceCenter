@@ -10,5 +10,6 @@ namespace Application.IService.Abstraction
     public interface IServiceTypeService
     {
         Task<bool> CreateServiceTypeAsync(CreateServiceTypeModel model);
+        Task<List<ServiceTypeListViewModel>> GetAllServiceTypeAsync();
     }
 }
