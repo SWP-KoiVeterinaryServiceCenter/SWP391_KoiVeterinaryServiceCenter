@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240923081146_AddRelationshipToServiceEntityAndDataToAccountEntity")]
+    partial class AddRelationshipToServiceEntityAndDataToAccountEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,14 +100,14 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            Id = new Guid("af29f656-eb16-410c-a7ab-3f7c56d88e32"),
+                            Id = new Guid("ec340000-4208-30d0-0b8d-08dcdba75ce7"),
                             ContactLink = "",
-                            CreationDate = new DateTime(2024, 9, 23, 8, 33, 37, 335, DateTimeKind.Utc).AddTicks(2453),
+                            CreationDate = new DateTime(2024, 9, 23, 8, 11, 44, 669, DateTimeKind.Utc).AddTicks(3521),
                             Email = "admin@gmail.com",
                             Fullname = "Admin",
                             IsDelete = false,
                             Location = "",
-                            PasswordHash = "$2a$11$C/ogfzxlye2ZxB8GDUOny.vNgiGMhz1dFgfzeq1gBZwHiKebBGBLS",
+                            PasswordHash = "$2a$11$QQZ.ULOpY.n8iv7qjm.lYOZLcRiZDzxKGFPMIpMBr4mdcUf5XueT2",
                             Phonenumber = "",
                             RoleId = 1,
                             Username = "Admin"
@@ -170,68 +173,6 @@ namespace Infrastructure.Migrations
                         .HasFilter("[ServiceId] IS NOT NULL");
 
                     b.ToTable("Appointments");
-                });
-
-            modelBuilder.Entity("Domain.Entities.CenterService", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("AppointmentId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid?>("DeletedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("DeletionDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<TimeSpan>("Duration")
-                        .HasColumnType("time");
-
-                    b.Property<bool>("IsDelete")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid?>("ModificationBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("ModificationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(5,2)");
-
-                    b.Property<string>("ServiceName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("ServiceTypeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("TankId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("TypeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ServiceTypeId");
-
-                    b.HasIndex("TankId");
-
-                    b.ToTable("CenterServices");
                 });
 
             modelBuilder.Entity("Domain.Entities.CenterTank", b =>
@@ -551,6 +492,71 @@ namespace Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Domain.Entities.Service", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AppointmentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CenterTankId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletionDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<TimeSpan>("Duration")
+                        .HasColumnType("time");
+
+                    b.Property<bool>("IsDelete")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("ModificationBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("ModificationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<string>("ServiceName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ServiceTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("TankId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("TypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CenterTankId");
+
+                    b.HasIndex("ServiceTypeId");
+
+                    b.ToTable("Services");
+                });
+
             modelBuilder.Entity("Domain.Entities.ServiceType", b =>
                 {
                     b.Property<Guid>("Id")
@@ -700,30 +706,13 @@ namespace Infrastructure.Migrations
                         .WithMany("AppointmentLists")
                         .HasForeignKey("KoiId");
 
-                    b.HasOne("Domain.Entities.CenterService", "Service")
+                    b.HasOne("Domain.Entities.Service", "Service")
                         .WithOne("Appointment")
                         .HasForeignKey("Domain.Entities.Appointment", "ServiceId");
 
                     b.Navigation("Koi");
 
                     b.Navigation("Service");
-                });
-
-            modelBuilder.Entity("Domain.Entities.CenterService", b =>
-                {
-                    b.HasOne("Domain.Entities.ServiceType", "ServiceType")
-                        .WithMany()
-                        .HasForeignKey("ServiceTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.CenterTank", "Tank")
-                        .WithMany("ServiceList")
-                        .HasForeignKey("TankId");
-
-                    b.Navigation("ServiceType");
-
-                    b.Navigation("Tank");
                 });
 
             modelBuilder.Entity("Domain.Entities.Feedback", b =>
@@ -785,6 +774,25 @@ namespace Infrastructure.Migrations
                     b.Navigation("RatingAppointment");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Service", b =>
+                {
+                    b.HasOne("Domain.Entities.CenterTank", "CenterTank")
+                        .WithMany("ServiceList")
+                        .HasForeignKey("CenterTankId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.ServiceType", "ServiceType")
+                        .WithMany()
+                        .HasForeignKey("ServiceTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CenterTank");
+
+                    b.Navigation("ServiceType");
+                });
+
             modelBuilder.Entity("Domain.Entities.ServiceType", b =>
                 {
                     b.HasOne("Domain.Entities.TravelExpense", "TravelExpense")
@@ -811,12 +819,6 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Domain.Entities.CenterService", b =>
-                {
-                    b.Navigation("Appointment")
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Domain.Entities.CenterTank", b =>
                 {
                     b.Navigation("ServiceList");
@@ -836,6 +838,12 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Role", b =>
                 {
                     b.Navigation("Accounts");
+                });
+
+            modelBuilder.Entity("Domain.Entities.Service", b =>
+                {
+                    b.Navigation("Appointment")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.TravelExpense", b =>

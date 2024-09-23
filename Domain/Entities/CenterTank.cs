@@ -14,7 +14,7 @@ namespace Domain.Entities
         public decimal Capacity { get; set; }
         public string Status { get; set; }
         public string TankName { get; set; }    
-        public ICollection<Service> ServiceList { get; set; }
+        public ICollection<CenterService> ServiceList { get; set; }
         public Guid? CreatedBy { get; set; }
         public DateTime? CreationDate { get; set; }
         public Guid? ModificationBy { get; set; }

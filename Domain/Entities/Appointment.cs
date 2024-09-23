@@ -12,7 +12,7 @@ namespace Domain.Entities
         public string Description { get; set; }
         public string AppointmentStatus { get; set; }
         public Guid? ServiceId { get; set; }
-        public Service Service { get; set; }
+        public CenterService Service { get; set; }
         public Guid? MedicalRecordId { get; set; }
         public MedicalRecord MedicalRecord { get; set; }
         public Guid? RatingId { get; set; }

@@ -1,4 +1,6 @@
-﻿using Domain.Entities;
+﻿using Application.Util;
+using Domain.Entities;
+using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -15,6 +17,19 @@ namespace Infrastructure.EntityConfiguration
         public void Configure(EntityTypeBuilder<Account> builder)
         {
            builder.HasIndex(x=>x.Email).IsUnique();
+            builder.HasData(new Account
+            {
+                Id=Guid.NewGuid(),
+                Email = "admin@gmail.com",
+                PasswordHash = new string("Admin@123").Hash(),
+                CreationDate= DateTime.UtcNow,
+                ContactLink="",
+                Fullname="Admin",
+                RoleId=1,
+                Username="Admin",
+                Location="",
+                Phonenumber="",
+            }) ;
         }
     }
 }

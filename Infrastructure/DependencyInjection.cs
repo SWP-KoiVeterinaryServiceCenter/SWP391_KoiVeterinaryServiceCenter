@@ -17,6 +17,9 @@ namespace Infrastructure
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(databaseConnection).EnableSensitiveDataLogging());
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<IKoiRepository, KoiRepository>();
+            services.AddScoped<IServiceTypeRepository, ServiceTypeRepository>();
+            services.AddScoped<ICenterServiceRepository, CenterServiceRepository>();
+            services.AddScoped<ICenterTankRepository, CenterTankRepository>();
             services.AddScoped<IUnitOfWork,UnitOfWork>();
             return services;
         }
