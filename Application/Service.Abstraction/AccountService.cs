@@ -29,6 +29,34 @@ namespace Application.Service.Abstraction
             _claimsService = claimService;
         }
 
+        public async Task<bool> CreateStaffAccount(RegisterModel model)
+        {
+            var findUser = await _unitOfWork.AccountRepository.FindAccountByEmail(model.Email);
+            if (findUser != null)
+            {
+                throw new Exception("Email already exist");
+            }
+            var newStaffAccount=_mapper.Map<Account>(model);
+            newStaffAccount.PasswordHash = model.Password.Hash();
+            newStaffAccount.RoleId = 2;
+            await _unitOfWork.AccountRepository.AddAsync(newStaffAccount);
+            return await _unitOfWork.SaveChangeAsync()>0;
+        }
+
+        public async Task<bool> CreateVetAccount(RegisterModel model)
+        {
+            var findUser = await _unitOfWork.AccountRepository.FindAccountByEmail(model.Email);
+            if (findUser != null)
+            {
+                throw new Exception("Email already exist");
+            }
+            var newVetAccount=_mapper.Map<Account>(model);
+            newVetAccount.PasswordHash = model.Password.Hash();
+            newVetAccount.RoleId = 3;
+            await _unitOfWork.AccountRepository.AddAsync(newVetAccount);
+            return await _unitOfWork.SaveChangeAsync() > 0;
+        }
+
         public async Task<CurrentUserModel> GetCurrentLoginUserAsync()
         {
             var loginUser = await _unitOfWork.AccountRepository.GetByIdAsync(_claimsService.GetCurrentUserId, x => x.Role);

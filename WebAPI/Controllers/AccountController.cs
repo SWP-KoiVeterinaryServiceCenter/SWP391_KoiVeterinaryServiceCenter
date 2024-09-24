@@ -44,5 +44,25 @@ namespace WebAPI.Controllers
             }
             return Ok(currentUser);
         }
+        [HttpPost]
+        public async Task<IActionResult> CreateVetAccount(RegisterModel registerModel)
+        {
+            bool isRegister = await _accountService.CreateVetAccount(registerModel);
+            if (isRegister)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateStaffAccount(RegisterModel registerModel)
+        {
+            bool isRegister = await _accountService.CreateStaffAccount(registerModel);
+            if (isRegister)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
     }
 }
