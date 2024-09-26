@@ -27,5 +27,17 @@ namespace Application.Service.Abstraction
             await _unitOfWork.CenterServiceRepository.AddAsync(newCenterService);
             return await _unitOfWork.SaveChangeAsync()>0;
         }
+
+        public async Task<List<ListCenterServiceModel>> GetAllService()
+        {
+            var listCenterService=await _unitOfWork.CenterServiceRepository.GetAllAsync();
+            var listCenterServiceModel=listCenterService.Select(x=>new ListCenterServiceModel
+            {
+                Id= x.Id,
+                Name=x.ServiceName,
+                Price=x.Price
+            }).ToList();
+            return listCenterServiceModel;
+        }
     }
 }

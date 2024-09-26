@@ -5,6 +5,7 @@ using Application.Model.AccountModel;
 using Application.Util;
 using AutoMapper;
 using Domain.Entities;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,13 +21,17 @@ namespace Application.Service.Abstraction
         private readonly AppConfiguration _appConfiguration;
         private readonly ICurrentTime _currentTime;
         private readonly IClaimService _claimsService;
-        public AccountService(IUnitOfWork unitOfWork,IMapper mapper,AppConfiguration appConfiguration,ICurrentTime currentTime,IClaimService claimService)
+        private readonly IUploadImageService _uploadImageService;
+        public AccountService(IUnitOfWork unitOfWork,IMapper mapper,
+            AppConfiguration appConfiguration,ICurrentTime currentTime,
+            IClaimService claimService,IUploadImageService uploadImageService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _appConfiguration = appConfiguration;
             _currentTime = currentTime;
             _claimsService = claimService;
+            _uploadImageService = uploadImageService;
         }
 
         public async Task<bool> CreateStaffAccount(RegisterModel model)
@@ -106,6 +111,22 @@ namespace Application.Service.Abstraction
             newAccount.RoleId = 4;
             await _unitOfWork.AccountRepository.AddAsync(newAccount);
             return await _unitOfWork.SaveChangeAsync()>0;
+        }
+
+        public async Task<bool> UploadImageForAccount(Guid accountId, IFormFile formFile)
+        {
+            var updateAccount=await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
+            if (updateAccount != null)
+            {
+                string uploadImage = await _uploadImageService.UploadFileToFireBase(formFile, "Account");
+                updateAccount.ProfileImage = uploadImage;
+                _unitOfWork.AccountRepository.Update(updateAccount);
+            }
+            else
+            {
+                throw new Exception("Account do not exist");
+            }
+          return  await _unitOfWork.SaveChangeAsync()>0;
         }
     }
 }

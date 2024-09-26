@@ -10,7 +10,7 @@ namespace Domain.Enum
     {
         Admin,
         Staff,
-        Veterian,
+        Veterinarian,
         Customer
     }
 }

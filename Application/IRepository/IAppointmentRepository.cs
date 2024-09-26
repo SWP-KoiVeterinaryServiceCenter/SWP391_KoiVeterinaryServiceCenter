@@ -9,5 +9,6 @@ namespace Application.IRepository
 {
     public interface IAppointmentRepository:IGenericRepository<Appointment>
     {
+        Task<Guid> GetLastSaveAppointmentId();
     }
 }

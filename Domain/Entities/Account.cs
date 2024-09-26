@@ -16,6 +16,7 @@ namespace Domain.Entities
         public string Location { get; set; }
         public string Phonenumber { get; set; }
         public string ContactLink { get; set; }
+        public string? ProfileImage { get; set; }
         public int RoleId { get; set; }
         public Role Role { get; set; }
         public Guid? WorkingScheduleId { get; set; }

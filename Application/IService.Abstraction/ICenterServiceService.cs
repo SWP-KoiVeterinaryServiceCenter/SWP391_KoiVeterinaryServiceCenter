@@ -10,5 +10,6 @@ namespace Application.IService.Abstraction
     public interface ICenterServiceService
     {
         Task<bool> CreateCenterServiceAysnc(CreateServiceModel createServiceModel);
+        Task<List<ListCenterServiceModel>> GetAllService();
     }
 }
