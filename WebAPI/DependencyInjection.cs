@@ -22,6 +22,7 @@ namespace WebAPI
             services.AddScoped<ICenterTankService, CenterTankService>();
             services.AddScoped<IServiceTypeService, ServiceTypeService>();
             services.AddScoped<ICenterServiceService, CenterServiceService>();
+            services.AddScoped<IWorkingScheduleService, WorkingScheduleService>();
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
