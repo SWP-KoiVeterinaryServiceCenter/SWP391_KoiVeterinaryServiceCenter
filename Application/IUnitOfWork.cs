@@ -14,6 +14,7 @@ namespace Application
         public ICenterTankRepository CenterTankRepository { get; }
         public ICenterServiceRepository CenterServiceRepository { get; }
         public IServiceTypeRepository ServiceTypeRepository { get; }
+        public IWorkingScheduleRepository WorkingScheduleRepository { get; }
         public Task<int> SaveChangeAsync();
     }
 }

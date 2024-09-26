@@ -20,6 +20,7 @@ namespace Infrastructure
             services.AddScoped<IServiceTypeRepository, ServiceTypeRepository>();
             services.AddScoped<ICenterServiceRepository, CenterServiceRepository>();
             services.AddScoped<ICenterTankRepository, CenterTankRepository>();
+            services.AddScoped<IWorkingScheduleRepository, WorkingScheduleRepository>();
             services.AddScoped<IUnitOfWork,UnitOfWork>();
             return services;
         }
