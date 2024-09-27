@@ -11,7 +11,7 @@ namespace Domain.Entities
     {
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-        public int DayOfWeek { get; set; }
+        public int  DayOfWeek { get; set; }
         public Guid? CreatedBy { get; set; }
         public DateTime? CreationDate { get; set; }
         public Guid? ModificationBy { get; set; }
