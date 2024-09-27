@@ -21,6 +21,7 @@ namespace Domain.Entities
         public Feedback Feedback { get; set; }
         public Guid? KoiId { get; set; }
         public Koi Koi { get; set; }
+        public Guid? VeterinarianId { get; set; }
         public Guid? CreatedBy { get; set; }
         public DateTime? CreationDate { get; set; }
         public Guid? ModificationBy { get; set; }

@@ -21,6 +21,7 @@ namespace Infrastructure
             services.AddScoped<ICenterServiceRepository, CenterServiceRepository>();
             services.AddScoped<ICenterTankRepository, CenterTankRepository>();
             services.AddScoped<IWorkingScheduleRepository, WorkingScheduleRepository>();
+            services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<IUnitOfWork,UnitOfWork>();
             return services;
         }

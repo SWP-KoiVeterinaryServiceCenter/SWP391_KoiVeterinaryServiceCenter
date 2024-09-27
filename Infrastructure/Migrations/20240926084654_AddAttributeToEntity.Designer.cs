@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240926084654_AddAttributeToEntity")]
+    partial class AddAttributeToEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,9 +76,6 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProfileImage")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
@@ -102,12 +102,12 @@ namespace Infrastructure.Migrations
                         {
                             Id = new Guid("1de7660a-5288-440c-af13-9914662f155c"),
                             ContactLink = "",
-                            CreationDate = new DateTime(2024, 9, 26, 9, 32, 2, 877, DateTimeKind.Utc).AddTicks(6401),
+                            CreationDate = new DateTime(2024, 9, 26, 8, 46, 52, 411, DateTimeKind.Utc).AddTicks(567),
                             Email = "admin@gmail.com",
                             Fullname = "Admin",
                             IsDelete = false,
                             Location = "",
-                            PasswordHash = "$2a$11$IfO58nWnh3qi93ACWn6LBu0SZZC93HZRLidWBUvd4VT8IZaJHz0O6",
+                            PasswordHash = "$2a$11$mT3WB.Zhe2MWV1e4dF2rvOuQqkOjEXEpb4588H59ejQsemqzitMa.",
                             Phonenumber = "",
                             RoleId = 1,
                             Username = "Admin"
@@ -116,12 +116,12 @@ namespace Infrastructure.Migrations
                         {
                             Id = new Guid("dc699c6a-3980-42dd-be75-d10ae89c82b3"),
                             ContactLink = "",
-                            CreationDate = new DateTime(2024, 9, 26, 9, 32, 3, 59, DateTimeKind.Utc).AddTicks(1222),
+                            CreationDate = new DateTime(2024, 9, 26, 8, 46, 52, 581, DateTimeKind.Utc).AddTicks(7527),
                             Email = "staff@gmail.com",
                             Fullname = "Staff",
                             IsDelete = false,
                             Location = "",
-                            PasswordHash = "$2a$11$xx2C68XM9JdTfDFyDp44tu9/qcqeD3AaCXUmDJbHe2jXMvJWxg8eK",
+                            PasswordHash = "$2a$11$G/eqLFRTCStDvvzNsySA5OWi4pr9oP/NR3syNxp17voNWMtWLz876",
                             Phonenumber = "",
                             RoleId = 1,
                             Username = "Staff"
@@ -178,7 +178,7 @@ namespace Infrastructure.Migrations
                     b.Property<Guid?>("ServiceId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("VeterinarianId")
+                    b.Property<Guid>("VeterinarianId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -372,9 +372,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
-
-                    b.Property<string>("KoiImage")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("KoiName")
                         .IsRequired()

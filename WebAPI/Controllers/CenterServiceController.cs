@@ -23,5 +23,11 @@ namespace WebAPI.Controllers
             }
             return BadRequest();
         }
+        [HttpGet]
+        public async Task<IActionResult> GetAllService()
+        {
+            var listCenterService = await _centerServiceService.GetAllService();
+            return Ok(listCenterService);
+        }
     }
 }

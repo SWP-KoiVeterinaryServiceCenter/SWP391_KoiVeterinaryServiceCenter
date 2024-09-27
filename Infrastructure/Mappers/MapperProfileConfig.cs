@@ -1,4 +1,5 @@
 ﻿using Application.Model.AccountModel;
+using Application.Model.AppointmentModel;
 using Application.Model.KoiModel;
 using Application.Model.KoiServiceModel;
 using Application.Model.ServiceTypeModel;
@@ -21,6 +22,7 @@ namespace Infrastructure.Mappers
             CreateServiceTypeMap();
             CreateCenterServiceMap();
             CreateCenterTankMap();
+            CreateAppointmentMap();
         }
         internal void CreateAccountMap()
         {
@@ -42,6 +44,13 @@ namespace Infrastructure.Mappers
         {
             CreateMap<CreateTankModel, CenterTank>()
                 .ReverseMap();
+        }
+        internal void CreateAppointmentMap()
+        {
+            CreateMap<CreateAppointmentModel, Appointment>()
+                .ForMember(scr => scr.KoiId, dest => dest.MapFrom(model => model.KoiId))
+                .ForMember(scr => scr.ServiceId, dest => dest.MapFrom(model => model.ServiceId))
+                .ForMember(scr=>scr.VeterinarianId,dest=>dest.MapFrom(model=>model.VeterinarianId)).ReverseMap();
         }
     }
 }

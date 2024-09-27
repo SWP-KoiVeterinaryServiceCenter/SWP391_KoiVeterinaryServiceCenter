@@ -1,4 +1,5 @@
 ﻿using Application.Model.AccountModel;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace Application.IService.Abstraction
         Task<CurrentUserModel> GetCurrentLoginUserAsync();
         Task<bool> CreateVetAccount(RegisterModel model);
         Task<bool> CreateStaffAccount(RegisterModel model);
+        Task<bool> UploadImageForAccount(Guid accountId, IFormFile formFile);
     }
 }
