@@ -24,7 +24,7 @@ public class WorkingScheduleService : IWorkingScheduleService
             Id = ws.Id,
             StartTime = ws.StartTime,
             EndTime = ws.EndTime,
-            DayOfWeek = ws.WorkingDay
+            WorkingDay = ws.WorkingDay
         });
     }
 
@@ -38,45 +38,51 @@ public class WorkingScheduleService : IWorkingScheduleService
             Id = workingSchedule.Id,
             StartTime = workingSchedule.StartTime,
             EndTime = workingSchedule.EndTime,
-            DayOfWeek = workingSchedule.WorkingDay
+            WorkingDay = workingSchedule.WorkingDay
         };
     }
 
     public async Task<WorkingScheduleResponse> CreateAsync(AddWorkingScheduleRequest request)
     {
-        /* var workingSchedule = new WorkingSchedule
-         {
-             StartTime = request.StartTime,
-             EndTime = request.EndTime,
-             DayOfWeek = request.DayOfWeek
-         };
+        var startTime = request.StartTime.TimeOfDay;
+        var endTime = request.EndTime.TimeOfDay;
 
-         await _unitOfWork.WorkingScheduleRepository.AddAsync(workingSchedule);
-         await _unitOfWork.SaveChangeAsync();
+        var workingSchedule = new WorkingSchedule
+        {
+            StartTime = startTime,
+            EndTime = endTime,
+            WorkingDay = request.WorkingDay
+        };
 
-         return new WorkingScheduleResponse
-         {
-             Id = workingSchedule.Id,
-             StartTime = workingSchedule.StartTime,
-             EndTime = workingSchedule.EndTime,
-             DayOfWeek = workingSchedule.DayOfWeek
-         };*/
-        return null;
+        await _unitOfWork.WorkingScheduleRepository.AddAsync(workingSchedule);
+        await _unitOfWork.SaveChangeAsync();
+
+        return new WorkingScheduleResponse
+        {
+            Id = workingSchedule.Id,
+            StartTime = workingSchedule.StartTime,
+            EndTime = workingSchedule.EndTime,
+            WorkingDay = workingSchedule.WorkingDay
+        };
     }
+
 
     public async Task UpdateAsync(UpdateWorkingScheduleRequest request)
     {
-       /* var workingSchedule = await _unitOfWork.WorkingScheduleRepository.GetByIdAsync(request.Id);
+        var workingSchedule = await _unitOfWork.WorkingScheduleRepository.GetByIdAsync(request.Id);
+
         if (workingSchedule != null)
         {
-            workingSchedule.StartTime = request.StartTime;
-            workingSchedule.EndTime = request.EndTime;
-            workingSchedule.DayOfWeek = request.DayOfWeek;
+            workingSchedule.StartTime = request.StartTime.TimeOfDay;
+            workingSchedule.EndTime = request.EndTime.TimeOfDay;
+
+            workingSchedule.WorkingDay = request.WorkingDay;
 
             _unitOfWork.WorkingScheduleRepository.Update(workingSchedule);
             await _unitOfWork.SaveChangeAsync();
-        }*/
+        }
     }
+
 
     public async Task DeleteAsync(Guid id)
     {

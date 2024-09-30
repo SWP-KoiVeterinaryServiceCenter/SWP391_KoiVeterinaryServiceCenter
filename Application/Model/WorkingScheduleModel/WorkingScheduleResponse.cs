@@ -10,7 +10,7 @@ namespace Application.Model.WorkingScheduleModel
     {
         public Guid Id { get; set; }
         public TimeSpan StartTime { get; set; }
-        public TimeSpan  EndTime { get; set; }
-        public DateTime DayOfWeek { get; set; }
+        public TimeSpan EndTime { get; set; }
+        public DateTime WorkingDay { get; set; }
     }
 }
