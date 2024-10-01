@@ -76,7 +76,7 @@ namespace WebAPI.Controllers
             return NoContent();
         }
 
-        [HttpGet("account/{accountId}")]
+        [HttpGet("{accountId}")]
         public async Task<IActionResult> GetAllByAccountId(Guid accountId)
         {
             var schedules = await _workingScheduleService.GetAllByAccountIdAsync(accountId);
