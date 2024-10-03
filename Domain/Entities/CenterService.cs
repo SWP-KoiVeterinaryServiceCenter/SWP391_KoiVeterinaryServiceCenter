@@ -12,7 +12,7 @@ namespace Domain.Entities
     {
         public string ServiceName { get; set; }
         public string Description { get; set; }
-        [Column(TypeName="decimal(5,2)")]
+        [Column(TypeName="decimal(15,2)")]
         public decimal Price { get; set; }
         public TimeSpan Duration { get; set; }
         public Guid? TypeId { get; set; }

@@ -1,5 +1,6 @@
 ﻿using Application.IService.Abstraction;
 using Application.Model.TankModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,6 +14,7 @@ namespace WebAPI.Controllers
         {
             _centerTankService = centerTankService;
         }
+        [Authorize(Roles = "Admin,Staff")]
         [HttpPost]
         public async Task<IActionResult> CreateTank(CreateTankModel model)
         {
@@ -23,6 +25,7 @@ namespace WebAPI.Controllers
             }
             return BadRequest(new {message="Create error"});
         }
+        [Authorize(Roles = "Admin,Staff")]
         [HttpGet]
         public async Task<IActionResult> GetAllTank()
         {

@@ -16,5 +16,8 @@ namespace Application.IService.Abstraction
         Task<bool> CreateVetAccount(RegisterModel model);
         Task<bool> CreateStaffAccount(RegisterModel model);
         Task<bool> UploadImageForAccount(Guid accountId, IFormFile formFile);
+        Task<List<CurrentUserModel>> GetAllUserInSystemAsync();
+        Task<bool> BanAccountAsync(Guid accountId);
+        Task<bool> UnBanAccountAsync(Guid accountId);
     }
 }

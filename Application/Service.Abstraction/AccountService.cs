@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -32,6 +33,18 @@ namespace Application.Service.Abstraction
             _currentTime = currentTime;
             _claimsService = claimService;
             _uploadImageService = uploadImageService;
+        }
+
+        public async Task<bool> BanAccountAsync(Guid accountId)
+        {
+            var account = await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
+            if (account == null)
+            {
+                throw new Exception("Account already been banned");
+            }
+            account.IsDelete = true;
+            _unitOfWork.AccountRepository.Update(account);
+            return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
         public async Task<bool> CreateStaffAccount(RegisterModel model)
@@ -60,6 +73,21 @@ namespace Application.Service.Abstraction
             newVetAccount.RoleId = 3;
             await _unitOfWork.AccountRepository.AddAsync(newVetAccount);
             return await _unitOfWork.SaveChangeAsync() > 0;
+        }
+
+        public async Task<List<CurrentUserModel>> GetAllUserInSystemAsync()
+        {
+            var listAccount = await _unitOfWork.AccountRepository.GetAllAccountsForAdmin();
+            var listAccountModel = listAccount.Select(x => new CurrentUserModel
+            {
+                 AccountId=x.Id,
+                 ContactLink=x.ContactLink,
+                 Email=x.Email,
+                 Location=x.Location,
+                 Role=x.Role.RoleName,
+                 Username=x.Username
+            }).ToList();
+            return listAccountModel;
         }
 
         public async Task<CurrentUserModel> GetCurrentLoginUserAsync()
@@ -111,6 +139,18 @@ namespace Application.Service.Abstraction
             newAccount.RoleId = 4;
             await _unitOfWork.AccountRepository.AddAsync(newAccount);
             return await _unitOfWork.SaveChangeAsync()>0;
+        }
+
+        public async Task<bool> UnBanAccountAsync(Guid accountId)
+        {
+          var bannedAccount=await _unitOfWork.AccountRepository.GetBannedAccount(accountId);
+            if (bannedAccount == null)
+            {
+                throw new Exception("This account is not banned");
+            }
+            bannedAccount.IsDelete= false;
+            _unitOfWork.AccountRepository.Update(bannedAccount);
+            return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
         public async Task<bool> UploadImageForAccount(Guid accountId, IFormFile formFile)

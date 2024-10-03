@@ -1,5 +1,6 @@
 ﻿using Application.IService.Abstraction;
 using Application.Model.KoiServiceModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,8 +14,9 @@ namespace WebAPI.Controllers
         {
             _centerServiceService = centerServiceService;
         }
+        [Authorize(Roles ="Admin,Staff")]
         [HttpPost]
-        public async Task<IActionResult> CreateCenterService(CreateServiceModel createServiceModel)
+        public async Task<IActionResult> CreateCenterService([FromBody]CreateServiceModel createServiceModel)
         {
             var isCreated = await _centerServiceService.CreateCenterServiceAysnc(createServiceModel);
             if (isCreated)
