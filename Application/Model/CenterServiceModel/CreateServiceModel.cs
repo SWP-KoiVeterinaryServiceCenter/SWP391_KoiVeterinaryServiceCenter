@@ -1,4 +1,6 @@
-﻿using MassTransit;
+﻿using Application.ModelUtil.ModelBinding;
+using MassTransit;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +15,7 @@ namespace Application.Model.KoiServiceModel
         public string Description { get; set; }
         public decimal Price { get; set; }
         public Guid TypeId {  get; set; }
-        public Guid TankId { get; set; }
-
+        [ModelBinder(BinderType = typeof(NullableGuidModelBinder))]
+        public Guid? TankId { get; set; }
     }
 }
