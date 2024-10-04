@@ -75,17 +75,18 @@ namespace Application.Service.Abstraction
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
-        public async Task<List<CurrentUserModel>> GetAllUserInSystemAsync()
+        public async Task<List<ListUserViewModel>> GetAllUserInSystemAsync()
         {
             var listAccount = await _unitOfWork.AccountRepository.GetAllAccountsForAdmin();
-            var listAccountModel = listAccount.Select(x => new CurrentUserModel
+            var listAccountModel = listAccount.Select(x => new ListUserViewModel
             {
                  AccountId=x.Id,
                  ContactLink=x.ContactLink,
                  Email=x.Email,
                  Location=x.Location,
                  Role=x.Role.RoleName,
-                 Username=x.Username
+                 Username=x.Username,
+                 Status=x.IsDelete?"Ban":"Not ban"
             }).ToList();
             return listAccountModel;
         }
