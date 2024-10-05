@@ -47,20 +47,21 @@ namespace WebAPI.Controllers
             return CreatedAtAction(nameof(GetById), new { id = createdSchedule.Id }, createdSchedule);
         }
 
-        [HttpPatch]
-        public async Task<IActionResult> Update([FromBody] UpdateWorkingScheduleRequest request)
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> Update(Guid id, [FromBody] UpdateWorkingScheduleRequest request)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var existingSchedule = await _workingScheduleService.GetByIdAsync(request.Id);
+
+            var existingSchedule = await _workingScheduleService.GetByIdAsync(id);
             if (existingSchedule == null)
             {
                 return NotFound();
             }
 
-            await _workingScheduleService.UpdateAsync(request);
+            await _workingScheduleService.UpdateAsync(id, request);
             return NoContent();
         }
 
