@@ -96,5 +96,15 @@ namespace WebAPI.Controllers
             }
             return BadRequest();
         }
+        [HttpGet("{accountId}")]
+        public async Task<IActionResult> AccountDetail(Guid accountId)
+        {
+            var accountDetail=await _accountService.GetAccountDetailAsync(accountId);
+            if (accountDetail != null)
+            {
+                return Ok(accountDetail);
+            }
+            return BadRequest();
+        }
     }
 }

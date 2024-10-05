@@ -74,6 +74,11 @@ namespace Application.Service.Abstraction
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
+        public async Task<AccountDetailViewModel> GetAccountDetailAsync(Guid accountId)
+        {
+            return await _unitOfWork.AccountRepository.GetAccountDetail(accountId);
+        }
+
         public async Task<List<ListUserViewModel>> GetAllUserInSystemAsync()
         {
             var listAccount = await _unitOfWork.AccountRepository.GetAllAccountsForAdmin();
