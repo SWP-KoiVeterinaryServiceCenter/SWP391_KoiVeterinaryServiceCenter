@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Model.AccountModel;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace Application.IRepository
         Task<Account> FindAccountByEmail(string email);
         Task<List<Account>> GetAllAccountsForAdmin();
         Task<Account> GetBannedAccount(Guid accountId);
+        Task<AccountDetailViewModel> GetAccountDetail(Guid accountId);  
     }
 }

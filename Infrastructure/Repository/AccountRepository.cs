@@ -1,5 +1,7 @@
 ﻿using Application.IRepository;
 using Application.IService.Common;
+using Application.Model.AccountModel;
+using Application.Model.KoiModel;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
@@ -22,6 +24,28 @@ namespace Infrastructure.Repository
         public async Task<Account> FindAccountByEmail(string email)
         {
            return await _appDbContext.Accounts.Where(x=>x.Email==email).Include(x=>x.Role).SingleOrDefaultAsync();  
+        }
+
+        public async Task<AccountDetailViewModel> GetAccountDetail(Guid accountId)
+        {
+            var accountDetail=await _appDbContext.Accounts.Where(x=>x.Id==accountId)
+                                                          .Select(x=>new AccountDetailViewModel
+                                                          {
+                                                              Email=x.Email,
+                                                              Location=x.Location,
+                                                              PhoneNumber=x.Phonenumber,
+                                                              Username=x.Username,
+                                                              OwnedKoi= _appDbContext.Kois.Where(koi=>koi.AccountId== accountId)
+                                                                                          .Select(koi=>new KoiOwner
+                                                                                          {
+                                                                                              Age=koi.Age,
+                                                                                              Gender=koi.Gender,
+                                                                                              KoiName=koi.KoiName,
+                                                                                              Varieties= koi.Varieties,
+                                                                                              Weight = koi.Weight
+                                                                                          }).Single()
+                                                          }).SingleOrDefaultAsync();
+            return accountDetail;
         }
 
         public async Task<List<Account>> GetAllAccountsForAdmin()

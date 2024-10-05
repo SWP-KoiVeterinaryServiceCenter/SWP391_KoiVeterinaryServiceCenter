@@ -19,5 +19,6 @@ namespace Application.IService.Abstraction
         Task<List<ListUserViewModel>> GetAllUserInSystemAsync();
         Task<bool> BanAccountAsync(Guid accountId);
         Task<bool> UnBanAccountAsync(Guid accountId);
+        Task<AccountDetailViewModel> GetAccountDetailAsync(Guid accountId);
     }
 }
