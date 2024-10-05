@@ -35,7 +35,8 @@ namespace Application.Service.Abstraction
             {
                 Id= x.Id,
                 Name=x.ServiceName,
-                Price=x.Price
+                Price=x.Price,
+                Description=x.Description,
             }).ToList();
             return listCenterServiceModel;
         }

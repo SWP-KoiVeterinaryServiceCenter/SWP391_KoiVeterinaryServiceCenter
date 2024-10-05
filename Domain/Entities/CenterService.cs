@@ -17,8 +17,6 @@ namespace Domain.Entities
         public TimeSpan Duration { get; set; }
         public Guid? TypeId { get; set; }
         public ServiceType ServiceType { get; set; }
-       /* public Guid? AppointmentId { get; set; }
-        public Appointment Appointment { get; set; }*/
        public ICollection<Appointment> Appointments { get; set; }
         public Guid? TankId { get; set; }
         public CenterTank Tank { get; set; }
