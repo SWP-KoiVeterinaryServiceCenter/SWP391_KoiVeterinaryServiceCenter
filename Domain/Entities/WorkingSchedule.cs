@@ -9,9 +9,9 @@ namespace Domain.Entities
 {
     public class WorkingSchedule : BaseEntity, ICreatedBy, IModificationBy, IDeletedBy
     {
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
-        public int DayOfWeek { get; set; }
+        public TimeSpan StartTime { get; set; }
+        public TimeSpan EndTime { get; set; }
+        public DateTime  WorkingDay { get; set; }
         public Guid? CreatedBy { get; set; }
         public DateTime? CreationDate { get; set; }
         public Guid? ModificationBy { get; set; }

@@ -27,7 +27,7 @@ namespace Infrastructure.EntityConfiguration
             new Role
             {
                 RoleId = 3,
-                RoleName = nameof(RoleEnum.Veterian),
+                RoleName = nameof(RoleEnum.Veterinarian),
             }, 
             new Role { 
                 RoleId = 4,

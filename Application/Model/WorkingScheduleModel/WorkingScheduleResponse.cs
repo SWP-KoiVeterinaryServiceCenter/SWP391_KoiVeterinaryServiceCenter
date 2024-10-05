@@ -9,8 +9,8 @@ namespace Application.Model.WorkingScheduleModel
     public class WorkingScheduleResponse
     {
         public Guid Id { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
-        public int DayOfWeek { get; set; }
+        public TimeSpan StartTime { get; set; }
+        public TimeSpan EndTime { get; set; }
+        public DateTime WorkingDay { get; set; }
     }
 }

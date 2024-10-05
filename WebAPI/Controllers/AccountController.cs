@@ -44,6 +44,7 @@ namespace WebAPI.Controllers
             }
             return Ok(currentUser);
         }
+        [Authorize(Roles ="Admin,Staff")]
         [HttpPost]
         public async Task<IActionResult> CreateVetAccount(RegisterModel registerModel)
         {
@@ -54,6 +55,7 @@ namespace WebAPI.Controllers
             }
             return BadRequest();
         }
+        [Authorize(Roles = "Admin,Staff")]
         [HttpPost]
         public async Task<IActionResult> CreateStaffAccount(RegisterModel registerModel)
         {
@@ -61,6 +63,36 @@ namespace WebAPI.Controllers
             if (isRegister)
             {
                 return Ok();
+            }
+            return BadRequest();
+        }
+        [HttpDelete("{accountId}")]
+        public async Task<IActionResult> BanAccount(Guid accountId)
+        {
+            bool isBanned=await _accountService.BanAccountAsync(accountId);
+            if (isBanned)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+        [HttpPatch("{accountId}")]
+        public async Task<IActionResult> UnBanAccount(Guid accountId)
+        {
+            bool isBanned = await _accountService.UnBanAccountAsync(accountId);
+            if (isBanned)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+        [HttpGet]
+        public async Task<IActionResult> Accounts()
+        {
+            var listUser=await _accountService.GetAllUserInSystemAsync();
+            if(listUser.Count > 0)
+            {
+                return Ok(listUser);
             }
             return BadRequest();
         }

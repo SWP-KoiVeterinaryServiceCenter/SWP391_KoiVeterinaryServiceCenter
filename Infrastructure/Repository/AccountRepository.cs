@@ -23,5 +23,15 @@ namespace Infrastructure.Repository
         {
            return await _appDbContext.Accounts.Where(x=>x.Email==email).Include(x=>x.Role).SingleOrDefaultAsync();  
         }
+
+        public async Task<List<Account>> GetAllAccountsForAdmin()
+        {
+           return await _appDbContext.Accounts.Where(x=>x.RoleId!=1).Include(x=>x.Role).ToListAsync();
+        }
+
+        public async Task<Account> GetBannedAccount(Guid accountId)
+        {
+            return await _appDbContext.Accounts.Where(x => x.Id == accountId && x.IsDelete == true).SingleOrDefaultAsync();
+        }
     }
 }

@@ -5,9 +5,11 @@ using Application.Model.AccountModel;
 using Application.Util;
 using AutoMapper;
 using Domain.Entities;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,13 +22,29 @@ namespace Application.Service.Abstraction
         private readonly AppConfiguration _appConfiguration;
         private readonly ICurrentTime _currentTime;
         private readonly IClaimService _claimsService;
-        public AccountService(IUnitOfWork unitOfWork,IMapper mapper,AppConfiguration appConfiguration,ICurrentTime currentTime,IClaimService claimService)
+        private readonly IUploadImageService _uploadImageService;
+        public AccountService(IUnitOfWork unitOfWork,IMapper mapper,
+            AppConfiguration appConfiguration,ICurrentTime currentTime,
+            IClaimService claimService,IUploadImageService uploadImageService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _appConfiguration = appConfiguration;
             _currentTime = currentTime;
             _claimsService = claimService;
+            _uploadImageService = uploadImageService;
+        }
+
+        public async Task<bool> BanAccountAsync(Guid accountId)
+        {
+            var account = await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
+            if (account == null)
+            {
+                throw new Exception("Account already been banned");
+            }
+            account.IsDelete = true;
+            _unitOfWork.AccountRepository.Update(account);
+            return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
         public async Task<bool> CreateStaffAccount(RegisterModel model)
@@ -55,6 +73,22 @@ namespace Application.Service.Abstraction
             newVetAccount.RoleId = 3;
             await _unitOfWork.AccountRepository.AddAsync(newVetAccount);
             return await _unitOfWork.SaveChangeAsync() > 0;
+        }
+
+        public async Task<List<ListUserViewModel>> GetAllUserInSystemAsync()
+        {
+            var listAccount = await _unitOfWork.AccountRepository.GetAllAccountsForAdmin();
+            var listAccountModel = listAccount.Select(x => new ListUserViewModel
+            {
+                 AccountId=x.Id,
+                 ContactLink=x.ContactLink,
+                 Email=x.Email,
+                 Location=x.Location,
+                 Role=x.Role.RoleName,
+                 Username=x.Username,
+                 Status=x.IsDelete?"Ban":"Not ban"
+            }).ToList();
+            return listAccountModel;
         }
 
         public async Task<CurrentUserModel> GetCurrentLoginUserAsync()
@@ -106,6 +140,34 @@ namespace Application.Service.Abstraction
             newAccount.RoleId = 4;
             await _unitOfWork.AccountRepository.AddAsync(newAccount);
             return await _unitOfWork.SaveChangeAsync()>0;
+        }
+
+        public async Task<bool> UnBanAccountAsync(Guid accountId)
+        {
+          var bannedAccount=await _unitOfWork.AccountRepository.GetBannedAccount(accountId);
+            if (bannedAccount == null)
+            {
+                throw new Exception("This account is not banned");
+            }
+            bannedAccount.IsDelete= false;
+            _unitOfWork.AccountRepository.Update(bannedAccount);
+            return await _unitOfWork.SaveChangeAsync() > 0;
+        }
+
+        public async Task<bool> UploadImageForAccount(Guid accountId, IFormFile formFile)
+        {
+            var updateAccount=await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
+            if (updateAccount != null)
+            {
+                string uploadImage = await _uploadImageService.UploadFileToFireBase(formFile, "Account");
+                updateAccount.ProfileImage = uploadImage;
+                _unitOfWork.AccountRepository.Update(updateAccount);
+            }
+            else
+            {
+                throw new Exception("Account do not exist");
+            }
+          return  await _unitOfWork.SaveChangeAsync()>0;
         }
     }
 }

@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240929025730_FixWorkingScheduleEntityAttribute")]
+    partial class FixWorkingScheduleEntityAttribute
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,12 +105,12 @@ namespace Infrastructure.Migrations
                         {
                             Id = new Guid("1de7660a-5288-440c-af13-9914662f155c"),
                             ContactLink = "",
-                            CreationDate = new DateTime(2024, 10, 3, 3, 26, 48, 754, DateTimeKind.Utc).AddTicks(9920),
+                            CreationDate = new DateTime(2024, 9, 29, 2, 57, 28, 893, DateTimeKind.Utc).AddTicks(1567),
                             Email = "admin@gmail.com",
                             Fullname = "Admin",
                             IsDelete = false,
                             Location = "",
-                            PasswordHash = "$2a$11$ExVTov9UwLhEIJHisn5fuO0uLAwdFrUdr3esB6FpE2N8BsMiYvHK.",
+                            PasswordHash = "$2a$11$r1KBScnqA.KOBNlJy1oNDOkq9bWcxMw71PK.VbbZR/Z1oIqunKZDe",
                             Phonenumber = "",
                             RoleId = 1,
                             Username = "Admin"
@@ -116,12 +119,12 @@ namespace Infrastructure.Migrations
                         {
                             Id = new Guid("dc699c6a-3980-42dd-be75-d10ae89c82b3"),
                             ContactLink = "",
-                            CreationDate = new DateTime(2024, 10, 3, 3, 26, 48, 920, DateTimeKind.Utc).AddTicks(350),
+                            CreationDate = new DateTime(2024, 9, 29, 2, 57, 29, 61, DateTimeKind.Utc).AddTicks(8078),
                             Email = "staff@gmail.com",
                             Fullname = "Staff",
                             IsDelete = false,
                             Location = "",
-                            PasswordHash = "$2a$11$wo2JkVdYTB46nn2ErknRg.aqYGXazND79.Juk3tydglAI2P4k1qQ.",
+                            PasswordHash = "$2a$11$nR7RVhdnRVzdT5YCLHCW8eqn.o7oiQWM3J1FjF5vCbE6ORM1quNmi",
                             Phonenumber = "",
                             RoleId = 1,
                             Username = "Staff"
@@ -230,7 +233,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(15,2)");
+                        .HasColumnType("decimal(5,2)");
 
                     b.Property<string>("ServiceName")
                         .IsRequired()

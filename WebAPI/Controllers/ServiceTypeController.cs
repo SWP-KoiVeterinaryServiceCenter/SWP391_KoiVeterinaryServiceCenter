@@ -1,6 +1,7 @@
 ﻿using Application.IService.Abstraction;
 using Application.Model.KoiServiceModel;
 using Application.Model.ServiceTypeModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,6 +15,7 @@ namespace WebAPI.Controllers
         {
             _serviceTypeService = serviceTypeService;
         }
+        [Authorize(Roles = "Admin,Staff")]
         [HttpPost]
         public async Task<IActionResult> CreateServiceType(CreateServiceTypeModel createServiceTypeModel)
         {
@@ -24,6 +26,7 @@ namespace WebAPI.Controllers
             }
             return Ok();
         }
+        [Authorize(Roles = "Admin,Staff")]
         [HttpGet]
         public async Task<IActionResult> GetAllServiceType()
         {
