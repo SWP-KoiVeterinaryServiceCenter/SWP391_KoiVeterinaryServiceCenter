@@ -13,7 +13,7 @@ namespace Application.IService.Abstraction
         Task<IEnumerable<WorkingScheduleResponse>> GetAllAsync();
         Task<WorkingScheduleResponse> GetByIdAsync(Guid id);
         Task<WorkingScheduleResponse> CreateAsync(AddWorkingScheduleRequest request);
-        Task UpdateAsync(UpdateWorkingScheduleRequest request);
+        Task UpdateAsync(Guid id, UpdateWorkingScheduleRequest request);
         Task DeleteAsync(Guid id);
         Task<IEnumerable<WorkingScheduleResponse>> GetAllByAccountIdAsync(Guid accountId);
     }

@@ -63,9 +63,9 @@ public class WorkingScheduleService : IWorkingScheduleService
         };
     }
 
-    public async Task UpdateAsync(UpdateWorkingScheduleRequest request)
+    public async Task UpdateAsync(Guid id, UpdateWorkingScheduleRequest request)
     {
-        var workingSchedule = await _unitOfWork.WorkingScheduleRepository.GetByIdAsync(request.Id);
+        var workingSchedule = await _unitOfWork.WorkingScheduleRepository.GetByIdAsync(id);
         if (workingSchedule != null)
         {
             workingSchedule.StartTime = request.StartTime;
