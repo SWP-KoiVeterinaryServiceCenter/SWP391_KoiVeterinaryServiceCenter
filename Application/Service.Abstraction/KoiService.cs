@@ -38,7 +38,7 @@ namespace Application.Service.Abstraction
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
-        public async Task<IEnumerable<KoiResponse>> GetAllKoiAsync()
+        public async Task<List<KoiResponse>> GetAllKoiAsync()
         {
             var koiList = await _unitOfWork.KoiRepository.GetAllAsync();
 
@@ -76,7 +76,7 @@ namespace Application.Service.Abstraction
             };
         }
 
-        public async Task<IEnumerable<KoiResponse>> GetAllKoiByAccountIdAsync(Guid accountId)
+        public async Task<List<KoiResponse>> GetAllKoiByAccountIdAsync(Guid accountId)
         {
             var koiList = await _unitOfWork.KoiRepository.FindAsync(k => k.AccountId == accountId);
 

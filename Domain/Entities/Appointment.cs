@@ -11,6 +11,8 @@ namespace Domain.Entities
     {
         public string Description { get; set; }
         public string AppointmentStatus { get; set; }
+        public DateOnly AppointmentDate { get; set; }
+        public TimeSpan AppointmentTime { get; set; }
         public Guid? ServiceId { get; set; }
         public CenterService Service { get; set; }
         public Guid? MedicalRecordId { get; set; }
