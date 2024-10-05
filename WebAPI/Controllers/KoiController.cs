@@ -112,7 +112,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var result = await _koiService.DeleteKoiAsync(id, Guid.NewGuid()); // Assume DeletedBy comes from authenticated user
+                var result = await _koiService.DeleteKoiAsync(id); // Assume DeletedBy comes from authenticated user
                 if (result)
                 {
                     return NoContent();

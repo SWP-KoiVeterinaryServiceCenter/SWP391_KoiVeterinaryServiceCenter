@@ -26,7 +26,7 @@ namespace Application.Service.Abstraction
             var findService=await _unitOfWork.CenterServiceRepository.GetByIdAsync(createAppointmentModel.ServiceId);
             await _unitOfWork.AppointmentRepository.AddAsync(newAppointment);
             await _unitOfWork.SaveChangeAsync();
-            if (findService != null)
+           /* if (findService != null)
             {
                 findService.AppointmentId = await _unitOfWork.AppointmentRepository.GetLastSaveAppointmentId();
                 _unitOfWork.CenterServiceRepository.Update(findService);
@@ -34,7 +34,7 @@ namespace Application.Service.Abstraction
             else
             {
                 throw new Exception("Service not found");
-            }
+            }*/
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
     }

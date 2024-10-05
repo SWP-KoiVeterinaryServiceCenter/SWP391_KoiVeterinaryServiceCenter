@@ -116,19 +116,14 @@ namespace Application.Service.Abstraction
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
-        public async Task<bool> DeleteKoiAsync(Guid id, Guid deletedBy)
+        public async Task<bool> DeleteKoiAsync(Guid id)
         {
             var koi = await _unitOfWork.KoiRepository.GetByIdAsync(id);
             if (koi == null)
             {
                 throw new Exception("Koi not found");
             }
-
-            koi.IsDelete = true;
-            koi.DeletedBy = deletedBy;
-            koi.DeletionDate = DateTime.Now;
-
-            _unitOfWork.KoiRepository.Update(koi);
+             _unitOfWork.KoiRepository.SoftRemove(koi);
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
     }

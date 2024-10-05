@@ -15,7 +15,7 @@ namespace Application.IService.Abstraction
         Task<KoiResponse> GetKoiByIdAsync(Guid id);
         Task<List<KoiResponse>> GetAllKoiByAccountIdAsync(Guid accountId);
         Task<bool> UpdateKoiAsync(Guid id, UpdateKoiRequest koiRequest);
-        Task<bool> DeleteKoiAsync(Guid id, Guid deletedBy);
+        Task<bool> DeleteKoiAsync(Guid id);
 
     }
 }

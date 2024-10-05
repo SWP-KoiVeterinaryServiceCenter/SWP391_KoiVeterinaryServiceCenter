@@ -42,8 +42,7 @@ namespace Application.Service.Abstraction
             {
                 throw new Exception("Account already been banned");
             }
-            account.IsDelete = true;
-            _unitOfWork.AccountRepository.Update(account);
+            _unitOfWork.AccountRepository.SoftRemove(account);
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
