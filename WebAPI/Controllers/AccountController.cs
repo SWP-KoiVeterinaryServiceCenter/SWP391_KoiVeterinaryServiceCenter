@@ -66,7 +66,7 @@ namespace WebAPI.Controllers
             }
             return BadRequest();
         }
-        [HttpPatch]
+        [HttpDelete("{accountId}")]
         public async Task<IActionResult> BanAccount(Guid accountId)
         {
             bool isBanned=await _accountService.BanAccountAsync(accountId);
@@ -76,7 +76,7 @@ namespace WebAPI.Controllers
             }
             return BadRequest();
         }
-        [HttpPatch]
+        [HttpPatch("{accountId}")]
         public async Task<IActionResult> UnBanAccount(Guid accountId)
         {
             bool isBanned = await _accountService.UnBanAccountAsync(accountId);
