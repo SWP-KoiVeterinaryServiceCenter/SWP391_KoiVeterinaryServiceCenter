@@ -106,5 +106,33 @@ namespace WebAPI.Controllers
             }
             return BadRequest();
         }
+        [HttpPatch("{accountId}")]
+        public async Task<IActionResult> UploadProfileImage(Guid accountId,IFormFile formFile)
+        {
+            var uploadImage=await _accountService.UploadImageForAccount(accountId,formFile);
+            if (uploadImage)
+            {
+                return Ok(uploadImage);
+            }
+            return BadRequest();
+        }
+        [HttpGet]
+        public async Task<IActionResult> CustomerAmount()
+        {
+            var customerAmount = await _accountService.CustomerAccountAmount();
+            return Ok(customerAmount);
+        }
+        [HttpGet]
+        public async Task<IActionResult> VetAmount()
+        {
+            var verterinaryAmount=await _accountService.VeterinaryAccountAmount();
+            return Ok(verterinaryAmount);
+        }
+        [HttpGet]
+        public async Task<IActionResult> StaffAmount()
+        {
+            var staffAmount=await _accountService.StaffAccountAmount();
+            return Ok(staffAmount);
+        }
     }
 }

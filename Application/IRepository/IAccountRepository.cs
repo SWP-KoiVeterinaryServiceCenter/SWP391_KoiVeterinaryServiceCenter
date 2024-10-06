@@ -13,6 +13,9 @@ namespace Application.IRepository
         Task<Account> FindAccountByEmail(string email);
         Task<List<Account>> GetAllAccountsForAdmin();
         Task<Account> GetBannedAccount(Guid accountId);
-        Task<AccountDetailViewModel> GetAccountDetail(Guid accountId);  
+        Task<AccountDetailViewModel> GetAccountDetail(Guid accountId);
+        Task<int> VeterinaryAccountAmount();
+        Task<int> StaffAccountAmount();
+        Task<int> CustomerAccountAmount();
     }
 }

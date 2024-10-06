@@ -20,5 +20,8 @@ namespace Application.IService.Abstraction
         Task<bool> BanAccountAsync(Guid accountId);
         Task<bool> UnBanAccountAsync(Guid accountId);
         Task<AccountDetailViewModel> GetAccountDetailAsync(Guid accountId);
+        Task<AccountAmount> VeterinaryAccountAmount();
+        Task<AccountAmount> StaffAccountAmount();
+        Task<AccountAmount> CustomerAccountAmount();
     }
 }

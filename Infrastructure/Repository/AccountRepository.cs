@@ -21,6 +21,11 @@ namespace Infrastructure.Repository
             _appDbContext = appDbContext;
         }
 
+        public async Task<int> CustomerAccountAmount()
+        {
+            return await _appDbContext.Accounts.Where(x=>x.RoleId==4).CountAsync();
+        }
+
         public async Task<Account> FindAccountByEmail(string email)
         {
            return await _appDbContext.Accounts.Where(x=>x.Email==email).Include(x=>x.Role).SingleOrDefaultAsync();  
@@ -56,6 +61,16 @@ namespace Infrastructure.Repository
         public async Task<Account> GetBannedAccount(Guid accountId)
         {
             return await _appDbContext.Accounts.Where(x => x.Id == accountId && x.IsDelete == true).SingleOrDefaultAsync();
+        }
+
+        public async Task<int> StaffAccountAmount()
+        {
+            return await _appDbContext.Accounts.Where(x => x.RoleId == 2).CountAsync();
+        }
+
+        public async Task<int> VeterinaryAccountAmount()
+        {
+            return await _appDbContext.Accounts.Where(x => x.RoleId == 3).CountAsync();
         }
     }
 }

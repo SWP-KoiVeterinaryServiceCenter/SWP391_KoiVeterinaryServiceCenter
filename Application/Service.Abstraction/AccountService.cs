@@ -23,9 +23,9 @@ namespace Application.Service.Abstraction
         private readonly ICurrentTime _currentTime;
         private readonly IClaimService _claimsService;
         private readonly IUploadImageService _uploadImageService;
-        public AccountService(IUnitOfWork unitOfWork,IMapper mapper,
-            AppConfiguration appConfiguration,ICurrentTime currentTime,
-            IClaimService claimService,IUploadImageService uploadImageService)
+        public AccountService(IUnitOfWork unitOfWork, IMapper mapper,
+            AppConfiguration appConfiguration, ICurrentTime currentTime,
+            IClaimService claimService, IUploadImageService uploadImageService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -53,11 +53,11 @@ namespace Application.Service.Abstraction
             {
                 throw new Exception("Email already exist");
             }
-            var newStaffAccount=_mapper.Map<Account>(model);
+            var newStaffAccount = _mapper.Map<Account>(model);
             newStaffAccount.PasswordHash = model.Password.Hash();
             newStaffAccount.RoleId = 2;
             await _unitOfWork.AccountRepository.AddAsync(newStaffAccount);
-            return await _unitOfWork.SaveChangeAsync()>0;
+            return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
         public async Task<bool> CreateVetAccount(RegisterModel model)
@@ -67,11 +67,21 @@ namespace Application.Service.Abstraction
             {
                 throw new Exception("Email already exist");
             }
-            var newVetAccount=_mapper.Map<Account>(model);
+            var newVetAccount = _mapper.Map<Account>(model);
             newVetAccount.PasswordHash = model.Password.Hash();
             newVetAccount.RoleId = 3;
             await _unitOfWork.AccountRepository.AddAsync(newVetAccount);
             return await _unitOfWork.SaveChangeAsync() > 0;
+        }
+
+        public async Task<AccountAmount> CustomerAccountAmount()
+        {
+            var amount = await _unitOfWork.AccountRepository.CustomerAccountAmount();
+            var amountModel = new AccountAmount()
+            {
+                Amount = amount
+            };
+            return amountModel;
         }
 
         public async Task<AccountDetailViewModel> GetAccountDetailAsync(Guid accountId)
@@ -84,13 +94,13 @@ namespace Application.Service.Abstraction
             var listAccount = await _unitOfWork.AccountRepository.GetAllAccountsForAdmin();
             var listAccountModel = listAccount.Select(x => new ListUserViewModel
             {
-                 AccountId=x.Id,
-                 ContactLink=x.ContactLink,
-                 Email=x.Email,
-                 Location=x.Location,
-                 Role=x.Role.RoleName,
-                 Username=x.Username,
-                 Status=x.IsDelete?"Ban":"Not ban"
+                AccountId = x.Id,
+                ContactLink = x.ContactLink,
+                Email = x.Email,
+                Location = x.Location,
+                Role = x.Role.RoleName,
+                Username = x.Username,
+                Status = x.IsDelete ? "Ban" : "Not ban"
             }).ToList();
             return listAccountModel;
         }
@@ -100,12 +110,12 @@ namespace Application.Service.Abstraction
             var loginUser = await _unitOfWork.AccountRepository.GetByIdAsync(_claimsService.GetCurrentUserId, x => x.Role);
             var currentUser = new CurrentUserModel
             {
-                AccountId=loginUser.Id,
-                Email=loginUser.Email,
-                Role=loginUser.Role.RoleName,
-                Username=loginUser.Username,
-                Location=loginUser.Location,
-                ContactLink=loginUser.ContactLink,
+                AccountId = loginUser.Id,
+                Email = loginUser.Email,
+                Role = loginUser.Role.RoleName,
+                Username = loginUser.Username,
+                Location = loginUser.Location,
+                ContactLink = loginUser.ContactLink,
             };
             return currentUser;
         }
@@ -127,12 +137,12 @@ namespace Application.Service.Abstraction
             }
             var accessToken = findUser.GenerateTokenString(_appConfiguration!.JwtSecretKey, _currentTime.GetCurrentTime());
             var refreshToken = RefreshToken.GetRefreshToken();
-            return new Token 
-            { 
-                userId=findUser.Id,
-                accessToken=accessToken,
-                refreshToken=refreshToken,
-                userName=findUser.Username
+            return new Token
+            {
+                userId = findUser.Id,
+                accessToken = accessToken,
+                refreshToken = refreshToken,
+                userName = findUser.Username
             };
         }
 
@@ -147,24 +157,34 @@ namespace Application.Service.Abstraction
             newAccount.PasswordHash = StringUtil.Hash(model.Password);
             newAccount.RoleId = 4;
             await _unitOfWork.AccountRepository.AddAsync(newAccount);
-            return await _unitOfWork.SaveChangeAsync()>0;
+            return await _unitOfWork.SaveChangeAsync() > 0;
+        }
+
+        public async Task<AccountAmount> StaffAccountAmount()
+        {
+            var amount = await _unitOfWork.AccountRepository.StaffAccountAmount();
+            var amountModel = new AccountAmount()
+            {
+                Amount = amount
+            };
+            return amountModel;
         }
 
         public async Task<bool> UnBanAccountAsync(Guid accountId)
         {
-          var bannedAccount=await _unitOfWork.AccountRepository.GetBannedAccount(accountId);
+            var bannedAccount = await _unitOfWork.AccountRepository.GetBannedAccount(accountId);
             if (bannedAccount == null)
             {
                 throw new Exception("This account is not banned");
             }
-            bannedAccount.IsDelete= false;
+            bannedAccount.IsDelete = false;
             _unitOfWork.AccountRepository.Update(bannedAccount);
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
         public async Task<bool> UploadImageForAccount(Guid accountId, IFormFile formFile)
         {
-            var updateAccount=await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
+            var updateAccount = await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
             if (updateAccount != null)
             {
                 string uploadImage = await _uploadImageService.UploadFileToFireBase(formFile, "Account");
@@ -175,7 +195,17 @@ namespace Application.Service.Abstraction
             {
                 throw new Exception("Account do not exist");
             }
-          return  await _unitOfWork.SaveChangeAsync()>0;
+            return await _unitOfWork.SaveChangeAsync() > 0;
+        }
+
+        public async  Task<AccountAmount> VeterinaryAccountAmount()
+        {
+            var amount = await _unitOfWork.AccountRepository.VeterinaryAccountAmount();
+            var amountModel = new AccountAmount()
+            {
+                Amount = amount
+            };
+            return amountModel;
         }
     }
 }
