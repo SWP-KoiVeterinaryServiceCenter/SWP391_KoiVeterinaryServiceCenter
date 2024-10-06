@@ -121,6 +121,10 @@ namespace Application.Service.Abstraction
             {
                 throw new Exception("Password incorrect");
             }
+            if (findUser.IsDelete == true)
+            {
+                throw new Exception("You have been banned");
+            }
             var accessToken = findUser.GenerateTokenString(_appConfiguration!.JwtSecretKey, _currentTime.GetCurrentTime());
             var refreshToken = RefreshToken.GetRefreshToken();
             return new Token 
