@@ -134,5 +134,36 @@ namespace WebAPI.Controllers
             var staffAmount=await _accountService.StaffAccountAmount();
             return Ok(staffAmount);
         }
+        [HttpGet]
+        public async Task<IActionResult> SendVerifcationCode(string email)
+        {
+            var isCorret=await _accountService.SendVerificationCodeToEmail(email);
+            if (isCorret)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+        [HttpPost("{code}")]
+        public async Task<IActionResult> ChangePasswordForForgetPassword(string code,ChangePasswordModel model)
+        {
+            var isChange=await _accountService.ChangePasswordForForgetPasswordAsync(code,model);
+            if (isChange)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+        [Authorize]
+        [HttpPatch]
+        public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
+        {
+            var isReset=await _accountService.ResetPasswordAsync(model);
+            if (isReset)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
     }
 }

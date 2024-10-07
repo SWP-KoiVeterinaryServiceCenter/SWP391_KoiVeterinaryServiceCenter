@@ -6,6 +6,7 @@ using Application.Util;
 using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,9 +24,11 @@ namespace Application.Service.Abstraction
         private readonly ICurrentTime _currentTime;
         private readonly IClaimService _claimsService;
         private readonly IUploadImageService _uploadImageService;
+        private readonly ISendMailService _sendMailService;
+        private readonly IMemoryCache _memoryCache;
         public AccountService(IUnitOfWork unitOfWork, IMapper mapper,
             AppConfiguration appConfiguration, ICurrentTime currentTime,
-            IClaimService claimService, IUploadImageService uploadImageService)
+            IClaimService claimService, IUploadImageService uploadImageService, ISendMailService sendMailService,IMemoryCache memoryCache)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -33,6 +36,8 @@ namespace Application.Service.Abstraction
             _currentTime = currentTime;
             _claimsService = claimService;
             _uploadImageService = uploadImageService;
+            _sendMailService = sendMailService;
+            _memoryCache = memoryCache;
         }
 
         public async Task<bool> BanAccountAsync(Guid accountId)
@@ -43,6 +48,27 @@ namespace Application.Service.Abstraction
                 throw new Exception("Account already been banned");
             }
             _unitOfWork.AccountRepository.SoftRemove(account);
+            return await _unitOfWork.SaveChangeAsync() > 0;
+        }
+
+        public async Task<bool> ChangePasswordForForgetPasswordAsync(string code, ChangePasswordModel changePasswordModel)
+        {
+           if(changePasswordModel.ConfirmPassword!=changePasswordModel.Password)
+            {
+                throw new Exception("Confirm password and password must be the same");
+            }
+            var email = _memoryCache.Get<string>(code);
+            var user = await _unitOfWork.AccountRepository.FindAccountByEmail(email);
+            if (user != null)
+            {
+                if (changePasswordModel.Password.CheckPassword(user.PasswordHash))
+                {
+                    throw new Exception("New password must not be the same as old password");
+                }
+                user.PasswordHash = changePasswordModel.Password.Hash();
+                _unitOfWork.AccountRepository.Update(user);
+                _memoryCache.Remove(code);
+            }
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
@@ -158,6 +184,65 @@ namespace Application.Service.Abstraction
             newAccount.RoleId = 4;
             await _unitOfWork.AccountRepository.AddAsync(newAccount);
             return await _unitOfWork.SaveChangeAsync() > 0;
+        }
+
+        public async Task<bool> ResetPasswordAsync(ResetPasswordModel resetPasswordModel)
+        {
+            var user = await _unitOfWork.AccountRepository.GetByIdAsync(_claimsService.GetCurrentUserId);
+            if (user != null)
+            {
+                if (!resetPasswordModel.OldPassword.CheckPassword(user.PasswordHash))
+                {
+                    throw new Exception("Password incorrect");
+                }
+                if(resetPasswordModel.OldPassword==resetPasswordModel.NewPassword)
+                {
+                    throw new Exception("New password must not be the same as old password");
+                }
+                user.PasswordHash = resetPasswordModel.NewPassword.Hash();
+                _unitOfWork.AccountRepository.Update(user);
+                return await _unitOfWork.SaveChangeAsync() > 0;
+            }
+            else
+            {
+                throw new Exception("Account has been banned");
+            }
+        }
+
+        public async Task<bool> SendVerificationCodeToEmail(string email)
+        {
+            var findAccount = await _unitOfWork.AccountRepository.FindAccountByEmail(email);
+            string key;
+            if (findAccount == null)
+            {
+                throw new Exception("Account do not exist");
+            }
+            try
+            {
+                key = StringUtil.RandomString(6);
+                //Get project's directory and fetch ForgotPasswordTemplate content from EmailTemplate
+                string exePath = Environment.CurrentDirectory.ToString();
+                string FilePath = exePath + @"/EmailTemplate/ForgotPassword.html";
+                StreamReader streamreader = new StreamReader(FilePath);
+                string MailText = streamreader.ReadToEnd();
+                streamreader.Close();
+                //Replace [resetpasswordkey] = key
+                MailText = MailText.Replace("[resetpasswordkey]", key);
+                //Replace [emailaddress] = email
+                MailText = MailText.Replace("[emailaddress]", email);
+                var result = await _sendMailService.SendMailAsync(email, "ResetPassword", MailText);
+                if (!result)
+                {
+                    return false;
+                };
+
+                _memoryCache.Set(key, email, DateTimeOffset.Now.AddMinutes(10));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return true;
         }
 
         public async Task<AccountAmount> StaffAccountAmount()

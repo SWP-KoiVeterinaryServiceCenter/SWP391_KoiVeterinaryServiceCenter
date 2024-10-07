@@ -25,6 +25,8 @@ namespace WebAPI
             services.AddScoped<IWorkingScheduleService, WorkingScheduleService>();
             services.AddScoped<IAppointmentService, AppointmentService>();  
             services.AddScoped<IUploadImageService, UploadImageService>();
+            services.AddScoped<ISendMailService, SendMailService>();
+            services.AddMemoryCache();
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
             {
