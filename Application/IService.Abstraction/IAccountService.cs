@@ -23,5 +23,8 @@ namespace Application.IService.Abstraction
         Task<AccountAmount> VeterinaryAccountAmount();
         Task<AccountAmount> StaffAccountAmount();
         Task<AccountAmount> CustomerAccountAmount();
+        Task<bool> SendVerificationCodeToEmail(string email);
+        Task<bool> ChangePasswordForForgetPasswordAsync(string code,ChangePasswordModel changePasswordModel);
+        Task<bool> ResetPasswordAsync(ResetPasswordModel resetPasswordModel);
     }
 }
