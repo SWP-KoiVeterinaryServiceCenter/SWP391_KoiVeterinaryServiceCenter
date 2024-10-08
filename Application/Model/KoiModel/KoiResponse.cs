@@ -10,6 +10,7 @@ namespace Application.Model.KoiModel
 {
     public class KoiResponse : BaseEntity
     {
+        public Guid Id { get; set; }
         public string KoiName { get; set; }
         public decimal Weight { get; set; }
         public int Age { get; set; }

@@ -85,6 +85,7 @@ namespace Application.Service.Abstraction
             {
                 koiResponseList.Add(new KoiResponse
                 {
+                    Id=koi.Id,
                     KoiName = koi.KoiName,
                     Weight = koi.Weight,
                     Age = koi.Age,
