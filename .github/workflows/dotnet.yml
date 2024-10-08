@@ -28,5 +28,5 @@ jobs:
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
           server: winxxxx.site4now.net
-          username: ${{secret.USERNAME}}
-          password: ${{secret.PASSWORD}}
+          username: ${{secrets.USERNAME}}
+          password: ${{secrets.PASSWORD}}
