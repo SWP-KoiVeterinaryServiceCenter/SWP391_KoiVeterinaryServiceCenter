@@ -27,6 +27,6 @@ jobs:
     - name: Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
-          server: https://win8111.site4now.net:8172/
+          server: ttmq2024-001-site1.gtempurl.com
           username: ${{secrets.USERNAME}}
           password: ${{secrets.PASSWORD}}
