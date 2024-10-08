@@ -67,6 +67,7 @@ namespace Application.Service.Abstraction
 
             return new KoiResponse
             {
+                Id = koi.Id,
                 KoiName = koi.KoiName,
                 Weight = koi.Weight,
                 Age = koi.Age,
