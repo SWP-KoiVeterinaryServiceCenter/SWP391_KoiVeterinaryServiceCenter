@@ -27,6 +27,6 @@ jobs:
     - name: Deploy 
       uses: SamKirkland/FTP-Deploy-Action@v4.3.5
       with:
-        server: ftp.win8111.site4now.net
+        server: ftp://win8111.site4now.net:21/site
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
