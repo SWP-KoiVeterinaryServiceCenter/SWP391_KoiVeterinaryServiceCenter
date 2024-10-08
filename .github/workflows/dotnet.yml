@@ -29,4 +29,4 @@ jobs:
       with:
           server: ttmq2024-001-site1.gtempurl.com
           username: ${{secrets.USERNAME}}
-          password: ${{secrets.PASSWORD}}
+          password: ""
