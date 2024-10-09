@@ -2,6 +2,7 @@
 using Application.Model.AppointmentModel;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +23,8 @@ namespace Application.Service.Abstraction
 
         public async Task<bool> CreateAppointmentAsync(CreateAppointmentModel createAppointmentModel)
         {
-            var newAppointment = _mapper.Map<Appointment>(createAppointmentModel);
-            var findService=await _unitOfWork.CenterServiceRepository.GetByIdAsync(createAppointmentModel.ServiceId);
+           var newAppointment=_mapper.Map<Appointment>(createAppointmentModel);
+            newAppointment.AppointmentStatus = nameof(AppointmentStatus.Pending);
             await _unitOfWork.AppointmentRepository.AddAsync(newAppointment);
             return await _unitOfWork.SaveChangeAsync() > 0;
         }

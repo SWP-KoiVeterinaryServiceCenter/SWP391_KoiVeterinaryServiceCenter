@@ -1,5 +1,9 @@
-﻿using System.Net;
+﻿using Microsoft.AspNetCore.Http;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Net;
 using System.Text.Json;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
 
 namespace WebAPI.Middleware
 {
@@ -26,7 +30,6 @@ namespace WebAPI.Middleware
             {
                 await HandleExceptionAsync(httpContext, ex, HttpStatusCode.InternalServerError);
             }
-
         }
 
         private Task HandleExceptionAsync(HttpContext context, Exception exception, HttpStatusCode statusCode)

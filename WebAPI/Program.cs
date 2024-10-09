@@ -3,6 +3,7 @@ using Infrastructure;
 using Infrastructure.Mappers;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using WebAPI;
 using WebAPI.Middleware;
 var builder = WebApplication.CreateBuilder(args);
@@ -43,11 +44,12 @@ builder.Services.AddSwaggerGen(opt =>
                 new string[]{}
             }
      });
-    /*    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-        opt.IncludeXmlComments(xmlPath);*/
-    /*opt.SchemaFilter<RegisterSchemaFilter>();*/
+    /*var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    opt.IncludeXmlComments(xmlPath);*/
+/*    opt.SchemaFilter<CreateAppointmentSchemaFilter>();*/
 });
+
 //Add cors
 builder.Services.AddCors(options =>
 {
