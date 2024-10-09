@@ -50,7 +50,8 @@ namespace Infrastructure.Mappers
             CreateMap<CreateAppointmentModel, Appointment>()
                 .ForMember(scr => scr.KoiId, dest => dest.MapFrom(model => model.KoiId))
                 .ForMember(scr => scr.ServiceId, dest => dest.MapFrom(model => model.ServiceId))
-                .ForMember(scr=>scr.VeterinarianId,dest=>dest.MapFrom(model=>model.VeterinarianId)).ReverseMap();
+                .ForMember(scr=>scr.VeterinarianId,dest=>dest.MapFrom(model=>model.VeterinarianId))
+                .ForMember(scr=>scr.AppointmentDate,dest=>dest.MapFrom(model=>model.AppointmentDate)).ReverseMap();
         }
     }
 }
