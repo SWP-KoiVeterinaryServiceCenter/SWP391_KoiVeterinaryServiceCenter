@@ -33,5 +33,35 @@ namespace WebAPI.Controllers
             }
             return BadRequest();
         }
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateAppointment(Guid id, [FromBody]UpdateAppointmentModel updateAppointmentModel)
+        {
+            var isUpdated=await _appointmentService.UpdateAppointment(id, updateAppointmentModel);
+            if (isUpdated)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAppointment(Guid id)
+        {
+            var isDeleted=await _appointmentService.DeleteAppointmentAsync(id);
+            if (isDeleted)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> AppointmentDetail(Guid id)
+        {
+            var appointmentDetail=await _appointmentService.GetAppointmentByIdAsync(id);
+            if (appointmentDetail != null)
+            {
+                return Ok(appointmentDetail);
+            }
+            return BadRequest();
+        }
     }
 }

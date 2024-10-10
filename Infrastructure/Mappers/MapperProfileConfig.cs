@@ -54,6 +54,14 @@ namespace Infrastructure.Mappers
                 .ForMember(scr => scr.VeterinarianId, dest => dest.MapFrom(model => model.VeterinarianId))
                 .ForMember(dest => dest.AppointmentDate, opt => opt.MapFrom(src => DateOnly.Parse(src.AppointmentDate)))
                 .ForMember(dest => dest.AppointmentTime, opt => opt.MapFrom(src => TimeSpan.FromHours(src.AppointmentTime)));
+           CreateMap<UpdateAppointmentModel, Appointment>()
+             .ForMember(scr => scr.Description, dest => dest.MapFrom(model => model.Description))
+             .ForMember(scr => scr.KoiId, dest => dest.MapFrom(model => model.KoiId))
+             .ForMember(scr => scr.ServiceId, dest => dest.MapFrom(model => model.ServiceId))
+             .ForMember(scr => scr.VeterinarianId, dest => dest.MapFrom(model => model.VeterinarianId))
+             .ForMember(dest => dest.AppointmentDate, opt => opt.MapFrom(src => DateOnly.Parse(src.AppointmentDate)))
+             .ForMember(dest => dest.AppointmentTime, opt => opt.MapFrom(src => TimeSpan.FromHours(src.AppointmentTime)))
+             .ReverseMap();
         }
     }
 }

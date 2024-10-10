@@ -26,6 +26,10 @@ namespace Infrastructure.Repository
                                              {
                                                  Id=x.Id,
                                                  Description=x.Description,
+                                                 ServiceName=x.Service.ServiceName,
+                                                 KoiName=x.Koi.KoiName,
+                                                 Status=x.AppointmentStatus,
+                                                 VetName=_context.Accounts.Where(acc=>acc.Id==x.VeterinarianId).Select(x=>x.Username).SingleOrDefault()
                                              }).ToListAsync();
         }
 
