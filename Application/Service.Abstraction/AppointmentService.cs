@@ -28,5 +28,10 @@ namespace Application.Service.Abstraction
             await _unitOfWork.AppointmentRepository.AddAsync(newAppointment);
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
+
+        public async Task<List<AppointmentViewModel>> GetAllAsync()
+        {
+           return await _unitOfWork.AppointmentRepository.GetAllAppointment();
+        }
     }
 }

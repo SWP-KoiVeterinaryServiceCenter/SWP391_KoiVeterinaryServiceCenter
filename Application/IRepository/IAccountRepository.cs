@@ -17,5 +17,6 @@ namespace Application.IRepository
         Task<int> VeterinaryAccountAmount();
         Task<int> StaffAccountAmount();
         Task<int> CustomerAccountAmount();
+        Task<List<Account>> GetAllVeterinaryAccounts();
     }
 }

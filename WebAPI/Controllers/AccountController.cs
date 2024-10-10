@@ -165,5 +165,15 @@ namespace WebAPI.Controllers
             }
             return BadRequest();
         }
+        [HttpGet]
+        public async Task<IActionResult> Veterinaries()
+        {
+            var veterinaryList=await _accountService.GetAllVeterinaryInSystemAsync();
+            if (veterinaryList.Any())
+            {
+                return Ok(veterinaryList);
+            }
+            return BadRequest();
+        }
     }
 }

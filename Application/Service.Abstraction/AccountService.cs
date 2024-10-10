@@ -131,6 +131,22 @@ namespace Application.Service.Abstraction
             return listAccountModel;
         }
 
+        public async Task<List<ListUserViewModel>> GetAllVeterinaryInSystemAsync()
+        {
+            var listAccount = await _unitOfWork.AccountRepository.GetAllVeterinaryAccounts();
+            var listAccountModel = listAccount.Select(x => new ListUserViewModel
+            {
+                AccountId = x.Id,
+                ContactLink = x.ContactLink,
+                Email = x.Email,
+                Location = x.Location,
+                Role = x.Role.RoleName,
+                Username = x.Username,
+                Status = x.IsDelete ? "Ban" : "Not ban"
+            }).ToList();
+            return listAccountModel;
+        }
+
         public async Task<CurrentUserModel> GetCurrentLoginUserAsync()
         {
             var loginUser = await _unitOfWork.AccountRepository.GetByIdAsync(_claimsService.GetCurrentUserId, x => x.Role);

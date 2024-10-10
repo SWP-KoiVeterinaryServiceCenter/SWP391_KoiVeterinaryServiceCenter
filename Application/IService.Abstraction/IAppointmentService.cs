@@ -10,5 +10,6 @@ namespace Application.IService.Abstraction
     public interface IAppointmentService
     {
         Task<bool> CreateAppointmentAsync(CreateAppointmentModel createAppointmentModel);
+        Task<List<AppointmentViewModel>> GetAllAsync();
     }
 }
