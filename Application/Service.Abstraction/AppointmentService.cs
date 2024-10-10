@@ -1,4 +1,5 @@
 ﻿using Application.IService.Abstraction;
+using Application.IService.Common;
 using Application.Model.AppointmentModel;
 using AutoMapper;
 using Domain.Entities;
@@ -15,10 +16,12 @@ namespace Application.Service.Abstraction
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public AppointmentService(IUnitOfWork unitOfWork,IMapper mapper)
+        private readonly IClaimService _claimService;
+        public AppointmentService(IUnitOfWork unitOfWork,IMapper mapper,IClaimService claimService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _claimService = claimService;
         }
 
         public async Task<bool> CreateAppointmentAsync(CreateAppointmentModel createAppointmentModel)
@@ -50,6 +53,11 @@ namespace Application.Service.Abstraction
             var listAppointment = await _unitOfWork.AppointmentRepository.GetAllAppointment();
             var appointmentDetail = listAppointment.Where(x => x.Id == id).SingleOrDefault();
             return appointmentDetail;
+        }
+
+        public async Task<List<AppointmentViewModel>> GetCurrentUserAppointments()
+        {
+            return await _unitOfWork.AppointmentRepository.GetAllAppointmentByUserId(_claimService.GetCurrentUserId);
         }
 
         public async Task<bool> UpdateAppointment(Guid id, UpdateAppointmentModel updateAppointmentModel)

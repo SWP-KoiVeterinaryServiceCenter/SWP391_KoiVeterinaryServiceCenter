@@ -33,6 +33,20 @@ namespace Infrastructure.Repository
                                              }).ToListAsync();
         }
 
+        public async Task<List<AppointmentViewModel>> GetAllAppointmentByUserId(Guid userId)
+        {
+            return await _context.Appointments.Where(x => x.IsDelete == false&&x.Koi.AccountId==userId)
+                                            .Select(x => new AppointmentViewModel
+                                            {
+                                                Id = x.Id,
+                                                Description = x.Description,
+                                                ServiceName = x.Service.ServiceName,
+                                                KoiName = x.Koi.KoiName,
+                                                Status = x.AppointmentStatus,
+                                                VetName = _context.Accounts.Where(acc => acc.Id == x.VeterinarianId).Select(x => x.Username).SingleOrDefault()
+                                            }).ToListAsync();
+        }
+
         public async Task<Guid> GetLastSaveAppointmentId()
         {
             var appointment = await _context.Appointments.OrderBy(x=>x.CreationDate).LastAsync();

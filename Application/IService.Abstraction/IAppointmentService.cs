@@ -14,5 +14,6 @@ namespace Application.IService.Abstraction
         Task<bool> UpdateAppointment(Guid id, UpdateAppointmentModel updateAppointmentModel);
         Task<bool> DeleteAppointmentAsync(Guid id);
         Task<AppointmentViewModel> GetAppointmentByIdAsync(Guid id);
+        Task<List<AppointmentViewModel>> GetCurrentUserAppointments();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Application.IService.Abstraction;
 using Application.Model.AppointmentModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -60,6 +61,17 @@ namespace WebAPI.Controllers
             if (appointmentDetail != null)
             {
                 return Ok(appointmentDetail);
+            }
+            return BadRequest();
+        }
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> CurrentUserAppointments()
+        {
+            var appointmentList=await _appointmentService.GetCurrentUserAppointments();
+            if (appointmentList.Count() > 0)
+            {
+                return Ok(appointmentList);
             }
             return BadRequest();
         }
