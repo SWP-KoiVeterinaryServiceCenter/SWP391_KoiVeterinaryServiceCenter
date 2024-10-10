@@ -23,5 +23,15 @@ namespace WebAPI.Controllers
             }
             return BadRequest();
         }
+        [HttpGet]
+        public async Task<IActionResult> Appointments()
+        {
+            var appointmentList=await _appointmentService.GetAllAsync();
+            if (appointmentList.Any())
+            {
+                return Ok(appointmentList);
+            }
+            return BadRequest();
+        }
     }
 }

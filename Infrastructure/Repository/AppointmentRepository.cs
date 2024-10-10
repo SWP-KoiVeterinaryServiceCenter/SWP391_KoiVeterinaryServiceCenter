@@ -1,5 +1,6 @@
 ﻿using Application.IRepository;
 using Application.IService.Common;
+using Application.Model.AppointmentModel;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,6 +17,16 @@ namespace Infrastructure.Repository
         public AppointmentRepository(AppDbContext appDbContext, IClaimService claimService, ICurrentTime currentTime) : base(appDbContext, claimService, currentTime)
         {
             _context = appDbContext;
+        }
+
+        public async Task<List<AppointmentViewModel>> GetAllAppointment()
+        {
+            return await _context.Appointments.Where(x=>x.IsDelete==false)
+                                             .Select(x=>new AppointmentViewModel
+                                             {
+                                                 Id=x.Id,
+                                                 Description=x.Description,
+                                             }).ToListAsync();
         }
 
         public async Task<Guid> GetLastSaveAppointmentId()
