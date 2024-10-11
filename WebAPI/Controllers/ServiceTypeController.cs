@@ -33,5 +33,16 @@ namespace WebAPI.Controllers
             var serviceTypeList=await _serviceTypeService.GetAllServiceTypeAsync();
             return Ok(serviceTypeList);
         }
+        [Authorize(Roles ="Admin")]
+        [HttpDelete("{typeId}")]
+        public async Task<IActionResult> DeleteServiceType(Guid typeId)
+        {
+            var isDeleted = await _serviceTypeService.DeleteServiceType(typeId);
+            if (!isDeleted)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
     }
 }
