@@ -26,7 +26,7 @@ namespace WebAPI.Controllers
             }
             return Ok();
         }
-        [Authorize(Roles = "Admin,Staff")]
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllServiceType()
         {
