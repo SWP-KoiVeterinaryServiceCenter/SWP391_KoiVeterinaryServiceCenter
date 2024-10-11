@@ -27,6 +27,17 @@ namespace Application.Service.Abstraction
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
+        public async Task<bool> DeleteServiceType(Guid typeId)
+        {
+            var serviceType=await _unitOfWork.ServiceTypeRepository.GetByIdAsync(typeId);
+            if(serviceType == null)
+            {
+                throw new Exception("Service type not found");
+            }
+            _unitOfWork.ServiceTypeRepository.SoftRemove(serviceType);
+            return await _unitOfWork.SaveChangeAsync()>0;
+        }
+
         public async Task<List<ServiceTypeListViewModel>> GetAllServiceTypeAsync()
         {
             var serviceTypeList = await _unitOfWork.ServiceTypeRepository.GetAllAsync();

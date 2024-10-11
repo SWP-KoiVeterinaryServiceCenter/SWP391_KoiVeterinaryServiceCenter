@@ -11,5 +11,6 @@ namespace Application.IService.Abstraction
     {
         Task<bool> CreateServiceTypeAsync(CreateServiceTypeModel model);
         Task<List<ServiceTypeListViewModel>> GetAllServiceTypeAsync();
+        Task<bool> DeleteServiceType(Guid typeId);
     }
 }
