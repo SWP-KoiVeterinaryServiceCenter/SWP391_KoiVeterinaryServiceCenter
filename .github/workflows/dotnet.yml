@@ -25,7 +25,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Deploy to Simply        
-      uses: talunzhang/auto-web-deploy@v1.0.1
+      uses: jahbenjah/SmarterASP.NET-web-deploy@1.0.0
       with:
          website-name: ${{ secrets.WEBSITE_NAME }}
          server-computer-name: ${{ secrets.SERVER_COMPUTER_NAME }}
