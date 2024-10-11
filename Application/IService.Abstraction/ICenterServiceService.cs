@@ -11,6 +11,7 @@ namespace Application.IService.Abstraction
     {
         Task<bool> CreateCenterServiceAysnc(CreateServiceModel createServiceModel);
         Task<List<ListCenterServiceModel>> GetAllService();
+        Task<bool> DeleteCenterService(Guid centerServiceId);
 
     }
 }

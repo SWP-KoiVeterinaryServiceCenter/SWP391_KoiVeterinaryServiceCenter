@@ -15,6 +15,7 @@ namespace Domain.Entities
         [Column(TypeName="decimal(15,2)")]
         public decimal Price { get; set; }
         public TimeSpan Duration { get; set; }
+        public string? CenterServiceImage {  get; set; }
         public Guid? TypeId { get; set; }
         public ServiceType ServiceType { get; set; }
        public ICollection<Appointment> Appointments { get; set; }

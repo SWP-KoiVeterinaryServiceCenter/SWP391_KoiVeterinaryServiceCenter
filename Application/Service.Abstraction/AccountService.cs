@@ -137,6 +137,7 @@ namespace Application.Service.Abstraction
             var listAccountModel = listAccount.Select(x => new ListUserViewModel
             {
                 AccountId = x.Id,
+                ProfileImage=x.ProfileImage,
                 ContactLink = x.ContactLink,
                 Email = x.Email,
                 Location = x.Location,
@@ -283,9 +284,9 @@ namespace Application.Service.Abstraction
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
-        public async Task<bool> UploadImageForAccount(Guid accountId, IFormFile formFile)
+        public async Task<bool> UploadImageForAccount(IFormFile formFile)
         {
-            var updateAccount = await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
+            var updateAccount = await _unitOfWork.AccountRepository.GetByIdAsync(_claimsService.GetCurrentUserId);
             if (updateAccount != null)
             {
                 string uploadImage = await _uploadImageService.UploadFileToFireBase(formFile, "Account");

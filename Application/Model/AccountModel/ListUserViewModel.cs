@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MassTransit;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,7 @@ namespace Application.Model.AccountModel
     public class ListUserViewModel
     {
         public Guid AccountId { get; set; }
+        public string ProfileImage { get; set; }
         public string Username { get; set; }
         public string Role { get; set; }
         public string Email { get; set; }

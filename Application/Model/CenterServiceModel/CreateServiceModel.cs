@@ -1,5 +1,6 @@
 ﻿using Application.ModelUtil.ModelBinding;
 using MassTransit;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,9 @@ namespace Application.Model.KoiServiceModel
         public string Description { get; set; }
         public decimal Price { get; set; }
         public Guid TypeId {  get; set; }
-        [ModelBinder(BinderType = typeof(NullableGuidModelBinder))]
+      /*  [ModelBinder(BinderType = typeof(NullableGuidModelBinder))]*/
         public Guid? TankId { get; set; }
+        public IFormFile serviceImage { get; set; }
+        public int Duration { get; set; }
     }
 }

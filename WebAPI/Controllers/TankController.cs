@@ -1,5 +1,6 @@
 ﻿using Application.IService.Abstraction;
 using Application.Model.TankModel;
+using Application.Service.Abstraction;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,16 @@ namespace WebAPI.Controllers
         {
             var listTank=await _centerTankService.GetAllTanksAsync();
             return Ok(listTank);
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RemoveTank(Guid id)
+        {
+            var isRemoved = await _centerTankService.DeleteTankAsync(id);
+            if (isRemoved)
+            {
+                return NoContent();
+            }
+            return BadRequest();
         }
     }
 }

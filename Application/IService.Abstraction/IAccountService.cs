@@ -15,7 +15,7 @@ namespace Application.IService.Abstraction
         Task<CurrentUserModel> GetCurrentLoginUserAsync();
         Task<bool> CreateVetAccount(RegisterModel model);
         Task<bool> CreateStaffAccount(RegisterModel model);
-        Task<bool> UploadImageForAccount(Guid accountId, IFormFile formFile);
+        Task<bool> UploadImageForAccount(IFormFile formFile);
         Task<List<ListUserViewModel>> GetAllUserInSystemAsync();
         Task<bool> BanAccountAsync(Guid accountId);
         Task<bool> UnBanAccountAsync(Guid accountId);
