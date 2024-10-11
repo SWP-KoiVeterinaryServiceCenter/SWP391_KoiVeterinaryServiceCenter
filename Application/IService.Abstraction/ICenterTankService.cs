@@ -11,5 +11,6 @@ namespace Application.IService.Abstraction
     {
         Task<bool> CreateTankAsync(CreateTankModel model);
         Task<List<ListTankViewModel>> GetAllTanksAsync();
+        Task<bool> DeleteTankAsync(Guid id);
     }
 }

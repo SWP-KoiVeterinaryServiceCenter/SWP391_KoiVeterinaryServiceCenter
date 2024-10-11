@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
         }
         [Authorize(Roles ="Admin,Staff")]
         [HttpPost]
-        public async Task<IActionResult> CreateCenterService([FromBody]CreateServiceModel createServiceModel)
+        public async Task<IActionResult> CreateCenterService([FromForm]CreateServiceModel createServiceModel)
         {
             var isCreated = await _centerServiceService.CreateCenterServiceAysnc(createServiceModel);
             if (isCreated)
@@ -30,6 +30,16 @@ namespace WebAPI.Controllers
         {
             var listCenterService = await _centerServiceService.GetAllService();
             return Ok(listCenterService);
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> RemoveService(Guid id)
+        {
+            var isRemoved=await _centerServiceService.DeleteCenterService(id);
+            if (isRemoved)
+            {
+                return NoContent();
+            }
+            return BadRequest();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Model.KoiServiceModel;
+using Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace Application.IRepository
 {
     public interface ICenterServiceRepository:IGenericRepository<CenterService>
     {
+        Task<List<ListCenterServiceModel>> GetAllCenterService();
     }
 }

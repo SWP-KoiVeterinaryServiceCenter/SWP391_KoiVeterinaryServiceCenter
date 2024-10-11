@@ -26,6 +26,17 @@ namespace Application.Service.Abstraction
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
+        public async Task<bool> DeleteTankAsync(Guid id)
+        {
+            var foundTank=await _unitOfWork.CenterTankRepository.GetByIdAsync(id);
+            if (foundTank == null)
+            {
+                throw new Exception("Tank has already been removed");
+            }
+            _unitOfWork.CenterTankRepository.SoftRemove(foundTank);
+            return await _unitOfWork.SaveChangeAsync() > 0;
+        }
+
         public async Task<List<ListTankViewModel>> GetAllTanksAsync()
         {
             var listTank = await _unitOfWork.CenterTankRepository.GetAllAsync();
