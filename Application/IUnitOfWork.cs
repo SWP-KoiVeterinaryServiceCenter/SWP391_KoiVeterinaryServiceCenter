@@ -16,6 +16,7 @@ namespace Application
         public IServiceTypeRepository ServiceTypeRepository { get; }
         public IWorkingScheduleRepository WorkingScheduleRepository { get; }
         public IAppointmentRepository AppointmentRepository { get; }
+        public IRatingRepository RatingRepository { get; }
         public Task<int> SaveChangeAsync();
     }
 }
