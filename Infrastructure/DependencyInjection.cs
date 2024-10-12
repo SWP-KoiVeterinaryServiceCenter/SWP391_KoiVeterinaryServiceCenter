@@ -23,6 +23,7 @@ namespace Infrastructure
             services.AddScoped<IWorkingScheduleRepository, WorkingScheduleRepository>();
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<IUnitOfWork,UnitOfWork>();
+            services.AddScoped<IRatingRepository, RatingRepository>();
             return services;
         }
     }
