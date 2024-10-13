@@ -15,9 +15,9 @@ namespace Domain.Entities
         [Column(TypeName ="decimal(5,2)")]
         public decimal Distance { get; set; }
         [Column(TypeName = "decimal(5, 2)")]
-        public decimal MiniumTravelRate { get; set; }
+        public decimal MinimumTravelRate { get; set; }
         [Column(TypeName = "decimal(5, 2)")]
-        public decimal MaxiumTravelRate { get; set; }
+        public decimal MaximumTravelRate { get; set; }
         public Guid? CreatedBy { get; set; }
         public DateTime? CreationDate { get; set; }
         public Guid? ModificationBy { get; set; }

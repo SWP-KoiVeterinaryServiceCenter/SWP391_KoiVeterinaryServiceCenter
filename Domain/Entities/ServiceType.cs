@@ -10,6 +10,7 @@ namespace Domain.Entities
     public class ServiceType : BaseEntity, ICreatedBy, IModificationBy, IDeletedBy
     {
         public string TypeName { get; set; }
+        public string ServiceLocation { get; set; }
         public Guid? TravelExpenseId { get; set; }
         public TravelExpense TravelExpense { get; set; }
         public Guid? CreatedBy { get; set; }
