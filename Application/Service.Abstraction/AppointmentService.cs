@@ -61,6 +61,7 @@ namespace Application.Service.Abstraction
         {
             var listAppointment=await _unitOfWork.AppointmentRepository.GetAllAppointmentForCalculate(_claimService.GetCurrentUserId);
             var listVet=await _unitOfWork.AccountRepository.GetAllVeterinaryAccounts();
+            decimal travelFee;
             List<AppointmentViewModel> result = new List<AppointmentViewModel>();
             // var listAppointmentModel=await _unitOfWork.AppointmentRepository.GetAllAppointmentByUserId(_claimService.GetCurrentUserId);
 
@@ -68,15 +69,21 @@ namespace Application.Service.Abstraction
             {
                 Location userLocation = await CalculateLatAndLong.CalculateLatLongByAddressAsync(appointment.Koi.Account.Location);
                 Location serviceLocation = await CalculateLatAndLong.CalculateLatLongByAddressAsync(appointment.Service.ServiceType.ServiceLocation);
-                var distance = CalculateDistance.CalculateDistanceByLatAndLong(userLocation, serviceLocation);
-                var travelFee = (decimal)appointment.Service.ServiceType.TravelExpense.BaseRate * Convert.ToDecimal(distance);
-                if (travelFee < appointment.Service.ServiceType.TravelExpense.MinimumTravelRate)
+                if (appointment.Service.ServiceType.ServiceLocation == "Online")
                 {
-                    travelFee = appointment.Service.ServiceType.TravelExpense.MinimumTravelRate;
-                }
-                else if (travelFee > appointment.Service.ServiceType.TravelExpense.MaximumTravelRate)
+                    travelFee = 0;
+                } else
                 {
-                    travelFee = appointment.Service.ServiceType.TravelExpense.MaximumTravelRate;
+                    var distance = CalculateDistance.CalculateDistanceByLatAndLong(userLocation, serviceLocation);
+                    travelFee = (decimal)appointment.Service.ServiceType.TravelExpense.BaseRate * Convert.ToDecimal(distance);
+                    if (travelFee < appointment.Service.ServiceType.TravelExpense.MinimumTravelRate)
+                    {
+                        travelFee = appointment.Service.ServiceType.TravelExpense.MinimumTravelRate;
+                    }
+                    else if (travelFee > appointment.Service.ServiceType.TravelExpense.MaximumTravelRate)
+                    {
+                        travelFee = appointment.Service.ServiceType.TravelExpense.MaximumTravelRate;
+                    }
                 }
                 AppointmentViewModel appointmentViewModel = new AppointmentViewModel
                 {
@@ -93,7 +100,8 @@ namespace Application.Service.Abstraction
             return result;
         }
 
-        public async Task<bool> UpdateAppointment(Guid id, UpdateAppointmentModel updateAppointmentModel)
+        public async Task<bool> UpdateAppointment(Guid id, UpdateAppointmentModel updateAppointme
+            ntModel)
         {
             var findAppointment = await _unitOfWork.AppointmentRepository.GetByIdAsync(id);
             if (findAppointment == null)
