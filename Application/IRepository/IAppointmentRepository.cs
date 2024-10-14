@@ -13,5 +13,6 @@ namespace Application.IRepository
         Task<Guid> GetLastSaveAppointmentId();
         Task<List<AppointmentViewModel>> GetAllAppointment();
         Task<List<AppointmentViewModel>> GetAllAppointmentByUserId(Guid userId);
+        Task<List<Appointment>> GetAllAppointmentForCalculate(Guid userId);
     }
 }

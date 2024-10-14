@@ -1,4 +1,6 @@
-﻿using MassTransit;
+﻿using Application.ModelUtil.ModelBinding;
+using MassTransit;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +12,8 @@ namespace Application.Model.ServiceTypeModel
     public class CreateServiceTypeModel
     {
         public string TypeName { get; set; }
+        public string? ServiceLocation { get; set; }
+        [ModelBinder(BinderType = typeof(NullableGuidModelBinder))]
+        public Guid? TravelExpenseId { get; set; }
     }
 }

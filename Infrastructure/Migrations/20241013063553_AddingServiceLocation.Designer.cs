@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241013063553_AddingServiceLocation")]
+    partial class AddingServiceLocation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,12 +105,12 @@ namespace Infrastructure.Migrations
                         {
                             Id = new Guid("1de7660a-5288-440c-af13-9914662f155c"),
                             ContactLink = "",
-                            CreationDate = new DateTime(2024, 10, 13, 9, 31, 46, 501, DateTimeKind.Utc).AddTicks(6358),
+                            CreationDate = new DateTime(2024, 10, 13, 6, 35, 51, 42, DateTimeKind.Utc).AddTicks(7971),
                             Email = "admin@gmail.com",
                             Fullname = "Admin",
                             IsDelete = false,
                             Location = "",
-                            PasswordHash = "$2a$11$.vwUIkd8QOFKoJzhzqSu9uhMRgWKlriSnUUWf4B7BKkZTtyd.9xdu",
+                            PasswordHash = "$2a$11$98XTyQgivXdfEhPl8JQlvuymSpcIdy6L5JkwYc9vSPjVUexd8MFj2",
                             Phonenumber = "",
                             RoleId = 1,
                             Username = "Admin"
@@ -116,12 +119,12 @@ namespace Infrastructure.Migrations
                         {
                             Id = new Guid("dc699c6a-3980-42dd-be75-d10ae89c82b3"),
                             ContactLink = "",
-                            CreationDate = new DateTime(2024, 10, 13, 9, 31, 46, 684, DateTimeKind.Utc).AddTicks(1418),
+                            CreationDate = new DateTime(2024, 10, 13, 6, 35, 51, 266, DateTimeKind.Utc).AddTicks(965),
                             Email = "staff@gmail.com",
                             Fullname = "Staff",
                             IsDelete = false,
                             Location = "",
-                            PasswordHash = "$2a$11$n1c55dGKfuNQg3rYKlqMOueb3jhMPTAvV.G72gJVbSunbrS1eqBzO",
+                            PasswordHash = "$2a$11$XCU8GBxmN9fGm14v8ERghemXjAh1amTaoUb0s6IE./Szj3lSsoowS",
                             Phonenumber = "",
                             RoleId = 1,
                             Username = "Staff"
@@ -378,6 +381,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("KoiImage")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("KoiName")
@@ -626,7 +630,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("BaseRate")
-                        .HasColumnType("decimal(10, 2)");
+                        .HasColumnType("decimal(5, 2)");
 
                     b.Property<Guid?>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
@@ -640,14 +644,17 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("DeletionDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<decimal>("Distance")
+                        .HasColumnType("decimal(5,2)");
+
                     b.Property<bool>("IsDelete")
                         .HasColumnType("bit");
 
                     b.Property<decimal>("MaximumTravelRate")
-                        .HasColumnType("decimal(15, 2)");
+                        .HasColumnType("decimal(5, 2)");
 
                     b.Property<decimal>("MinimumTravelRate")
-                        .HasColumnType("decimal(10, 2)");
+                        .HasColumnType("decimal(5, 2)");
 
                     b.Property<Guid?>("ModificationBy")
                         .HasColumnType("uniqueidentifier");

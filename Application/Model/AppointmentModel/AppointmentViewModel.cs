@@ -14,5 +14,6 @@ namespace Application.Model.AppointmentModel
         public string KoiName { get; set; }
         public string Status { get; set; }
         public string VetName { get; set; }
+        public decimal Price { get; set; }
     }
 }

@@ -47,6 +47,12 @@ namespace Infrastructure.Repository
                                             }).ToListAsync();
         }
 
+        public async Task<List<Appointment>> GetAllAppointmentForCalculate(Guid userId)
+        {
+            return await _context.Appointments.Where(x => x.IsDelete == false && x.Koi.AccountId == userId).Include(x=>x.Koi).ThenInclude(x=>x.Account)
+                                              .Include(x=>x.Service).ThenInclude(x=>x.ServiceType).ThenInclude(x=>x.TravelExpense).ToListAsync();
+        }
+
         public async Task<Guid> GetLastSaveAppointmentId()
         {
             var appointment = await _context.Appointments.OrderBy(x=>x.CreationDate).LastAsync();

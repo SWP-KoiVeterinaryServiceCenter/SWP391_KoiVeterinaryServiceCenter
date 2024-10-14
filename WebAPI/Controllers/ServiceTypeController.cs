@@ -17,7 +17,7 @@ namespace WebAPI.Controllers
         }
         [Authorize(Roles = "Admin,Staff")]
         [HttpPost]
-        public async Task<IActionResult> CreateServiceType(CreateServiceTypeModel createServiceTypeModel)
+        public async Task<IActionResult> CreateServiceType([FromBody]CreateServiceTypeModel createServiceTypeModel)
         {
             var isCreated=await _serviceTypeService.CreateServiceTypeAsync(createServiceTypeModel);
             if (!isCreated)

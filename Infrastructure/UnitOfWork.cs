@@ -20,10 +20,12 @@ namespace Infrastructure
         private readonly IWorkingScheduleRepository _workingScheduleRepository;
         private readonly IAppointmentRepository _appointmentRepository;
         private readonly IRatingRepository _ratingRepository;
+        private readonly ITravelExpenseRepository _travelExpenseRepository;
         public UnitOfWork(AppDbContext dbContext, IAccountRepository accountRepository, 
             IKoiRepository koiRepository, IServiceTypeRepository serviceTypeRepository, 
             ICenterTankRepository centerTankRepository, ICenterServiceRepository centerServiceRepository, 
-            IWorkingScheduleRepository workingScheduleRepository,IAppointmentRepository appointmentRepository,IRatingRepository ratingRepository)
+            IWorkingScheduleRepository workingScheduleRepository,IAppointmentRepository appointmentRepository,
+            IRatingRepository ratingRepository,ITravelExpenseRepository travelExpenseRepository)
         {
             _dbContext = dbContext;
             _accountRepository = accountRepository;
@@ -34,6 +36,7 @@ namespace Infrastructure
             _workingScheduleRepository = workingScheduleRepository;
             _appointmentRepository = appointmentRepository;
             _ratingRepository = ratingRepository;
+            _travelExpenseRepository = travelExpenseRepository;
         }
 
         public IAccountRepository AccountRepository => _accountRepository;
@@ -48,6 +51,8 @@ namespace Infrastructure
 
         public IAppointmentRepository AppointmentRepository => _appointmentRepository;
         public IRatingRepository RatingRepository => _ratingRepository;
+
+        public ITravelExpenseRepository TravelExpenseRepository => _travelExpenseRepository;
 
         public async Task<int> SaveChangeAsync()
         {

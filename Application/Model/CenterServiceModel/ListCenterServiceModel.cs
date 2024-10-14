@@ -9,6 +9,7 @@ namespace Application.Model.KoiServiceModel
     public class ListCenterServiceModel
     {
         public Guid Id { get; set; }
+        public string ServiceImage { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
         public string Description { get; set; }
