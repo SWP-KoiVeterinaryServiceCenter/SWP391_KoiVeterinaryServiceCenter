@@ -4,6 +4,7 @@ using Application.Model.KoiModel;
 using Application.Model.KoiServiceModel;
 using Application.Model.ServiceTypeModel;
 using Application.Model.TankModel;
+using Application.Model.TravelExpenseModel;
 using AutoMapper;
 using Domain.Entities;
 using System;
@@ -23,6 +24,7 @@ namespace Infrastructure.Mappers
             CreateCenterServiceMap();
             CreateCenterTankMap();
             CreateAppointmentMap();
+            CreateTravelExpenseMap();
         }
         internal void CreateAccountMap()
         {
@@ -31,7 +33,8 @@ namespace Infrastructure.Mappers
         internal void CreateServiceTypeMap()
         {
             CreateMap<CreateServiceTypeModel, ServiceType>()
-                .ForMember(scr => scr.TypeName, dest => dest.MapFrom(model => model.TypeName)).ReverseMap();
+                .ForMember(scr => scr.TypeName, dest => dest.MapFrom(model => model.TypeName))
+                .ForMember(scr=>scr.TravelExpenseId,dest=>dest.MapFrom(model=>model.TravelExpenseId)).ReverseMap();
         }
         internal void CreateCenterServiceMap()
         {
@@ -62,6 +65,10 @@ namespace Infrastructure.Mappers
              .ForMember(dest => dest.AppointmentDate, opt => opt.MapFrom(src => DateOnly.Parse(src.AppointmentDate)))
              .ForMember(dest => dest.AppointmentTime, opt => opt.MapFrom(src => TimeSpan.FromHours(src.AppointmentTime)))
              .ReverseMap();
+        }
+        internal void CreateTravelExpenseMap()
+        {
+            CreateMap<CreateTravelExpenseModel, TravelExpense>().ReverseMap();
         }
     }
 }
