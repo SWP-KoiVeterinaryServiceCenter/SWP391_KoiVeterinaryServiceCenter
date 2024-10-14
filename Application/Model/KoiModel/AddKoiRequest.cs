@@ -14,6 +14,8 @@ namespace Application.Model.KoiModel
         public int Age { get; set; }
         public string Gender { get; set; }
         public string Varieties { get; set; }
+
+        public string KoiImage { get; set; }
         /*public Guid AccountId { get; set; }*/
         //public Guid? CreatedBy { get; set; }
         //public DateTime? CreationDate { get; set; }
