@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241013074709_UpdateColumnDataType")]
+    partial class UpdateColumnDataType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,12 +105,12 @@ namespace Infrastructure.Migrations
                         {
                             Id = new Guid("1de7660a-5288-440c-af13-9914662f155c"),
                             ContactLink = "",
-                            CreationDate = new DateTime(2024, 10, 13, 9, 31, 46, 501, DateTimeKind.Utc).AddTicks(6358),
+                            CreationDate = new DateTime(2024, 10, 13, 7, 47, 8, 430, DateTimeKind.Utc).AddTicks(6940),
                             Email = "admin@gmail.com",
                             Fullname = "Admin",
                             IsDelete = false,
                             Location = "",
-                            PasswordHash = "$2a$11$.vwUIkd8QOFKoJzhzqSu9uhMRgWKlriSnUUWf4B7BKkZTtyd.9xdu",
+                            PasswordHash = "$2a$11$B2z2FU2uksoWFzZYRYTp9OqytoDewC.YolWgSGGv6DX1sefXNnE2m",
                             Phonenumber = "",
                             RoleId = 1,
                             Username = "Admin"
@@ -116,12 +119,12 @@ namespace Infrastructure.Migrations
                         {
                             Id = new Guid("dc699c6a-3980-42dd-be75-d10ae89c82b3"),
                             ContactLink = "",
-                            CreationDate = new DateTime(2024, 10, 13, 9, 31, 46, 684, DateTimeKind.Utc).AddTicks(1418),
+                            CreationDate = new DateTime(2024, 10, 13, 7, 47, 8, 614, DateTimeKind.Utc).AddTicks(8947),
                             Email = "staff@gmail.com",
                             Fullname = "Staff",
                             IsDelete = false,
                             Location = "",
-                            PasswordHash = "$2a$11$n1c55dGKfuNQg3rYKlqMOueb3jhMPTAvV.G72gJVbSunbrS1eqBzO",
+                            PasswordHash = "$2a$11$R.jMchDq3oPOms5kEb/O/evZdzchuryH9Z0Tsmaz7Vr6MQk9CM9Qm",
                             Phonenumber = "",
                             RoleId = 1,
                             Username = "Staff"
@@ -378,6 +381,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("KoiImage")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("KoiName")

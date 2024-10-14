@@ -17,6 +17,7 @@ namespace Application
         public IWorkingScheduleRepository WorkingScheduleRepository { get; }
         public IAppointmentRepository AppointmentRepository { get; }
         public IRatingRepository RatingRepository { get; }
+        public ITravelExpenseRepository TravelExpenseRepository { get; }
         public Task<int> SaveChangeAsync();
     }
 }

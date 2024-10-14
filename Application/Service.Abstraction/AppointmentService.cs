@@ -1,6 +1,8 @@
 ﻿using Application.IService.Abstraction;
 using Application.IService.Common;
 using Application.Model.AppointmentModel;
+using Application.Util;
+using Application.Util.UitlModel;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Enum;
@@ -57,7 +59,38 @@ namespace Application.Service.Abstraction
 
         public async Task<List<AppointmentViewModel>> GetCurrentUserAppointments()
         {
-            return await _unitOfWork.AppointmentRepository.GetAllAppointmentByUserId(_claimService.GetCurrentUserId);
+            var listAppointment=await _unitOfWork.AppointmentRepository.GetAllAppointmentForCalculate(_claimService.GetCurrentUserId);
+            var listVet=await _unitOfWork.AccountRepository.GetAllVeterinaryAccounts();
+            List<AppointmentViewModel> result = new List<AppointmentViewModel>();
+            // var listAppointmentModel=await _unitOfWork.AppointmentRepository.GetAllAppointmentByUserId(_claimService.GetCurrentUserId);
+
+            foreach (var appointment in listAppointment)
+            {
+                Location userLocation = await CalculateLatAndLong.CalculateLatLongByAddressAsync(appointment.Koi.Account.Location);
+                Location serviceLocation = await CalculateLatAndLong.CalculateLatLongByAddressAsync(appointment.Service.ServiceType.ServiceLocation);
+                var distance = CalculateDistance.CalculateDistanceByLatAndLong(userLocation, serviceLocation);
+                var travelFee = (decimal)appointment.Service.ServiceType.TravelExpense.BaseRate * Convert.ToDecimal(distance);
+                if (travelFee < appointment.Service.ServiceType.TravelExpense.MinimumTravelRate)
+                {
+                    travelFee = appointment.Service.ServiceType.TravelExpense.MinimumTravelRate;
+                }
+                else if (travelFee > appointment.Service.ServiceType.TravelExpense.MaximumTravelRate)
+                {
+                    travelFee = appointment.Service.ServiceType.TravelExpense.MaximumTravelRate;
+                }
+                AppointmentViewModel appointmentViewModel = new AppointmentViewModel
+                {
+                    Description = appointment.Description,
+                    Id = appointment.Id,
+                    KoiName = appointment.Koi.KoiName,
+                    Price = Math.Round(appointment.Service.Price + travelFee, 0),
+                    ServiceName = appointment.Service.ServiceName,
+                    Status = appointment.AppointmentStatus,
+                    VetName = listVet.Where(x => x.Id == appointment.VeterinarianId).Select(x => x.Username).SingleOrDefault()
+                };
+                result.Add(appointmentViewModel);
+            }
+            return result;
         }
 
         public async Task<bool> UpdateAppointment(Guid id, UpdateAppointmentModel updateAppointmentModel)

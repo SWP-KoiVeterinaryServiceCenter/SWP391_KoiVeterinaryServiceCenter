@@ -29,6 +29,12 @@
     <None Update="EmailTemplate\ForgotPassword.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="PaymentTemplate\PaymentFailed.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="PaymentTemplate\PaymentSuccessful.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

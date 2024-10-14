@@ -16,7 +16,7 @@ namespace Domain.Entities
         public int Age { get; set; }
         public string Gender { get; set; }
         public string Varieties { get; set; }
-        public string KoiImage { get; set; }
+        public string? KoiImage { get; set; }
         public Guid AccountId { get; set; }
         public Account Account { get; set; }
         public Guid? CreatedBy { get; set; }

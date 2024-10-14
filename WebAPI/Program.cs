@@ -1,4 +1,5 @@
 using Application.Common;
+using Application.VnPay.Config;
 using Infrastructure;
 using Infrastructure.Mappers;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,7 @@ var configuration = builder.Configuration.Get<AppConfiguration>();
 builder.Services.AddWebAPIService(configuration!.JwtSecretKey);
 builder.Services.AddInfratructureService(configuration!.DatabaseConnection);
 builder.Services.AddAutoMapper(typeof(MapperProfileConfig));
+builder.Services.Configure<VnPayConfig>(builder.Configuration.GetSection(VnPayConfig.ConfigName));
 builder.Services.AddSingleton(configuration);
 builder.Services.AddSwaggerGen(opt =>
 {
@@ -83,11 +85,12 @@ if (app.Environment.IsProduction())
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend API");
 
     });
-   // app.ApplyMigration();
+   app.ApplyMigration();
 }
 
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<PerformanceMiddleware>();
 app.UseAuthorization();
 app.UseCors("AllowAll");
 app.MapControllers();
