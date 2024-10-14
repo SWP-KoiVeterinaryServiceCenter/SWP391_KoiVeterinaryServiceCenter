@@ -31,6 +31,7 @@ namespace Application.Service.Abstraction
                 Age = koiRequest.Age,
                 Gender = koiRequest.Gender,
                 Varieties = koiRequest.Varieties,
+                KoiImage = koiRequest.KoiImage,
                 AccountId = _claimService.GetCurrentUserId
             };
 
@@ -50,7 +51,8 @@ namespace Application.Service.Abstraction
                 Age = koi.Age,
                 Gender = koi.Gender,
                 Varieties = koi.Varieties,
-                AccountId=koi.AccountId
+                KoiImage = koi.KoiImage,
+                AccountId = koi.AccountId
             }).ToList();
 
             return koiResponseList;
@@ -73,6 +75,7 @@ namespace Application.Service.Abstraction
                 Age = koi.Age,
                 Gender = koi.Gender,
                 Varieties = koi.Varieties,
+                KoiImage = koi.KoiImage,
                 AccountId = koi.AccountId
             };
         }
@@ -92,7 +95,8 @@ namespace Application.Service.Abstraction
                     Age = koi.Age,
                     Gender = koi.Gender,
                     Varieties = koi.Varieties,
-                    AccountId=koi.AccountId
+                    KoiImage = koi.KoiImage,
+                    AccountId =koi.AccountId
                 });
             }
 
@@ -112,6 +116,7 @@ namespace Application.Service.Abstraction
             existingKoi.Age = koiRequest.Age;
             existingKoi.Gender = koiRequest.Gender;
             existingKoi.Varieties = koiRequest.Varieties;
+            existingKoi.KoiImage = koiRequest.KoiImage;
             existingKoi.ModificationDate = DateTime.Now;
 
             _unitOfWork.KoiRepository.Update(existingKoi);
