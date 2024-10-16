@@ -1,6 +1,7 @@
 ﻿using Application.IService.Abstraction;
 using Application.IService.Common;
 using Application.Model.KoiModel;
+using Application.Model.KoiServiceModel;
 using AutoMapper;
 using Domain.Entities;
 using System;
@@ -16,14 +17,17 @@ namespace Application.Service.Abstraction
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IClaimService _claimService;
-        public KoiService(IUnitOfWork unitOfWork,IClaimService claimService)
+        private readonly IUploadImageService _uploadImageService;
+        public KoiService(IUnitOfWork unitOfWork, IClaimService claimService, IUploadImageService uploadImageService)
         {
             _unitOfWork = unitOfWork;
             _claimService = claimService;
+            _uploadImageService = uploadImageService;
         }
 
         public async Task<bool> AddKoiAsync(AddKoiRequest koiRequest)
         {
+            var image = await _uploadImageService.UploadFileToFireBase(koiRequest.KoiImage, "KoiService");
             var koi = new Koi
             {
                 KoiName = koiRequest.KoiName,
@@ -31,7 +35,7 @@ namespace Application.Service.Abstraction
                 Age = koiRequest.Age,
                 Gender = koiRequest.Gender,
                 Varieties = koiRequest.Varieties,
-                KoiImage = koiRequest.KoiImage,
+                KoiImage = image,
                 AccountId = _claimService.GetCurrentUserId
             };
 
@@ -89,14 +93,14 @@ namespace Application.Service.Abstraction
             {
                 koiResponseList.Add(new KoiResponse
                 {
-                    Id=koi.Id,
+                    Id = koi.Id,
                     KoiName = koi.KoiName,
                     Weight = koi.Weight,
                     Age = koi.Age,
                     Gender = koi.Gender,
                     Varieties = koi.Varieties,
                     KoiImage = koi.KoiImage,
-                    AccountId =koi.AccountId
+                    AccountId = koi.AccountId
                 });
             }
 
@@ -108,20 +112,24 @@ namespace Application.Service.Abstraction
             var existingKoi = await _unitOfWork.KoiRepository.GetByIdAsync(id);
             if (existingKoi == null)
             {
-                throw new Exception("Koi not found");
+                throw new KeyNotFoundException("Koi not found");
             }
-
+            string image = existingKoi.KoiImage;
+            if (koiRequest.KoiImage != null)
+            {
+                image = await _uploadImageService.UploadFileToFireBase(koiRequest.KoiImage, "KoiService");
+            }
             existingKoi.KoiName = koiRequest.KoiName;
             existingKoi.Weight = koiRequest.Weight;
             existingKoi.Age = koiRequest.Age;
             existingKoi.Gender = koiRequest.Gender;
             existingKoi.Varieties = koiRequest.Varieties;
-            existingKoi.KoiImage = koiRequest.KoiImage;
-            existingKoi.ModificationDate = DateTime.Now;
-
+            existingKoi.KoiImage = image;
+            existingKoi.ModificationDate = DateTime.UtcNow;
             _unitOfWork.KoiRepository.Update(existingKoi);
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
+
 
         public async Task<bool> DeleteKoiAsync(Guid id)
         {
@@ -130,7 +138,7 @@ namespace Application.Service.Abstraction
             {
                 throw new Exception("Koi not found");
             }
-             _unitOfWork.KoiRepository.SoftRemove(koi);
+            _unitOfWork.KoiRepository.SoftRemove(koi);
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
     }
