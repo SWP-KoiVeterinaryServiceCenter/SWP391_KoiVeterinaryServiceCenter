@@ -1,4 +1,5 @@
 ﻿using Domain.Entities.Common;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace Application.Model.KoiModel
         public string Gender { get; set; }
         public string Varieties { get; set; }
 
-        public string KoiImage { get; set; }
+        public IFormFile KoiImage { get; set; }
         /*public Guid AccountId { get; set; }*/
         //public Guid? CreatedBy { get; set; }
         //public DateTime? CreationDate { get; set; }

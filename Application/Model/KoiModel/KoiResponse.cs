@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Model.KoiModel
 {
@@ -16,7 +17,7 @@ namespace Application.Model.KoiModel
         public int Age { get; set; }
         public string Gender { get; set; }
         public string Varieties { get; set; }
-        public string KoiImage { get; set; }
+        public String KoiImage { get; set; }
         public Guid AccountId { get; set; }
         //public Account Account { get; set; }
         //public Guid? CreatedBy { get; set; }

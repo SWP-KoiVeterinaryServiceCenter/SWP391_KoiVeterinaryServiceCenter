@@ -70,7 +70,7 @@ namespace WebAPI.Controllers
         // POST: api/v1/koi/AddKoi
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> AddKoi([FromBody] AddKoiRequest koiRequest)
+        public async Task<IActionResult> AddKoi([FromForm] AddKoiRequest koiRequest)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace WebAPI.Controllers
 
         // PUT: api/v1/koi/UpdateKoi/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateKoi(Guid id, [FromBody] UpdateKoiRequest koiRequest)
+        public async Task<IActionResult> UpdateKoi(Guid id, [FromForm] UpdateKoiRequest koiRequest)
         {
             try
             {

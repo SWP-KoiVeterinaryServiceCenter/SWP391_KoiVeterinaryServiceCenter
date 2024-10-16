@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,6 @@ namespace Application.Model.KoiModel
         public int Age { get; set; }
         public string Gender { get; set; }
         public string Varieties { get; set; }
-        public string KoiImage { get; set; }
+        public IFormFile KoiImage { get; set; }
     }
 }
