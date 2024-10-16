@@ -26,13 +26,10 @@ namespace WebAPI
             services.AddScoped<IAppointmentService, AppointmentService>();  
             services.AddScoped<IUploadImageService, UploadImageService>();
             services.AddScoped<ISendMailService, SendMailService>();
- ThanhHoa-FixKoiCurrentUser
             services.AddScoped<IRatingService, RatingService>();
-
             services.AddScoped<ITravelExpenseService, TravelExpenseService>();
             services.AddScoped<ICurrentUserIp,CurrentUserIp>();
             services.AddScoped<IPaymentService, PaymentService>();
- main
             services.AddMemoryCache();
             services.AddDistributedMemoryCache();
             services.AddSession(options =>

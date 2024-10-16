@@ -15,7 +15,7 @@ namespace WebAPI.Controllers
             _appointmentService = appointmentService;
         }
         [HttpPost]
-        public async Task<IActionResult> CreateAppoinment([FromBody]CreateAppointmentModel model)
+        public async Task<IActionResult> CreateAppointment([FromBody]CreateAppointmentModel model)
         {
             var isCreated=await _appointmentService.CreateAppointmentAsync(model);
             if (isCreated)
@@ -72,6 +72,16 @@ namespace WebAPI.Controllers
             if (appointmentList.Count() > 0)
             {
                 return Ok(appointmentList);
+            }
+            return BadRequest();
+        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> CancelAppointment(Guid id)
+        {
+            var isCancelled=await _appointmentService.CancelAppointmentAsync(id);
+            if (isCancelled)
+            {
+                return Ok();
             }
             return BadRequest();
         }

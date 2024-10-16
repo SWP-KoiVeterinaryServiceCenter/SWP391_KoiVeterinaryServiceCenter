@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Application.Service.Abstraction
 {
-    public class AppointmentService:IAppointmentService
+    public class AppointmentService : IAppointmentService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -24,6 +24,25 @@ namespace Application.Service.Abstraction
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _claimService = claimService;
+        }
+
+        public async Task<bool> CancelAppointmentAsync(Guid id)
+        {
+            var findAppintment = await _unitOfWork.AppointmentRepository.GetByIdAsync(id);
+            if (findAppintment == null)
+            {
+                throw new Exception("Appiontment have been removed");
+            }
+            if(findAppintment.AppointmentStatus==nameof(AppointmentStatus.Confirmed)) 
+            {
+                throw new Exception("Cannot cancel this appointment");
+            } else if(findAppintment.AppointmentStatus==nameof(AppointmentStatus.Cancelled))
+            {
+                throw new Exception("Appointment has already been cancelled");
+            }
+            findAppintment.AppointmentStatus=nameof(AppointmentStatus.Cancelled);
+            _unitOfWork.AppointmentRepository.Update(findAppintment);
+            return await _unitOfWork.SaveChangeAsync()>0;
         }
 
         public async Task<bool> CreateAppointmentAsync(CreateAppointmentModel createAppointmentModel)
@@ -100,8 +119,7 @@ namespace Application.Service.Abstraction
             return result;
         }
 
-        public async Task<bool> UpdateAppointment(Guid id, UpdateAppointmentModel updateAppointme
-            ntModel)
+        public async Task<bool> UpdateAppointment(Guid id, UpdateAppointmentModel updateAppointmentModel)
         {
             var findAppointment = await _unitOfWork.AppointmentRepository.GetByIdAsync(id);
             if (findAppointment == null)
