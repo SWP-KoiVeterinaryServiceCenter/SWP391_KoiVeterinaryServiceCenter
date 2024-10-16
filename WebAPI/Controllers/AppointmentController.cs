@@ -3,10 +3,8 @@ using Application.Model.AppointmentModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
 namespace WebAPI.Controllers
 {
-    
     public class AppointmentController :BaseController
     {
         private readonly IAppointmentService _appointmentService;
@@ -15,6 +13,7 @@ namespace WebAPI.Controllers
             _appointmentService = appointmentService;
         }
         [HttpPost]
+        //[ServiceFilter(typeof(InputValidationActionFilter))]
         public async Task<IActionResult> CreateAppointment([FromBody]CreateAppointmentModel model)
         {
             var isCreated=await _appointmentService.CreateAppointmentAsync(model);

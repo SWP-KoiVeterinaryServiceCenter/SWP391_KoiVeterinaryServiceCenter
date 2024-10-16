@@ -1,4 +1,5 @@
-﻿using Domain.Entities.Common;
+﻿using Application.ModelUtil.ModelValidation;
+using Domain.Entities.Common;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Application.Model.KoiModel
         public int Age { get; set; }
         public string Gender { get; set; }
         public string Varieties { get; set; }
-
+        [CheckFileExtension(new string[] { ".jpg", ".png", ".jpeg" })]
         public IFormFile KoiImage { get; set; }
         /*public Guid AccountId { get; set; }*/
         //public Guid? CreatedBy { get; set; }
