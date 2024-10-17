@@ -119,6 +119,10 @@ namespace Application.Service.Abstraction
             {
                 image = await _uploadImageService.UploadFileToFireBase(koiRequest.KoiImage, "KoiService");
             }
+            else
+            {
+                image = existingKoi.KoiImage;
+            }
             existingKoi.KoiName = koiRequest.KoiName;
             existingKoi.Weight = koiRequest.Weight;
             existingKoi.Age = koiRequest.Age;
