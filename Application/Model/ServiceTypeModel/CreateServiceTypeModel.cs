@@ -12,7 +12,6 @@ namespace Application.Model.ServiceTypeModel
     public class CreateServiceTypeModel
     {
         public string TypeName { get; set; }
-        public string? ServiceLocation { get; set; }
         [ModelBinder(BinderType = typeof(NullableGuidModelBinder))]
         public Guid? TravelExpenseId { get; set; }
     }

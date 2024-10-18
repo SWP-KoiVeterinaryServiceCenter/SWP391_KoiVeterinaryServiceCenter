@@ -145,6 +145,29 @@ namespace Application.Service.Abstraction
             _unitOfWork.KoiRepository.SoftRemove(koi);
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
+
+        public async Task<List<KoiResponse>> GetAllKoiByCurrentUser()
+        {
+            var koiList = await _unitOfWork.KoiRepository.FindAsync(k => k.AccountId == _claimService.GetCurrentUserId);
+
+            var koiResponseList = new List<KoiResponse>();
+            foreach (var koi in koiList)
+            {
+                koiResponseList.Add(new KoiResponse
+                {
+                    Id = koi.Id,
+                    KoiName = koi.KoiName,
+                    Weight = koi.Weight,
+                    Age = koi.Age,
+                    Gender = koi.Gender,
+                    Varieties = koi.Varieties,
+                    KoiImage = koi.KoiImage,
+                    AccountId = koi.AccountId
+                });
+            }
+
+            return koiResponseList;
+        }
     }
 
 }
