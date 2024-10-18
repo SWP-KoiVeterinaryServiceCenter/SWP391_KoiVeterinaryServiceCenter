@@ -16,6 +16,7 @@ namespace Domain.Entities
         public decimal Price { get; set; }
         public TimeSpan Duration { get; set; }
         public string? CenterServiceImage {  get; set; }
+        public string? ServiceLocation { get; set; }
         public Guid? TypeId { get; set; }
         public ServiceType ServiceType { get; set; }
        public ICollection<Appointment> Appointments { get; set; }

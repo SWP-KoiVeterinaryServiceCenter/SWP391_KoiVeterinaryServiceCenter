@@ -87,8 +87,8 @@ namespace Application.Service.Abstraction
             foreach (var appointment in listAppointment)
             {
                 Location userLocation = await CalculateLatAndLong.CalculateLatLongByAddressAsync(appointment.Koi.Account.Location);
-                Location serviceLocation = await CalculateLatAndLong.CalculateLatLongByAddressAsync(appointment.Service.ServiceType.ServiceLocation);
-                if (appointment.Service.ServiceType.ServiceLocation == "Online")
+                Location serviceLocation = await CalculateLatAndLong.CalculateLatLongByAddressAsync(appointment.Service.ServiceLocation);
+                if (appointment.Service.ServiceLocation == "Online")
                 {
                     travelFee = 0;
                 } else

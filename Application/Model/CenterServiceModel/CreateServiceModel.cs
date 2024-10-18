@@ -22,5 +22,6 @@ namespace Application.Model.KoiServiceModel
         [CheckFileExtension(new string[] { ".jpg", ".png", ".jpeg" })]
         public IFormFile serviceImage { get; set; }
         public int Duration { get; set; }
+        public string ServiceLocation { get; set; }
     }
 }

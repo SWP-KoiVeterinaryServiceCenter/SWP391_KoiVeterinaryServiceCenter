@@ -124,5 +124,12 @@ namespace WebAPI.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetKoiByCurrentUser()
+        {
+            var listKoi=await _koiService.GetAllKoiByCurrentUser();
+            return Ok(listKoi);
+        }
     }
 }
