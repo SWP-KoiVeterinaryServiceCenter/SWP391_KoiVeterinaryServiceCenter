@@ -112,7 +112,9 @@ namespace Application.Service.Abstraction
                     Price = Math.Round(appointment.Service.Price + travelFee, 0),
                     ServiceName = appointment.Service.ServiceName,
                     Status = appointment.AppointmentStatus,
-                    VetName = listVet.Where(x => x.Id == appointment.VeterinarianId).Select(x => x.Username).SingleOrDefault()
+                    VetName = listVet.Where(x => x.Id == appointment.VeterinarianId).Select(x => x.Username).SingleOrDefault(),
+                    TravelFee=Math.Round(travelFee,0),
+                    ServiceFee=appointment.Service.Price
                 };
                 result.Add(appointmentViewModel);
             }

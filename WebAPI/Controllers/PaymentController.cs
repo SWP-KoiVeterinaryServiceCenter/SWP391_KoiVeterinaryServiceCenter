@@ -28,10 +28,11 @@ namespace WebAPI.Controllers
             var isUpdated = await _paymentService.HandleVnpayResponseAsync(vnPayResponse);
             if (isUpdated)
             {
-                string exePath = Environment.CurrentDirectory.ToString();
-                string FilePath = exePath + @"/PaymentTemplate/PaymentSuccessful.html";
-                var htmlContent = await System.IO.File.ReadAllTextAsync(FilePath);
-                return Content(htmlContent, "text/html");
+                /* string exePath = Environment.CurrentDirectory.ToString();
+                 string FilePath = exePath + @"/PaymentTemplate/PaymentSuccessful.html";
+                 var htmlContent = await System.IO.File.ReadAllTextAsync(FilePath);
+                 return Content(htmlContent, "text/html");*/
+                return Redirect("http://localhost:5173/customer/serviceInformation");
             }
             string evnPath = Environment.CurrentDirectory.ToString();
             string filePath = evnPath + @"/PaymentTemplate/PaymentFailed.html";

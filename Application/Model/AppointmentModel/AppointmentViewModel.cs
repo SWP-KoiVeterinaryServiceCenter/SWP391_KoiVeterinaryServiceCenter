@@ -15,5 +15,7 @@ namespace Application.Model.AppointmentModel
         public string Status { get; set; }
         public string VetName { get; set; }
         public decimal Price { get; set; }
+        public decimal TravelFee { get; set; }
+        public decimal ServiceFee { get; set; }
     }
 }
