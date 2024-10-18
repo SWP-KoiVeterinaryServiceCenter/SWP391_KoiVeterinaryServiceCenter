@@ -14,5 +14,6 @@ namespace Application.Model.KoiServiceModel
         public decimal Price { get; set; }
         public string Description { get; set; }
         public string TypeName { get; set; }
+        public string ServiceLocation { get; set; }
     }
 }

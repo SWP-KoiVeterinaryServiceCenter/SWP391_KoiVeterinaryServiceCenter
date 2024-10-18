@@ -29,7 +29,8 @@ namespace Infrastructure.Repository
                                                          Name=x.ServiceName,
                                                          Price = x.Price,
                                                          TypeName=x.ServiceType.TypeName,
-                                                         ServiceImage=x.CenterServiceImage
+                                                         ServiceImage=x.CenterServiceImage,
+                                                         ServiceLocation=x.ServiceLocation
                                                      }).ToListAsync();
         }
     }
