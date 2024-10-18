@@ -29,6 +29,7 @@ namespace Infrastructure.Mappers
         internal void CreateAccountMap()
         {
             CreateMap<RegisterModel, Account>().ReverseMap();
+            CreateMap<UpdateAccount,Account>().ReverseMap();
         }
         internal void CreateServiceTypeMap()
         {

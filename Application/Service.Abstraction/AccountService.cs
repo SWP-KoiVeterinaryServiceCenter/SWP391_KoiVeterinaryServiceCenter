@@ -159,6 +159,8 @@ namespace Application.Service.Abstraction
                 Username = loginUser.Username,
                 Location = loginUser.Location,
                 ContactLink = loginUser.ContactLink,
+                Fullname=loginUser.Fullname,
+                Phonenumber=loginUser.Phonenumber
             };
             return currentUser;
         }
@@ -281,6 +283,18 @@ namespace Application.Service.Abstraction
             }
             bannedAccount.IsDelete = false;
             _unitOfWork.AccountRepository.Update(bannedAccount);
+            return await _unitOfWork.SaveChangeAsync() > 0;
+        }
+
+        public async Task<bool> UpdateProfileAsync(UpdateAccount updateAccount)
+        {
+            var loginUser = await _unitOfWork.AccountRepository.GetByIdAsync(_claimsService.GetCurrentUserId);
+            if(loginUser == null)
+            {
+                throw new Exception("Account do not exist");
+            }
+            _mapper.Map(updateAccount, loginUser,typeof(UpdateAccount),typeof(Account));
+            _unitOfWork.AccountRepository.Update(loginUser);
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 

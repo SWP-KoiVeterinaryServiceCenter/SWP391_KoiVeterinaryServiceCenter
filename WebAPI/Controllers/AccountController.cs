@@ -86,6 +86,17 @@ namespace WebAPI.Controllers
             }
             return BadRequest();
         }
+        [Authorize]
+        [HttpPatch]
+        public async Task<IActionResult> UpdateAccount(UpdateAccount updateAccount)
+        {
+            bool isUpdated= await _accountService.UpdateProfileAsync(updateAccount);
+            if (isUpdated)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
         [HttpGet]
         public async Task<IActionResult> Accounts()
         {
@@ -176,5 +187,6 @@ namespace WebAPI.Controllers
             }
             return BadRequest();
         }
+        
     }
 }
