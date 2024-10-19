@@ -118,7 +118,7 @@ namespace WebAPI.Controllers
             return BadRequest();
         }
         [Authorize]
-        [HttpPatch("{accountId}")]
+        [HttpPatch]
         public async Task<IActionResult> UploadProfileImage(IFormFile formFile)
         {
             var uploadImage=await _accountService.UploadImageForAccount(formFile);
