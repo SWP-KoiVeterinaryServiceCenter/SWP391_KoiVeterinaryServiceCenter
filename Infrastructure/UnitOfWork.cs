@@ -21,11 +21,14 @@ namespace Infrastructure
         private readonly IAppointmentRepository _appointmentRepository;
         private readonly IRatingRepository _ratingRepository;
         private readonly ITravelExpenseRepository _travelExpenseRepository;
+        private readonly IMedicalRecordRepository _medicalRecordRepository;
+        private readonly IMedicalPrescriptionRepository _medicalPrescriptionRepository;
         public UnitOfWork(AppDbContext dbContext, IAccountRepository accountRepository, 
             IKoiRepository koiRepository, IServiceTypeRepository serviceTypeRepository, 
             ICenterTankRepository centerTankRepository, ICenterServiceRepository centerServiceRepository, 
             IWorkingScheduleRepository workingScheduleRepository,IAppointmentRepository appointmentRepository,
-            IRatingRepository ratingRepository,ITravelExpenseRepository travelExpenseRepository)
+            IRatingRepository ratingRepository,ITravelExpenseRepository travelExpenseRepository,
+            IMedicalPrescriptionRepository medicalPrescriptionRepository,IMedicalRecordRepository medicalRecordRepository)
         {
             _dbContext = dbContext;
             _accountRepository = accountRepository;
@@ -37,6 +40,8 @@ namespace Infrastructure
             _appointmentRepository = appointmentRepository;
             _ratingRepository = ratingRepository;
             _travelExpenseRepository = travelExpenseRepository;
+            _medicalPrescriptionRepository= medicalPrescriptionRepository;  
+            _medicalRecordRepository=medicalRecordRepository;
         }
 
         public IAccountRepository AccountRepository => _accountRepository;
@@ -53,6 +58,10 @@ namespace Infrastructure
         public IRatingRepository RatingRepository => _ratingRepository;
 
         public ITravelExpenseRepository TravelExpenseRepository => _travelExpenseRepository;
+
+        public IMedicalRecordRepository MedicalRecordRepository => _medicalRecordRepository;
+
+        public IMedicalPrescriptionRepository MedicalPrescriptionRepository => _medicalPrescriptionRepository;
 
         public async Task<int> SaveChangeAsync()
         {

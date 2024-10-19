@@ -84,5 +84,27 @@ namespace WebAPI.Controllers
             }
             return BadRequest();
         }
+        [Authorize(Roles ="Staff,Veterinarian")]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> MissAppointment(Guid id)
+        {
+            var isCancelled = await _appointmentService.MissedAppointment(id);
+            if (isCancelled)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
+        [Authorize(Roles = "Staff,Veterinarian")]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> FinishAppointment(Guid id)
+        {
+            var isCancelled = await _appointmentService.FinishedAppointment(id);
+            if (isCancelled)
+            {
+                return Ok();
+            }
+            return BadRequest();
+        }
     }
 }

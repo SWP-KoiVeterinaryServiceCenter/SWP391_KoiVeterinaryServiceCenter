@@ -13,7 +13,7 @@ namespace Infrastructure.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<MedicalPrescription> builder)
         {
-            builder.HasOne(x => x.MedicalRecordLink).WithOne(x => x.MedicalPrescription).HasForeignKey<MedicalPrescription>(x => x.MedicalRecordId);
+            builder.HasOne(x => x.MedicalRecordLink).WithMany(x => x.Prescriptions).HasForeignKey(x => x.MedicalRecordId);
         }
     }
 }

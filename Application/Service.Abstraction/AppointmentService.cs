@@ -64,6 +64,56 @@ namespace Application.Service.Abstraction
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
+        public async Task<bool> FinishedAppointment(Guid id)
+        {
+            var account = await _unitOfWork.AccountRepository.GetByIdAsync(_claimService.GetCurrentUserId, x => x.Role);
+            var findAppointment = await _unitOfWork.AppointmentRepository.GetByIdAsync(id);
+            if (account == null || findAppointment == null)
+            {
+                throw new Exception("Error");
+            }
+            if (account.RoleId == 3)
+            {
+                if (account.Id != findAppointment.VeterinarianId)
+                {
+                    throw new Exception("You do not meet the patient");
+                }
+                if (findAppointment.AppointmentStatus == nameof(AppointmentStatus.Finished))
+                {
+                    throw new Exception("Appontment have been lable as finished");
+                } else if (findAppointment.AppointmentStatus == nameof(AppointmentStatus.Cancelled))
+                {
+                    throw new Exception("The appointment have been cancelled");
+                }
+                else if (findAppointment.AppointmentStatus == nameof(AppointmentStatus.Missed))
+                {
+                    throw new Exception("The patient have miss this appointment");
+                }
+
+                findAppointment.AppointmentStatus = nameof(AppointmentStatus.Finished);
+                _unitOfWork.AppointmentRepository.Update(findAppointment);
+
+            }
+            if (account.RoleId == 2)
+            {
+                if (findAppointment.AppointmentStatus == nameof(AppointmentStatus.Finished))
+                {
+                    throw new Exception("Appontment have been lable as finished");
+                }
+                else if (findAppointment.AppointmentStatus == nameof(AppointmentStatus.Cancelled))
+                {
+                    throw new Exception("The appointment have been cancelled");
+                }
+                else if (findAppointment.AppointmentStatus == nameof(AppointmentStatus.Missed))
+                {
+                    throw new Exception("The patient have miss this appointment");
+                }
+                findAppointment.AppointmentStatus = nameof(AppointmentStatus.Finished);
+                _unitOfWork.AppointmentRepository.Update(findAppointment);
+            }
+            return await _unitOfWork.SaveChangeAsync() > 0;
+        }
+
         public async Task<List<AppointmentViewModel>> GetAllAsync()
         {
            return await _unitOfWork.AppointmentRepository.GetAllAppointment();
@@ -82,8 +132,6 @@ namespace Application.Service.Abstraction
             var listVet=await _unitOfWork.AccountRepository.GetAllVeterinaryAccounts();
             decimal travelFee;
             List<AppointmentViewModel> result = new List<AppointmentViewModel>();
-            // var listAppointmentModel=await _unitOfWork.AppointmentRepository.GetAllAppointmentByUserId(_claimService.GetCurrentUserId);
-
             foreach (var appointment in listAppointment)
             {
                 Location userLocation = await CalculateLatAndLong.CalculateLatLongByAddressAsync(appointment.Koi.Account.Location);
@@ -119,6 +167,56 @@ namespace Application.Service.Abstraction
                 result.Add(appointmentViewModel);
             }
             return result;
+        }
+
+        public async Task<bool> MissedAppointment(Guid id)
+        {
+            var account = await _unitOfWork.AccountRepository.GetByIdAsync(_claimService.GetCurrentUserId,x=>x.Role);
+            var findAppointment = await _unitOfWork.AppointmentRepository.GetByIdAsync(id);
+            if (account == null||findAppointment==null)
+            {
+                throw new Exception("Error");
+            }
+            if (account.RoleId == 3)
+            {
+                if(account.Id!=findAppointment.VeterinarianId)
+                {
+                    throw new Exception("You do not meet the patient");
+                }
+                if (findAppointment.AppointmentStatus == nameof(AppointmentStatus.Missed))
+                {
+                    throw new Exception("Appontment have been lable as missed");
+                }
+                else if (findAppointment.AppointmentStatus == nameof(AppointmentStatus.Cancelled))
+                {
+                    throw new Exception("The appointment have been cancelled");
+                }
+                else if (findAppointment.AppointmentStatus == nameof(AppointmentStatus.Finished))
+                {
+                    throw new Exception("The appoinment is finished");
+                }
+                findAppointment.AppointmentStatus=nameof(AppointmentStatus.Missed);
+                _unitOfWork.AppointmentRepository.Update(findAppointment);
+                
+            }
+            if(account.RoleId == 2) 
+            {
+                if (findAppointment.AppointmentStatus == nameof(AppointmentStatus.Missed))
+                {
+                    throw new Exception("Appontment have been lable as missed");
+                }
+                else if (findAppointment.AppointmentStatus == nameof(AppointmentStatus.Cancelled))
+                {
+                    throw new Exception("The appointment have been cancelled");
+                }
+                else if (findAppointment.AppointmentStatus == nameof(AppointmentStatus.Finished))
+                {
+                    throw new Exception("The appoinment is finished");
+                }
+                findAppointment.AppointmentStatus = nameof(AppointmentStatus.Missed);
+                _unitOfWork.AppointmentRepository.Update(findAppointment);
+            }
+            return await _unitOfWork.SaveChangeAsync()>0;
         }
 
         public async Task<bool> UpdateAppointment(Guid id, UpdateAppointmentModel updateAppointmentModel)

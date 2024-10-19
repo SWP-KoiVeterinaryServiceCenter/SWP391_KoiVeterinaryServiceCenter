@@ -11,8 +11,14 @@ namespace Domain.Entities
     {
         public Guid? AppointmentId { get; set; }
         public Appointment Appointment { get; set; }
-        public Guid? MedicalPrescriptionId { get; set; }
-        public MedicalPrescription MedicalPrescription { get; set; }
+        /*public Guid? MedicalPrescriptionId { get; set; }
+        public MedicalPrescription MedicalPrescription { get; set; }*/
+        // Additional fields
+        public string Symptoms { get; set; }          // Description of symptoms
+        public string Diagnosis { get; set; }         // Diagnosis of the koi
+        public string TreatmentGiven { get; set; }    // Treatment given during visit
+        public string TestResults { get; set; }       // Results of any tests performed
+        public string Notes { get; set; }             // Additional notes from vet
         public Guid? CreatedBy { get; set; }
         public DateTime? CreationDate { get; set; }
         public Guid? ModificationBy { get; set; }
@@ -20,5 +26,6 @@ namespace Domain.Entities
         public bool IsDelete { get; set; }
         public Guid? DeletedBy { get; set; }
         public DateTime? DeletionDate { get; set; }
+        public ICollection<MedicalPrescription> Prescriptions { get; set; }
     }
 }
