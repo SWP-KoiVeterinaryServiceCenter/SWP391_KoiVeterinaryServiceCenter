@@ -11,6 +11,7 @@ namespace Domain.Enum
         Pending,
         Confirmed,
         Missed,
-        Cancelled
+        Cancelled,
+        Finished
     }
 }

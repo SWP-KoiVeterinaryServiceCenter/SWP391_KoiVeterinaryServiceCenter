@@ -2,6 +2,8 @@
 using Application.Model.AppointmentModel;
 using Application.Model.KoiModel;
 using Application.Model.KoiServiceModel;
+using Application.Model.MedicalPrescriptionModel;
+using Application.Model.MedicalRecordModel;
 using Application.Model.ServiceTypeModel;
 using Application.Model.TankModel;
 using Application.Model.TravelExpenseModel;
@@ -25,6 +27,8 @@ namespace Infrastructure.Mappers
             CreateCenterTankMap();
             CreateAppointmentMap();
             CreateTravelExpenseMap();
+            CreateMedicalPrescriptionMap();
+            CreateMedicalRecordMap();
         }
         internal void CreateAccountMap()
         {
@@ -70,6 +74,15 @@ namespace Infrastructure.Mappers
         internal void CreateTravelExpenseMap()
         {
             CreateMap<CreateTravelExpenseModel, TravelExpense>().ReverseMap();
+        }
+        internal void CreateMedicalRecordMap()
+        {
+            CreateMap<CreateMedicalRecordModel, MedicalRecord>().ReverseMap();  
+        }
+        internal void CreateMedicalPrescriptionMap()
+        {
+            CreateMap<CreatePrescriptionModel, MedicalPrescription>()
+                .ReverseMap();
         }
     }
 }

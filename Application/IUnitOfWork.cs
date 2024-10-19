@@ -18,6 +18,8 @@ namespace Application
         public IAppointmentRepository AppointmentRepository { get; }
         public IRatingRepository RatingRepository { get; }
         public ITravelExpenseRepository TravelExpenseRepository { get; }
+        public IMedicalRecordRepository MedicalRecordRepository { get; }
+        public IMedicalPrescriptionRepository MedicalPrescriptionRepository { get; }
         public Task<int> SaveChangeAsync();
     }
 }

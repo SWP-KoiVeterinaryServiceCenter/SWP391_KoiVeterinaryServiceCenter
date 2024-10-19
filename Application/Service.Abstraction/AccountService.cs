@@ -303,9 +303,10 @@ namespace Application.Service.Abstraction
             var updateAccount = await _unitOfWork.AccountRepository.GetByIdAsync(_claimsService.GetCurrentUserId);
             if (updateAccount != null)
             {
-                string uploadImage = await _uploadImageService.UploadFileToFireBase(formFile, "Account");
-                updateAccount.ProfileImage = uploadImage;
-                _unitOfWork.AccountRepository.Update(updateAccount);
+                    string uploadImage = await _uploadImageService.UploadFileToFireBase(formFile, "Account");
+                    updateAccount.ProfileImage = uploadImage;
+                    _unitOfWork.AccountRepository.Update(updateAccount);
+
             }
             else
             {

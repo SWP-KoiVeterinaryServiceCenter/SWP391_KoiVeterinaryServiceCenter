@@ -24,6 +24,8 @@ namespace Infrastructure
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             services.AddScoped<ITravelExpenseRepository, TravelExpenseRepository>();
             services.AddScoped<IRatingRepository, RatingRepository>();
+            services.AddScoped<IMedicalPrescriptionRepository,MedicalPrescriptionRepository>();
+            services.AddScoped<IMedicalRecordRepository, MedicalRecordRepository>();    
             services.AddScoped<IUnitOfWork,UnitOfWork>();
 
             return services;
