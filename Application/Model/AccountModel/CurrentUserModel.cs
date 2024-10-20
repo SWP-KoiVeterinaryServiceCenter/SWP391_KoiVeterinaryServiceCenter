@@ -16,5 +16,6 @@ namespace Application.Model.AccountModel
         public string ContactLink { get; set; }
         public string Fullname { get; set; }
         public string Phonenumber { get; set; }
+        public string ProfileImage { get; set; }
     }
 }

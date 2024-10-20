@@ -160,7 +160,8 @@ namespace Application.Service.Abstraction
                 Location = loginUser.Location,
                 ContactLink = loginUser.ContactLink,
                 Fullname=loginUser.Fullname,
-                Phonenumber=loginUser.Phonenumber
+                Phonenumber=loginUser.Phonenumber,
+                ProfileImage=loginUser.ProfileImage
             };
             return currentUser;
         }
