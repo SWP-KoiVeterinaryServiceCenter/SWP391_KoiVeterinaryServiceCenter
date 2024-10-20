@@ -23,12 +23,15 @@ namespace Infrastructure
         private readonly ITravelExpenseRepository _travelExpenseRepository;
         private readonly IMedicalRecordRepository _medicalRecordRepository;
         private readonly IMedicalPrescriptionRepository _medicalPrescriptionRepository;
-        public UnitOfWork(AppDbContext dbContext, IAccountRepository accountRepository, 
-            IKoiRepository koiRepository, IServiceTypeRepository serviceTypeRepository, 
-            ICenterTankRepository centerTankRepository, ICenterServiceRepository centerServiceRepository, 
-            IWorkingScheduleRepository workingScheduleRepository,IAppointmentRepository appointmentRepository,
-            IRatingRepository ratingRepository,ITravelExpenseRepository travelExpenseRepository,
-            IMedicalPrescriptionRepository medicalPrescriptionRepository,IMedicalRecordRepository medicalRecordRepository)
+        private readonly IAccountScheduleRepository _accountScheduleRepository;
+
+        public UnitOfWork(AppDbContext dbContext, IAccountRepository accountRepository,
+            IKoiRepository koiRepository, IServiceTypeRepository serviceTypeRepository,
+            ICenterTankRepository centerTankRepository, ICenterServiceRepository centerServiceRepository,
+            IWorkingScheduleRepository workingScheduleRepository, IAppointmentRepository appointmentRepository,
+            IRatingRepository ratingRepository, ITravelExpenseRepository travelExpenseRepository,
+            IMedicalPrescriptionRepository medicalPrescriptionRepository, IMedicalRecordRepository medicalRecordRepository,
+            IAccountScheduleRepository accountScheduleRepository)
         {
             _dbContext = dbContext;
             _accountRepository = accountRepository;
@@ -40,15 +43,15 @@ namespace Infrastructure
             _appointmentRepository = appointmentRepository;
             _ratingRepository = ratingRepository;
             _travelExpenseRepository = travelExpenseRepository;
-            _medicalPrescriptionRepository= medicalPrescriptionRepository;  
-            _medicalRecordRepository=medicalRecordRepository;
+            _medicalPrescriptionRepository = medicalPrescriptionRepository;
+            _medicalRecordRepository = medicalRecordRepository;
+            _accountScheduleRepository = accountScheduleRepository;
         }
 
         public IAccountRepository AccountRepository => _accountRepository;
         public IKoiRepository KoiRepository => _koiRepository;
 
         public ICenterTankRepository CenterTankRepository => _centerTankRepository;
-
         public ICenterServiceRepository CenterServiceRepository => _centerServiceRepository;
 
         public IServiceTypeRepository ServiceTypeRepository => _serviceTypeRepository;
@@ -62,6 +65,8 @@ namespace Infrastructure
         public IMedicalRecordRepository MedicalRecordRepository => _medicalRecordRepository;
 
         public IMedicalPrescriptionRepository MedicalPrescriptionRepository => _medicalPrescriptionRepository;
+
+        public IAccountScheduleRepository AccountScheduleRepository => _accountScheduleRepository;
 
         public async Task<int> SaveChangeAsync()
         {
