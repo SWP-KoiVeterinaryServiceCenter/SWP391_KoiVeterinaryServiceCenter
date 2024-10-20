@@ -47,9 +47,22 @@ namespace Application.Service.Abstraction
 
         public async Task<bool> CreateAppointmentAsync(CreateAppointmentModel createAppointmentModel)
         {
-           var newAppointment=_mapper.Map<Appointment>(createAppointmentModel);
-            newAppointment.AppointmentStatus = nameof(AppointmentStatus.Pending);
-            await _unitOfWork.AppointmentRepository.AddAsync(newAppointment);
+            var koiList = await _unitOfWork.KoiRepository.FindAsync(k => k.AccountId == _claimService.GetCurrentUserId);
+            var vetList = await _unitOfWork.AccountRepository.GetAllVeterinaryAccounts();
+            if(!vetList.Where(x=>x.Id==createAppointmentModel.VeterinarianId).Any())
+            {
+                throw new Exception("Vet account does not exist");
+            }
+            if(koiList.Where(x=>x.Id==createAppointmentModel.KoiId).Any())
+            {
+                var newAppointment = _mapper.Map<Appointment>(createAppointmentModel);
+                newAppointment.AppointmentStatus = nameof(AppointmentStatus.Pending);
+                await _unitOfWork.AppointmentRepository.AddAsync(newAppointment);
+            }
+            else
+            {
+                throw new Exception("You do not own this Koi");
+            }
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
