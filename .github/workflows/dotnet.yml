@@ -25,7 +25,7 @@ jobs:
     - name: Migrate
       run: |
          dotnet tool install --global dotnet-ef
-         dotnet ef database update --connection "${{ secrets.DATABASE_CONNECTION_STRING }}" --project WebAPI.csproj
+         dotnet ef database update --connection "${{ secrets.DATABASE_CONNECTION_STRING }}" --project WebAPI/WebAPI.csproj
     - name: Build
       run: dotnet build --no-restore
     - name: Publish
