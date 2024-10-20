@@ -22,6 +22,10 @@ jobs:
         dotnet-version: 8.0.x
     - name: Restore dependencies
       run: dotnet restore
+    - name: Migrate
+      run: |
+         dotnet tool install --global dotnet-ef
+         dotnet ef database update --connection "${{ secrets.DATABASE_CONNECTION_STRING }}"
     - name: Build
       run: dotnet build --no-restore
     - name: Publish
