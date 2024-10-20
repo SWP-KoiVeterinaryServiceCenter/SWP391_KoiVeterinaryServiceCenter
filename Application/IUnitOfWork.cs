@@ -20,6 +20,7 @@ namespace Application
         public ITravelExpenseRepository TravelExpenseRepository { get; }
         public IMedicalRecordRepository MedicalRecordRepository { get; }
         public IMedicalPrescriptionRepository MedicalPrescriptionRepository { get; }
+        public IAccountScheduleRepository AccountScheduleRepository { get; }
         public Task<int> SaveChangeAsync();
     }
 }

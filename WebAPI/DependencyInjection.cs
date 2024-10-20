@@ -31,6 +31,7 @@ namespace WebAPI
             services.AddScoped<ICurrentUserIp,CurrentUserIp>();
             services.AddScoped<IPaymentService, PaymentService>();
             services.AddScoped<IMedicalRecordService, MedicalRecordService>();
+            services.AddScoped<IAccountScheduleService, AccountScheduleService>();
             services.AddMemoryCache();
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
