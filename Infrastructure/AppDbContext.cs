@@ -22,7 +22,7 @@ namespace Infrastructure
         public DbSet<ServiceType> ServiceTypes { get; set; }
         public DbSet<TravelExpense> TravelExpenses { get; set; }
         public DbSet<WorkingSchedule> WorkingSchedules { get; set; }
-        
+        public DbSet<AccountSchedule> AccountSchedules { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

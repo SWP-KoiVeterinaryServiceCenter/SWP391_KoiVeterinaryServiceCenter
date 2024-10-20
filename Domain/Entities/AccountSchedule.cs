@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class WorkingSchedule : BaseEntity, ICreatedBy, IModificationBy, IDeletedBy
+    public class AccountSchedule : BaseEntity, ICreatedBy, IModificationBy, IDeletedBy
     {
-        public TimeSpan StartTime { get; set; }
-        public TimeSpan EndTime { get; set; }
-        public DateTime  WorkingDay { get; set; }
+        public Guid AccountId { get; set; }
+        public Account Account { get; set; }
+        public Guid ScheduleId { get; set; }
+        public WorkingSchedule WorkingSchedule { get; set; }
         public Guid? CreatedBy { get; set; }
-        public DateTime? CreationDate { get; set; }
+        public DateTime? CreationDate { get ; set  ; }
         public Guid? ModificationBy { get; set; }
         public DateTime? ModificationDate { get; set; }
         public bool IsDelete { get; set; }
         public Guid? DeletedBy { get; set; }
         public DateTime? DeletionDate { get; set; }
-        public ICollection<AccountSchedule> AccountSchedules { get; set; }
     }
 }

@@ -19,8 +19,6 @@ namespace Domain.Entities
         public string? ProfileImage { get; set; }
         public int RoleId { get; set; }
         public Role Role { get; set; }
-        public Guid? WorkingScheduleId { get; set; }
-        public WorkingSchedule WorkingSchedule { get; set; }
         public Guid? CreatedBy { get; set; }
         public DateTime? CreationDate { get; set; }
         public Guid? ModificationBy { get; set; }
@@ -29,5 +27,6 @@ namespace Domain.Entities
         public Guid? DeletedBy { get; set; }
         public DateTime? DeletionDate { get; set; }
         public ICollection<Koi> KoiLists { get; set; }
+        public ICollection<AccountSchedule> AccountSchedules { get; set; }
     }
 }
