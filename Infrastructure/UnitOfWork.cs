@@ -69,7 +69,7 @@ namespace Infrastructure
         public IMedicalPrescriptionRepository MedicalPrescriptionRepository => _medicalPrescriptionRepository;
 
         public IAccountScheduleRepository AccountScheduleRepository => _accountScheduleRepository;
-        public IFeedbackRepository feedbackRepository => _feedbackRepository;
+        public IFeedbackRepository FeedbackRepository => _feedbackRepository;
 
         public async Task<int> SaveChangeAsync()
         {

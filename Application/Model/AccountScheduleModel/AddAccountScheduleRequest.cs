@@ -9,6 +9,8 @@ namespace Application.Model.AccountSchedule
     public class AddAccountScheduleRequest
     {
         public Guid AccountId { get; set; }
-        public Guid ScheduleId { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public DateTime WorkingDay { get; set; }
     }
 }
