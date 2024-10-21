@@ -47,6 +47,24 @@ namespace Infrastructure.Repository
                                             }).ToListAsync();
         }
 
+        public async Task<List<AppointmentViewModel>> GetAllAppointmentByVetId(Guid vetId)
+        {
+          
+            
+                return await _context.Appointments.Where(x => x.IsDelete == false && x.VeterinarianId == vetId)
+                                                .Select(x => new AppointmentViewModel
+                                                {
+                                                    Id = x.Id,
+                                                    Description = x.Description,
+                                                    ServiceName = x.Service.ServiceName,
+                                                    KoiName = x.Koi.KoiName,
+                                                    Status = x.AppointmentStatus,
+                                                    VetName = _context.Accounts.Where(acc => acc.Id == x.VeterinarianId).Select(x => x.Username).SingleOrDefault()
+                                                }).ToListAsync();
+            
+
+        }
+
         public async Task<List<Appointment>> GetAllAppointmentForCalculate(Guid userId)
         {
             return await _context.Appointments.Where(x => x.IsDelete == false && x.Koi.AccountId == userId).Include(x=>x.Koi).ThenInclude(x=>x.Account)

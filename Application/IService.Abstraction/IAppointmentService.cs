@@ -18,5 +18,6 @@ namespace Application.IService.Abstraction
         Task<bool> CancelAppointmentAsync(Guid id);
         Task<bool> MissedAppointment(Guid id);
         Task<bool> FinishedAppointment(Guid id);
+        Task<List<AppointmentViewModel>> GetAppointmentByVetId();
     }
 }
