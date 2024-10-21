@@ -21,6 +21,7 @@ namespace Application.Service.Abstraction
         public RatingService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
+            
         }
 
         public async Task<IEnumerable<RatingResponse>> GetAllAsync()
