@@ -1,12 +1,13 @@
 ﻿using Application.IService.Abstraction;
 using Application.Model.FeedbackModel;
+using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
     public class FeedbackController : BaseController
     {
-        private readonly IRatingService _ratingService;
+        private readonly IFeedbackService _feedbackService;
 
         public FeedbackController(IFeedbackService feedbackService)
         {
@@ -21,9 +22,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetByAccountId (Guid AppointmentId)
+        public async Task<IActionResult> GetByAccountId(Guid AppointmentId)
         {
-            var feedback = await _feedbackServicervice.GetByIdAsync(AppointmentId);
+            var feedback = await _feedbackService.GetByIdAsync(AppointmentId);
             if (feedback == null)
             {
                 return NotFound();
@@ -39,13 +40,13 @@ namespace WebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var AddFeedback = await _feedbackServicervice.CreateAsync(request);
+            var AddFeedback = await _feedbackService.CreateAsync(request);
             if (AddFeedback == null)
             {
                 return BadRequest("Không thể tạo đánh giá.");
             }
 
-            return CreatedAtAction(nameof(GetByAppointmentId), new { id = AddFeedback.AppointmentId }, AddFeedback);
+            return Created(string.Empty, AddFeedback);
         }
 
     }

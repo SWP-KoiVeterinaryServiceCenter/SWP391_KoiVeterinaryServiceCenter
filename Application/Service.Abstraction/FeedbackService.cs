@@ -13,7 +13,7 @@ using AutoMapper;
 
 namespace Application.Service.Abstraction
 {
-    public class FeedbackService : IFeedbackRepository
+    public class FeedbackService : IFeedbackService
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -30,7 +30,7 @@ namespace Application.Service.Abstraction
             var feedback = await _unitOfWork.FeedbackRepository.GetAllAsync();
             return feedback.Select(feedback => new FeedbackResponse
             {
-                
+
                 AppointmentID = feedback.AppointmentId,
                 FeedbackContent = feedback.FeedbackContent,
                 CreationDate = feedback.CreationDate
@@ -56,7 +56,7 @@ namespace Application.Service.Abstraction
         {
             var feedback = new Feedback
             {
-                
+
                 AppointmentId = request.AppointmentId,
                 CreationDate = DateTime.UtcNow
             };
@@ -66,13 +66,13 @@ namespace Application.Service.Abstraction
 
             return new FeedbackResponse
             {
-               
+
                 AppointmentID = feedback.AppointmentId,
                 FeedbackContent = feedback.FeedbackContent,
                 CreationDate = feedback.CreationDate
             };
         }
 
-        
+
     }
 }
