@@ -12,5 +12,6 @@ namespace Application.Model.WorkingScheduleModel
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
         public DateTime WorkingDay { get; set; }
+        
     }
 }
