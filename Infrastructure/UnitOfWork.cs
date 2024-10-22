@@ -24,7 +24,6 @@ namespace Infrastructure
         private readonly IMedicalRecordRepository _medicalRecordRepository;
         private readonly IMedicalPrescriptionRepository _medicalPrescriptionRepository;
         private readonly IAccountScheduleRepository _accountScheduleRepository;
-        private readonly IFeedbackRepository _feedbackRepository;
 
         public UnitOfWork(AppDbContext dbContext, IAccountRepository accountRepository,
             IKoiRepository koiRepository, IServiceTypeRepository serviceTypeRepository,
@@ -32,7 +31,7 @@ namespace Infrastructure
             IWorkingScheduleRepository workingScheduleRepository, IAppointmentRepository appointmentRepository,
             IRatingRepository ratingRepository, ITravelExpenseRepository travelExpenseRepository,
             IMedicalPrescriptionRepository medicalPrescriptionRepository, IMedicalRecordRepository medicalRecordRepository,
-            IAccountScheduleRepository accountScheduleRepository, IFeedbackRepository feedbackRepository)
+            IAccountScheduleRepository accountScheduleRepository)
         {
             _dbContext = dbContext;
             _accountRepository = accountRepository;
@@ -47,7 +46,6 @@ namespace Infrastructure
             _medicalPrescriptionRepository = medicalPrescriptionRepository;
             _medicalRecordRepository = medicalRecordRepository;
             _accountScheduleRepository = accountScheduleRepository;
-            _feedbackRepository = feedbackRepository;
         }
 
         public IAccountRepository AccountRepository => _accountRepository;
@@ -69,7 +67,6 @@ namespace Infrastructure
         public IMedicalPrescriptionRepository MedicalPrescriptionRepository => _medicalPrescriptionRepository;
 
         public IAccountScheduleRepository AccountScheduleRepository => _accountScheduleRepository;
-        public IFeedbackRepository feedbackRepository => _feedbackRepository;
 
         public async Task<int> SaveChangeAsync()
         {

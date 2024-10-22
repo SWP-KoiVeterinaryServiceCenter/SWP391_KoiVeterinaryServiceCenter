@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel model)
         {
-            var token=await _accountService.LoginAsync(model);
+            var token = await _accountService.LoginAsync(model);
             if (token == null)
             {
                 return BadRequest();
@@ -24,9 +24,9 @@ namespace WebAPI.Controllers
             return Ok(token);
         }
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterModel model) 
-        { 
-            bool isRegister=await _accountService.RegisterAsync(model);
+        public async Task<IActionResult> Register(RegisterModel model)
+        {
+            bool isRegister = await _accountService.RegisterAsync(model);
             if (isRegister)
             {
                 return Ok();
@@ -37,14 +37,14 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetCurrentLoginUser()
         {
-            var currentUser=await _accountService.GetCurrentLoginUserAsync();
-            if(currentUser == null)
+            var currentUser = await _accountService.GetCurrentLoginUserAsync();
+            if (currentUser == null)
             {
                 return BadRequest();
             }
             return Ok(currentUser);
         }
-        [Authorize(Roles ="Admin,Staff")]
+        [Authorize(Roles = "Admin,Staff")]
         [HttpPost]
         public async Task<IActionResult> CreateVetAccount(RegisterModel registerModel)
         {
@@ -69,7 +69,7 @@ namespace WebAPI.Controllers
         [HttpDelete("{accountId}")]
         public async Task<IActionResult> BanAccount(Guid accountId)
         {
-            bool isBanned=await _accountService.BanAccountAsync(accountId);
+            bool isBanned = await _accountService.BanAccountAsync(accountId);
             if (isBanned)
             {
                 return Ok();
@@ -90,7 +90,7 @@ namespace WebAPI.Controllers
         [HttpPatch]
         public async Task<IActionResult> UpdateAccount(UpdateAccount updateAccount)
         {
-            bool isUpdated= await _accountService.UpdateProfileAsync(updateAccount);
+            bool isUpdated = await _accountService.UpdateProfileAsync(updateAccount);
             if (isUpdated)
             {
                 return Ok();
@@ -100,8 +100,8 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> Accounts()
         {
-            var listUser=await _accountService.GetAllUserInSystemAsync();
-            if(listUser.Count > 0)
+            var listUser = await _accountService.GetAllUserInSystemAsync();
+            if (listUser.Count > 0)
             {
                 return Ok(listUser);
             }
@@ -110,7 +110,7 @@ namespace WebAPI.Controllers
         [HttpGet("{accountId}")]
         public async Task<IActionResult> AccountDetail(Guid accountId)
         {
-            var accountDetail=await _accountService.GetAccountDetailAsync(accountId);
+            var accountDetail = await _accountService.GetAccountDetailAsync(accountId);
             if (accountDetail != null)
             {
                 return Ok(accountDetail);
@@ -121,7 +121,7 @@ namespace WebAPI.Controllers
         [HttpPatch]
         public async Task<IActionResult> UploadProfileImage(IFormFile formFile)
         {
-            var uploadImage=await _accountService.UploadImageForAccount(formFile);
+            var uploadImage = await _accountService.UploadImageForAccount(formFile);
             if (uploadImage)
             {
                 return Ok(uploadImage);
@@ -137,16 +137,16 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> VetAmount()
         {
-            var verterinaryAmount=await _accountService.VeterinaryAccountAmount();
+            var verterinaryAmount = await _accountService.VeterinaryAccountAmount();
             return Ok(verterinaryAmount);
         }
         [HttpGet]
         public async Task<IActionResult> StaffAmount()
         {
-            var staffAmount=await _accountService.StaffAccountAmount();
+            var staffAmount = await _accountService.StaffAccountAmount();
             return Ok(staffAmount);
         }
-        [HttpGet]
+        [HttpGet("{email}")]
         public async Task<IActionResult> SendVerifcationCode(string email)
         {
             var isCorret=await _accountService.SendVerificationCodeToEmail(email);
