@@ -70,12 +70,12 @@ namespace Infrastructure.Repository
 
         public async Task<int> StaffAccountAmount()
         {
-            return await _appDbContext.Accounts.Where(x => x.RoleId == 2).CountAsync();
+            return await _appDbContext.Accounts.Where(x => x.RoleId == 2&&x.IsDelete==false).CountAsync();
         }
 
         public async Task<int> VeterinaryAccountAmount()
         {
-            return await _appDbContext.Accounts.Where(x => x.RoleId == 3).CountAsync();
+            return await _appDbContext.Accounts.Where(x => x.RoleId == 3&&x.IsDelete==false).CountAsync();
         }
     }
 }
