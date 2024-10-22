@@ -143,6 +143,7 @@ namespace Application.Service.Abstraction
         {
             var listAppointment = await _unitOfWork.AppointmentRepository.GetAllAppointmentByVetId(_claimService.GetCurrentUserId);
             return listAppointment;
+
         }
 
         public async Task<List<AppointmentViewModel>> GetCurrentUserAppointments()
