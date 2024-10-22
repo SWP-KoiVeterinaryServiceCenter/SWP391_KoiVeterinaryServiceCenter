@@ -20,39 +20,44 @@ public class AccountScheduleService : IAccountScheduleService
         _claimService = claimService;
     }
 
-    public async Task AddAccountToScheduleAsync(Guid accountId, Guid scheduleId)
+    public async Task AddAccountToScheduleAsync(AddAccountScheduleRequest addAccountScheduleRequest)
     {
-        // Kiểm tra xem tài khoản có tồn tại không
-        var account = await _unitOfWork.AccountRepository.GetByIdAsync(accountId);
+        var account = await _unitOfWork.AccountRepository.GetByIdAsync(addAccountScheduleRequest.AccountId);
         if (account == null)
         {
             throw new Exception("Account not found.");
         }
 
-        // Kiểm tra xem lịch làm việc có tồn tại không
-        var schedule = await _unitOfWork.WorkingScheduleRepository.GetByIdAsync(scheduleId);
-        if (schedule == null)
+        var workingSchedule = new WorkingSchedule
         {
-            throw new Exception("Working Schedule not found.");
-        }
+            Id = Guid.NewGuid(),
+            StartTime = addAccountScheduleRequest.StartTime.TimeOfDay,
+            EndTime = addAccountScheduleRequest.EndTime.TimeOfDay,
+            WorkingDay = addAccountScheduleRequest.WorkingDay.Date
+        };
 
-        // Kiểm tra xem tài khoản đã được gán cho lịch chưa
-        var existingLink = await _unitOfWork.AccountScheduleRepository.GetByAccountAndScheduleAsync(accountId, scheduleId);
+        await _unitOfWork.WorkingScheduleRepository.AddAsync(workingSchedule);
+
+        var existingLink = await _unitOfWork.AccountScheduleRepository
+                                .GetByAccountAndScheduleAsync(
+                                    addAccountScheduleRequest.AccountId,
+                                    workingSchedule.Id);
+
         if (existingLink != null)
         {
             throw new Exception("This account is already assigned to the schedule.");
         }
 
-        // Tạo mới mối liên kết giữa tài khoản và lịch
         var accountSchedule = new AccountSchedule
         {
-            AccountId = accountId,
-            ScheduleId = scheduleId,
+            AccountId = addAccountScheduleRequest.AccountId,
+            ScheduleId = workingSchedule.Id
         };
 
-        await _unitOfWork.AccountScheduleRepository.Add(accountSchedule);
+        await _unitOfWork.AccountScheduleRepository.AddAsync(accountSchedule);
         await _unitOfWork.SaveChangeAsync();
     }
+
 
     public async Task<IEnumerable<AccountScheduleResponse>> GetSchedulesByAccountIdAsync(Guid accountId)
     {

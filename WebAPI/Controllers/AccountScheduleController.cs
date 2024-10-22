@@ -18,7 +18,7 @@ namespace WebAPI.Controllers
             _accountScheduleService = accountScheduleService;
         }
 
-        //[Authorize(Roles = "Staff")]
+        [Authorize(Roles = "Staff")]
         [HttpPost]
         public async Task<IActionResult> AddAccountToSchedule([FromBody] AddAccountScheduleRequest request)
         {
@@ -29,7 +29,7 @@ namespace WebAPI.Controllers
 
             try
             {
-                await _accountScheduleService.AddAccountToScheduleAsync(request.AccountId, request.ScheduleId);
+                await _accountScheduleService.AddAccountToScheduleAsync(request);
                 return CreatedAtAction(nameof(GetSchedulesByAccountId), new { accountId = request.AccountId }, null);
             }
             catch (Exception ex)

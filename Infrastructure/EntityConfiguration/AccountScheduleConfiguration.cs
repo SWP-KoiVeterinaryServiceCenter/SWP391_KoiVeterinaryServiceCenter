@@ -15,8 +15,8 @@ namespace Infrastructure.EntityConfiguration
         {
             builder.Ignore(x => x.Id);
             builder.HasKey(x => new { x.AccountId, x.ScheduleId });
-            builder.HasOne(x=>x.Account).WithMany(acc=>acc.AccountSchedules).HasForeignKey(x=>x.AccountId);
-            builder.HasOne(x=>x.WorkingSchedule).WithMany(sche=>sche.AccountSchedules).HasForeignKey(x => x.ScheduleId);
+            builder.HasOne(x => x.Account).WithMany(acc => acc.AccountSchedules).HasForeignKey(x => x.AccountId);
+            builder.HasOne(x => x.WorkingSchedule).WithMany(sche => sche.AccountSchedules).HasForeignKey(x => x.ScheduleId);
         }
     }
 }
