@@ -20,5 +20,6 @@ namespace Domain.Entities
         public Guid? DeletedBy { get; set; }
         public DateTime? DeletionDate { get; set; }
         public ICollection<AccountSchedule> AccountSchedules { get; set; }
+        
     }
 }

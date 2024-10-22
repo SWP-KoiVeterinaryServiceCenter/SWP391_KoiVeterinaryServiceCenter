@@ -30,7 +30,7 @@ namespace WebAPI.Controllers
             try
             {
                 await _accountScheduleService.AddAccountToScheduleAsync(request);
-                return CreatedAtAction(nameof(GetSchedulesByAccountId), new { accountId = request.AccountId }, null);
+                return CreatedAtAction(nameof(GetSchedulesByAccountId), new { accountId = request.VeterinarianId }, null);
             }
             catch (Exception ex)
             {
@@ -38,12 +38,12 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpGet("{accountId}")]
-        public async Task<IActionResult> GetSchedulesByAccountId(Guid accountId)
+        [HttpGet("{veterinarianId}")]
+        public async Task<IActionResult> GetSchedulesByAccountId(Guid veterinarianId)
         {
             try
             {
-                var schedules = await _accountScheduleService.GetSchedulesByAccountIdAsync(accountId);
+                var schedules = await _accountScheduleService.GetSchedulesByAccountIdAsync(veterinarianId);
                 return Ok(schedules);
             }
             catch (Exception ex)
@@ -52,10 +52,10 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpGet("{accountId}/{scheduleId}")]
-        public async Task<IActionResult> GetAccountScheduleById(Guid accountId, Guid scheduleId)
+        [HttpGet("{veterinarianId}/{scheduleId}")]
+        public async Task<IActionResult> GetAccountScheduleById(Guid veterinarianId, Guid scheduleId)
         {
-            var accountSchedule = await _accountScheduleService.GetAccountScheduleByIdAsync(accountId, scheduleId);
+            var accountSchedule = await _accountScheduleService.GetAccountScheduleByIdAsync(veterinarianId, scheduleId);
             if (accountSchedule == null)
             {
                 return NotFound("AccountSchedule not found.");
@@ -63,12 +63,12 @@ namespace WebAPI.Controllers
             return Ok(accountSchedule);
         }
 
-        [HttpPatch("{accountId}/{scheduleId}")]
-        public async Task<IActionResult> UpdateAccountSchedule(Guid accountId, Guid scheduleId, [FromBody] UpdateAccountScheduleRequest request)
+        [HttpPatch("{veterinarianId}/{scheduleId}")]
+        public async Task<IActionResult> UpdateAccountSchedule(Guid veterinarianId, Guid scheduleId, [FromBody] UpdateAccountScheduleRequest request)
         {
             try
             {
-                await _accountScheduleService.UpdateAccountScheduleAsync(accountId, scheduleId, request);
+                await _accountScheduleService.UpdateAccountScheduleAsync(veterinarianId, scheduleId, request);
                 return Ok("Account schedule updated successfully.");
             }
             catch (Exception ex)
@@ -77,12 +77,12 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpDelete("{accountId}/{scheduleId}")]
-        public async Task<IActionResult> DeleteAccountSchedule(Guid accountId, Guid scheduleId)
+        [HttpDelete("{veterinarianId}/{scheduleId}")]
+        public async Task<IActionResult> DeleteAccountSchedule(Guid veterinarianId, Guid scheduleId)
         {
             try
             {
-                await _accountScheduleService.DeleteAccountScheduleAsync(accountId, scheduleId);
+                await _accountScheduleService.DeleteAccountScheduleAsync(veterinarianId, scheduleId);
                 return Ok("Account schedule deleted successfully.");
             }
             catch (Exception ex)

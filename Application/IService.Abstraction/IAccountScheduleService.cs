@@ -10,7 +10,7 @@ namespace Application.IService.Abstraction
 {
     public interface IAccountScheduleService
     {
-        Task AddAccountToScheduleAsync(AddAccountScheduleRequest addAccountScheduleRequest);
+        Task<AccountScheduleResponse> AddAccountToScheduleAsync(AddAccountScheduleRequest addAccountScheduleRequest);
         Task<IEnumerable<AccountScheduleResponse>> GetSchedulesByAccountIdAsync(Guid accountId);
         Task<AccountScheduleResponse?> GetAccountScheduleByIdAsync(Guid accountId, Guid scheduleId);
         Task UpdateAccountScheduleAsync(Guid accountId, Guid scheduleId, UpdateAccountScheduleRequest request);
