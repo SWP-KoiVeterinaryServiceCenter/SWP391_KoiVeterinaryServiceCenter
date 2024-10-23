@@ -38,7 +38,7 @@ namespace Infrastructure.EntityConfiguration
                 CreationDate = DateTime.UtcNow,
                 ContactLink = "",
                 Fullname = "Staff",
-                RoleId = 1,
+                RoleId = 2,
                 Username = "Staff",
                 Location = "",
                 Phonenumber = "",
