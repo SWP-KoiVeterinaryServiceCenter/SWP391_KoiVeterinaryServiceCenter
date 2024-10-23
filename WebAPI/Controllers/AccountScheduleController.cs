@@ -1,4 +1,5 @@
-﻿using Application.IService.Abstraction;
+﻿
+using Application.IService.Abstraction;
 using Application.Model.AccountSchedule;
 using Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -29,8 +30,10 @@ namespace WebAPI.Controllers
 
             try
             {
-                await _accountScheduleService.AddAccountToScheduleAsync(request);
-                return CreatedAtAction(nameof(GetSchedulesByAccountId), new { accountId = request.VeterinarianId }, null);
+                var response = await _accountScheduleService.AddAccountToScheduleAsync(request);
+
+                return CreatedAtAction(nameof(GetAccountScheduleById),
+                    new { id = response.Id }, response);
             }
             catch (Exception ex)
             {
@@ -39,7 +42,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet("{veterinarianId}")]
-        public async Task<IActionResult> GetSchedulesByAccountId(Guid veterinarianId)
+        public async Task<IActionResult> GetDetailSchedule(Guid veterinarianId)
         {
             try
             {
@@ -52,24 +55,43 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpGet("{veterinarianId}/{scheduleId}")]
-        public async Task<IActionResult> GetAccountScheduleById(Guid veterinarianId, Guid scheduleId)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAccountScheduleById(Guid id)
         {
-            var accountSchedule = await _accountScheduleService.GetAccountScheduleByIdAsync(veterinarianId, scheduleId);
-            if (accountSchedule == null)
+            var result = await _accountScheduleService.GetAccountScheduleByIdAsync(id);
+            if (result == null)
             {
-                return NotFound("AccountSchedule not found.");
+                return NotFound();
             }
-            return Ok(accountSchedule);
+            return Ok(result);
         }
 
-        [HttpPatch("{veterinarianId}/{scheduleId}")]
-        public async Task<IActionResult> UpdateAccountSchedule(Guid veterinarianId, Guid scheduleId, [FromBody] UpdateAccountScheduleRequest request)
+        [HttpGet]
+        public async Task<IActionResult> GetCurrentUserSchedule()
         {
             try
             {
-                await _accountScheduleService.UpdateAccountScheduleAsync(veterinarianId, scheduleId, request);
-                return Ok("Account schedule updated successfully.");
+                var response = await _accountScheduleService.GetAccountScheduleByCurrentUserAsync();
+                if (response == null)
+                {
+                    return NotFound("No schedule found for the current user.");
+                }
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(new { Message = ex.Message });
+            }
+        }
+
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateAccountSchedule(Guid id, [FromBody] UpdateAccountScheduleRequest request)
+        {
+            try
+            {
+                var updatedAccountSchedule = await _accountScheduleService.UpdateAccountScheduleAsync(id, request);
+                return Ok(updatedAccountSchedule);
             }
             catch (Exception ex)
             {
@@ -77,12 +99,12 @@ namespace WebAPI.Controllers
             }
         }
 
-        [HttpDelete("{veterinarianId}/{scheduleId}")]
-        public async Task<IActionResult> DeleteAccountSchedule(Guid veterinarianId, Guid scheduleId)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAccountSchedule(Guid id)
         {
             try
             {
-                await _accountScheduleService.DeleteAccountScheduleAsync(veterinarianId, scheduleId);
+                await _accountScheduleService.DeleteAccountScheduleAsync(id);
                 return Ok("Account schedule deleted successfully.");
             }
             catch (Exception ex)
@@ -106,3 +128,4 @@ namespace WebAPI.Controllers
         }
     }
 }
+

@@ -8,6 +8,7 @@ namespace Application.Model.AccountSchedule
 {
     public class UpdateAccountScheduleRequest
     {
+        public Guid VeterinarianId { get; set; }
         public string StartTime { get; set; }
         public string EndTime { get; set; }
         public string WorkingDay { get; set; }
