@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Application;
 using Application.IRepository;
+using Application.IService.Abstraction;
 using Infrastructure.Repository;
 namespace Infrastructure
 {
@@ -32,7 +33,7 @@ namespace Infrastructure
             IWorkingScheduleRepository workingScheduleRepository, IAppointmentRepository appointmentRepository,
             IRatingRepository ratingRepository, ITravelExpenseRepository travelExpenseRepository,
             IMedicalPrescriptionRepository medicalPrescriptionRepository, IMedicalRecordRepository medicalRecordRepository,
-            IAccountScheduleRepository accountScheduleRepository, IFeedbackRepository feedbackRepository)
+            IAccountScheduleRepository accountScheduleRepository,IFeedbackRepository feedbackRepository)
         {
             _dbContext = dbContext;
             _accountRepository = accountRepository;
@@ -43,11 +44,11 @@ namespace Infrastructure
             _workingScheduleRepository = workingScheduleRepository;
             _appointmentRepository = appointmentRepository;
             _ratingRepository = ratingRepository;
+            _feedbackRepository= feedbackRepository;    
             _travelExpenseRepository = travelExpenseRepository;
             _medicalPrescriptionRepository = medicalPrescriptionRepository;
             _medicalRecordRepository = medicalRecordRepository;
             _accountScheduleRepository = accountScheduleRepository;
-            _feedbackRepository = feedbackRepository;
         }
 
         public IAccountRepository AccountRepository => _accountRepository;

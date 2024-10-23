@@ -60,7 +60,34 @@ namespace Infrastructure.Repository
 
         public async Task<List<Account>> GetAllVeterinaryAccounts()
         {
-            return await _appDbContext.Accounts.Where(x => x.RoleId == 3).Include(x => x.Role).ToListAsync();
+            /*var listDoctorHaveSchedlue = new List<Account>();
+            var listDoctor = await _appDbContext.Accounts.Where(x => x.RoleId == 3 && x.IsDelete == false).Include(x => x.Role).ToListAsync();
+            var listSchedule = await _appDbContext.AccountSchedules.Where(x => x.IsDelete == false).ToListAsync();
+            foreach (var vet in listDoctor)
+            {
+                if (listSchedule.Where(x => x.AccountId == vet.Id).Any())
+                {
+                    listDoctorHaveSchedlue.Add(vet);
+                }
+            }
+            return listDoctorHaveSchedlue;*/
+            var listDoctor = await _appDbContext.Accounts.Where(x => x.RoleId == 3 && x.IsDelete == false).Include(x => x.Role).ToListAsync();
+            return listDoctor;
+        }
+
+        public async Task<List<Account>> GetAllVeterinaryAccountsForAppointment()
+        {
+            var listDoctorHaveSchedlue = new List<Account>();
+            var listDoctor = await _appDbContext.Accounts.Where(x => x.RoleId == 3 && x.IsDelete == false).Include(x => x.Role).ToListAsync();
+            var listSchedule = await _appDbContext.AccountSchedules.Where(x => x.IsDelete == false).ToListAsync();
+            foreach (var vet in listDoctor)
+            {
+                if (listSchedule.Where(x => x.AccountId == vet.Id).Any())
+                {
+                    listDoctorHaveSchedlue.Add(vet);
+                }
+            }
+            return listDoctorHaveSchedlue;
         }
 
         public async Task<Account> GetBannedAccount(Guid accountId)

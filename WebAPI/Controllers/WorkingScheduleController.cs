@@ -2,6 +2,7 @@
 using Application.IService.Abstraction;
 using Application.Model.WorkingScheduleModel;
 using Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -32,7 +33,7 @@ namespace WebAPI.Controllers
             }
             return Ok(schedule);
         }
-
+        [Authorize(Roles ="Staff")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AddWorkingScheduleRequest request)
         {

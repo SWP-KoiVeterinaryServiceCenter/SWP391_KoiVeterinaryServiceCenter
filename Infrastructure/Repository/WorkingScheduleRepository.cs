@@ -1,6 +1,7 @@
 ﻿using Application.IRepository;
 using Application.IService.Common;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,13 @@ namespace Infrastructure.Repository
         {
             _appDbContext = appDbContext;
         }
+
+        public async Task<Guid> GetLastSaveScheduleId()
+        {
+            var lastSaveSchedule = await _appDbContext.WorkingSchedules.Where(x => x.IsDelete == false)
+                                                                     .OrderBy(x => x.CreationDate)
+                                                                     .LastOrDefaultAsync();
+            return lastSaveSchedule.Id;
+        } 
     }
 }

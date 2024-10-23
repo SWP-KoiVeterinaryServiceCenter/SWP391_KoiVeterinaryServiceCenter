@@ -139,6 +139,13 @@ namespace Application.Service.Abstraction
             return appointmentDetail;
         }
 
+        public async Task<List<AppointmentViewModel>> GetAppointmentByVetId()
+        {
+            var listAppointment = await _unitOfWork.AppointmentRepository.GetAllAppointmentByVetId(_claimService.GetCurrentUserId);
+            return listAppointment;
+
+        }
+
         public async Task<List<AppointmentViewModel>> GetCurrentUserAppointments()
         {
             var listAppointment=await _unitOfWork.AppointmentRepository.GetAllAppointmentForCalculate(_claimService.GetCurrentUserId);

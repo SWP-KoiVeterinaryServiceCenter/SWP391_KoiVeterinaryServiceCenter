@@ -44,26 +44,34 @@ public class WorkingScheduleService : IWorkingScheduleService
 
     public async Task<WorkingScheduleResponse> CreateAsync(AddWorkingScheduleRequest request)
     {
-        var startTime = request.StartTime.TimeOfDay;
-        var endTime = request.EndTime.TimeOfDay;
-
+        var startTime = new TimeSpan(request.StartTime,0,0);
+        var endTime = new TimeSpan(request.EndTime,0,0);
         var workingSchedule = new WorkingSchedule
         {
             StartTime = startTime,
             EndTime = endTime,
-            WorkingDay = request.WorkingDay
+            WorkingDay = DateTime.Parse(request.WorkingDay)
         };
 
         await _unitOfWork.WorkingScheduleRepository.AddAsync(workingSchedule);
         await _unitOfWork.SaveChangeAsync();
-
-        return new WorkingScheduleResponse
+        AccountSchedule accountSchedule = new AccountSchedule
         {
-            Id = workingSchedule.Id,
-            StartTime = workingSchedule.StartTime,
-            EndTime = workingSchedule.EndTime,
-            WorkingDay = workingSchedule.WorkingDay
+            AccountId=request.VeterinarianId,
+            ScheduleId= await _unitOfWork.WorkingScheduleRepository.GetLastSaveScheduleId()
         };
+        await _unitOfWork.AccountScheduleRepository.AddAsync(accountSchedule);
+       if( await _unitOfWork.SaveChangeAsync() > 0)
+        {
+            return new WorkingScheduleResponse
+            {
+                Id = workingSchedule.Id,
+                StartTime = workingSchedule.StartTime,
+                EndTime = workingSchedule.EndTime,
+                WorkingDay = workingSchedule.WorkingDay
+            };
+        }
+        return null;
     }
 
     public async Task UpdateAsync(Guid id, UpdateWorkingScheduleRequest request)

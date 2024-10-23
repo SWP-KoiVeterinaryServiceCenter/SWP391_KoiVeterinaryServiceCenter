@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241023035134_FixRoleError")]
+    partial class FixRoleError
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,12 +100,12 @@ namespace Infrastructure.Migrations
                         {
                             Id = new Guid("1de7660a-5288-440c-af13-9914662f155c"),
                             ContactLink = "",
-                            CreationDate = new DateTime(2024, 10, 23, 8, 19, 35, 31, DateTimeKind.Utc).AddTicks(7540),
+                            CreationDate = new DateTime(2024, 10, 23, 3, 51, 32, 829, DateTimeKind.Utc).AddTicks(3634),
                             Email = "admin@gmail.com",
                             Fullname = "Admin",
                             IsDelete = false,
                             Location = "",
-                            PasswordHash = "$2a$11$DuPVyS/2NDIrPD7GWwOLKOW29DLCbgv8uJ7SV.gMDfJjqMdQm6s4K",
+                            PasswordHash = "$2a$11$pA6INsmAIm5Bw8/1GBycD.AEiq4oMbBKZxIeRa.v6b9hxbAi.XT.q",
                             Phonenumber = "",
                             RoleId = 1,
                             Username = "Admin"
@@ -111,12 +114,12 @@ namespace Infrastructure.Migrations
                         {
                             Id = new Guid("dc699c6a-3980-42dd-be75-d10ae89c82b3"),
                             ContactLink = "",
-                            CreationDate = new DateTime(2024, 10, 23, 8, 19, 35, 215, DateTimeKind.Utc).AddTicks(6422),
+                            CreationDate = new DateTime(2024, 10, 23, 3, 51, 33, 5, DateTimeKind.Utc).AddTicks(7513),
                             Email = "staff@gmail.com",
                             Fullname = "Staff",
                             IsDelete = false,
                             Location = "",
-                            PasswordHash = "$2a$11$6ZJrnMxjEmNqBl7DJ6nzIuYK2FXonplct4ExXIhHuUqwUg.KJKQzK",
+                            PasswordHash = "$2a$11$JsVi.J7UjjVoEX3eEh/zZu4.CJ9eXZZ8wSm8vxTwcbF1Cefbbr/ou",
                             Phonenumber = "",
                             RoleId = 2,
                             Username = "Staff"
@@ -125,11 +128,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.AccountSchedule", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("AccountId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("AccountId")
+                    b.Property<Guid>("ScheduleId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("CreatedBy")
@@ -153,12 +155,7 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime?>("ModificationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("ScheduleId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
+                    b.HasKey("AccountId", "ScheduleId");
 
                     b.HasIndex("ScheduleId");
 

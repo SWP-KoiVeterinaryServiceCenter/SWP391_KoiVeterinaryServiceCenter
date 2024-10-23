@@ -26,6 +26,7 @@ namespace Application.Service.Abstraction
         private readonly IUploadImageService _uploadImageService;
         private readonly ISendMailService _sendMailService;
         private readonly IMemoryCache _memoryCache;
+        private static string defaultAvatarUrl = "https://firebasestorage.googleapis.com/v0/b/save-image-7918c.appspot.com/o/Account%2Fpngwing.com.png?alt=media&token=25254ca9-94d2-4558-89d7-1b44c9acf425";
         public AccountService(IUnitOfWork unitOfWork, IMapper mapper,
             AppConfiguration appConfiguration, ICurrentTime currentTime,
             IClaimService claimService, IUploadImageService uploadImageService, ISendMailService sendMailService,IMemoryCache memoryCache)
@@ -131,6 +132,23 @@ namespace Application.Service.Abstraction
             return listAccountModel;
         }
 
+        public async Task<List<ListUserViewModel>> GetAllVeterinaryForAppointment()
+        {
+            var listAccount = await _unitOfWork.AccountRepository.GetAllVeterinaryAccountsForAppointment();
+            var listAccountModel = listAccount.Select(x => new ListUserViewModel
+            {
+                AccountId = x.Id,
+                ProfileImage = x.ProfileImage,
+                ContactLink = x.ContactLink,
+                Email = x.Email,
+                Location = x.Location,
+                Role = x.Role.RoleName,
+                Username = x.Username,
+                Status = x.IsDelete ? "Ban" : "Not ban"
+            }).ToList();
+            return listAccountModel;
+        }
+
         public async Task<List<ListUserViewModel>> GetAllVeterinaryInSystemAsync()
         {
             var listAccount = await _unitOfWork.AccountRepository.GetAllVeterinaryAccounts();
@@ -160,7 +178,8 @@ namespace Application.Service.Abstraction
                 Location = loginUser.Location,
                 ContactLink = loginUser.ContactLink,
                 Fullname=loginUser.Fullname,
-                Phonenumber=loginUser.Phonenumber
+                Phonenumber=loginUser.Phonenumber,
+                ProfileImage=loginUser.ProfileImage
             };
             return currentUser;
         }
@@ -201,6 +220,7 @@ namespace Application.Service.Abstraction
             var newAccount = _mapper.Map<Account>(model);
             newAccount.PasswordHash = StringUtil.Hash(model.Password);
             newAccount.RoleId = 4;
+            newAccount.ProfileImage = defaultAvatarUrl;
             await _unitOfWork.AccountRepository.AddAsync(newAccount);
             return await _unitOfWork.SaveChangeAsync() > 0;
         }

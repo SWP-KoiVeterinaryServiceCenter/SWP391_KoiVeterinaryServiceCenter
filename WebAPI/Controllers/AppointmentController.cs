@@ -106,5 +106,16 @@ namespace WebAPI.Controllers
             }
             return BadRequest();
         }
+        [Authorize(Roles = "Veterinarian")]
+        [HttpGet]
+        public async Task<IActionResult> AppointmentByCurrentVet()
+        {
+            var listAppointment = await _appointmentService.GetAppointmentByVetId();
+            if (listAppointment == null)
+            {
+                return BadRequest();
+            }
+            return Ok(listAppointment);
+        }
     }
 }
