@@ -9,5 +9,6 @@ namespace Application.IRepository
 {
     public interface IWorkingScheduleRepository : IGenericRepository<WorkingSchedule>
     {
+        Task<Guid> GetLastSaveScheduleId();
     }
 }

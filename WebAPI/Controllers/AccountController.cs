@@ -185,7 +185,7 @@ namespace WebAPI.Controllers
             {
                 return Ok(veterinaryList);
             }
-            return Ok();
+            return Ok(veterinaryList);
         }
         
     }
