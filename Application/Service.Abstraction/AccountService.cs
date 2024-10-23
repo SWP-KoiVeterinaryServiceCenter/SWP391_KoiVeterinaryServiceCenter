@@ -26,6 +26,7 @@ namespace Application.Service.Abstraction
         private readonly IUploadImageService _uploadImageService;
         private readonly ISendMailService _sendMailService;
         private readonly IMemoryCache _memoryCache;
+        private static string defaultAvatarUrl = "https://firebasestorage.googleapis.com/v0/b/save-image-7918c.appspot.com/o/Account%2Fpngwing.com.png?alt=media&token=25254ca9-94d2-4558-89d7-1b44c9acf425";
         public AccountService(IUnitOfWork unitOfWork, IMapper mapper,
             AppConfiguration appConfiguration, ICurrentTime currentTime,
             IClaimService claimService, IUploadImageService uploadImageService, ISendMailService sendMailService,IMemoryCache memoryCache)
@@ -219,6 +220,7 @@ namespace Application.Service.Abstraction
             var newAccount = _mapper.Map<Account>(model);
             newAccount.PasswordHash = StringUtil.Hash(model.Password);
             newAccount.RoleId = 4;
+            newAccount.ProfileImage = defaultAvatarUrl;
             await _unitOfWork.AccountRepository.AddAsync(newAccount);
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
