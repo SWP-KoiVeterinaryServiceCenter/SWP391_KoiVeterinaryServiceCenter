@@ -8,9 +8,9 @@ namespace Application.Model.WorkingScheduleModel
 {
     public class AddWorkingScheduleRequest
     {
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
-        public DateTime WorkingDay { get; set; }
-        //public Guid VeterinarianId { get; set; }
+        public int  StartTime { get; set; }
+        public int  EndTime { get; set; }
+        public DateOnly WorkingDay { get; set; }
+        public Guid VeterinarianId { get; set; }
     }
 }
