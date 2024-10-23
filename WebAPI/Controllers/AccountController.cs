@@ -187,6 +187,16 @@ namespace WebAPI.Controllers
             }
             return Ok(veterinaryList);
         }
-        
+        [HttpGet]
+        public async Task<IActionResult> VeterinariesForAppointment()
+        {
+            var veterinaryList = await _accountService.GetAllVeterinaryForAppointment();
+            if (veterinaryList.Any())
+            {
+                return Ok(veterinaryList);
+            }
+            return Ok(veterinaryList);
+        }
+
     }
 }

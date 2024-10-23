@@ -28,5 +28,6 @@ namespace Application.IService.Abstraction
         Task<bool> ResetPasswordAsync(ResetPasswordModel resetPasswordModel);
         Task<List<ListUserViewModel>> GetAllVeterinaryInSystemAsync();
         Task<bool> UpdateProfileAsync(UpdateAccount updateAccount);
+        Task<List<ListUserViewModel>> GetAllVeterinaryForAppointment();
     }
 }
