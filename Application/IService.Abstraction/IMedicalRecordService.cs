@@ -10,5 +10,6 @@ namespace Application.IService.Abstraction
     public interface IMedicalRecordService
     {
         Task<bool> AddMedicalRecord(Guid appointmentId,CreateMedicalRecordModel model);
+        Task<List<MedicalRecordListModel>> GetListMedicalRecordByAppointmentIdAsync(Guid appointmentId);
     }
 }

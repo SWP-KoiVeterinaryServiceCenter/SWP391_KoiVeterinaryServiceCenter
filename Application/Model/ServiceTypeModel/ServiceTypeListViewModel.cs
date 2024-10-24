@@ -10,5 +10,6 @@ namespace Application.Model.ServiceTypeModel
     {
         public Guid TypeId { get; set; }
         public string TypeName { get; set; }
+        public Guid TravelExpenseId { get; set; }
     }
 }
