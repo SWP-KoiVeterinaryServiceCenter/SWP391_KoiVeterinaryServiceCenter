@@ -50,6 +50,7 @@ namespace Infrastructure.Repository
         public async Task<IEnumerable<AccountSchedule>> GetAllAsync()
         {
             return await _appDbContext.AccountSchedules
+                .Where(x=>x.IsDelete==false)
                 .Include(x => x.WorkingSchedule)
                 .ToListAsync();
         }
