@@ -50,5 +50,11 @@ namespace Application.Service.Abstraction
             }
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
+
+        public async Task<List<MedicalRecordListModel>> GetListMedicalRecordByAppointmentIdAsync(Guid appointmentId)
+        {
+            var listMedicalRecord = await _unitOfWork.MedicalRecordRepository.GetAllMedicalRecordByAppointmentIdAsync(appointmentId);
+            return listMedicalRecord;
+        }
     }
 }

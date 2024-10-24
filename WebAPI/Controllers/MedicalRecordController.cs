@@ -26,5 +26,15 @@ namespace WebAPI.Controllers
             }
             return BadRequest();
         }
+        [HttpGet("{appointmentId}")]
+        public async Task<IActionResult> MedicalRecords(Guid appointmentId)
+        {
+            var listMedicalRecords=await _medicalRecordService.GetListMedicalRecordByAppointmentIdAsync(appointmentId);
+            if(listMedicalRecords.Count > 0)
+            {
+                return Ok(listMedicalRecords);
+            }
+            return Ok(listMedicalRecords);
+        }
     }
 }

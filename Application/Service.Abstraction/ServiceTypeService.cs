@@ -40,11 +40,12 @@ namespace Application.Service.Abstraction
 
         public async Task<List<ServiceTypeListViewModel>> GetAllServiceTypeAsync()
         {
-            var serviceTypeList = await _unitOfWork.ServiceTypeRepository.GetAllAsync();
+            var serviceTypeList = await _unitOfWork.ServiceTypeRepository.GetAllAsync(x=>x.TravelExpense);
             var serviceTypeListModel = serviceTypeList.Select(x => new ServiceTypeListViewModel
             {
                 TypeId=x.Id,
-                TypeName=x.TypeName
+                TypeName=x.TypeName,
+                TravelExpenseId=x.TravelExpense.Id
             }).ToList();
             return serviceTypeListModel;
         }
