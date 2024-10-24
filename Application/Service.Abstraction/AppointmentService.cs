@@ -127,7 +127,7 @@ namespace Application.Service.Abstraction
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
-        public async Task<List<AppointmentViewModel>> GetAllAsync()
+        public async Task<List<AppointmentWithCustName>> GetAllAsync()
         {
            return await _unitOfWork.AppointmentRepository.GetAllAppointment();
         }
@@ -135,11 +135,23 @@ namespace Application.Service.Abstraction
         public async Task<AppointmentViewModel> GetAppointmentByIdAsync(Guid id)
         {
             var listAppointment = await _unitOfWork.AppointmentRepository.GetAllAppointment();
-            var appointmentDetail = listAppointment.Where(x => x.Id == id).SingleOrDefault();
+            var appointmentDetail = listAppointment.Where(x => x.Id == id)
+                                                   .Select(x=>new AppointmentViewModel
+                                                   {
+                                                       Id = x.Id,
+                                                       Description = x.Description,
+                                                       KoiName=x.KoiName,
+                                                       Price = x.Price,
+                                                       ServiceFee = x.ServiceFee,
+                                                       ServiceName = x.ServiceName,
+                                                       Status = x.Status,
+                                                       TravelFee = x.TravelFee,
+                                                       VetName = x.VetName
+                                                   }).SingleOrDefault();
             return appointmentDetail;
         }
 
-        public async Task<List<AppointmentViewModel>> GetAppointmentByVetId()
+        public async Task<List<AppointmentWithCustName>> GetAppointmentByVetId()
         {
             var listAppointment = await _unitOfWork.AppointmentRepository.GetAllAppointmentByVetId(_claimService.GetCurrentUserId);
             return listAppointment;

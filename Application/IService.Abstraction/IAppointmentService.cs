@@ -10,7 +10,7 @@ namespace Application.IService.Abstraction
     public interface IAppointmentService
     {
         Task<bool> CreateAppointmentAsync(CreateAppointmentModel createAppointmentModel);
-        Task<List<AppointmentViewModel>> GetAllAsync();
+        Task<List<AppointmentWithCustName>> GetAllAsync();
         Task<bool> UpdateAppointment(Guid id, UpdateAppointmentModel updateAppointmentModel);
         Task<bool> DeleteAppointmentAsync(Guid id);
         Task<AppointmentViewModel> GetAppointmentByIdAsync(Guid id);
@@ -18,6 +18,6 @@ namespace Application.IService.Abstraction
         Task<bool> CancelAppointmentAsync(Guid id);
         Task<bool> MissedAppointment(Guid id);
         Task<bool> FinishedAppointment(Guid id);
-        Task<List<AppointmentViewModel>> GetAppointmentByVetId();
+        Task<List<AppointmentWithCustName>> GetAppointmentByVetId();
     }
 }

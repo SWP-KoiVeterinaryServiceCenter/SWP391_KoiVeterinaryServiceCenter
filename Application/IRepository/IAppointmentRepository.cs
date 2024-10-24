@@ -11,9 +11,9 @@ namespace Application.IRepository
     public interface IAppointmentRepository:IGenericRepository<Appointment>
     {
         Task<Guid> GetLastSaveAppointmentId();
-        Task<List<AppointmentViewModel>> GetAllAppointment();
+        Task<List<AppointmentWithCustName>> GetAllAppointment();
         Task<List<AppointmentViewModel>> GetAllAppointmentByUserId(Guid userId);
         Task<List<Appointment>> GetAllAppointmentForCalculate(Guid userId);
-        Task<List<AppointmentViewModel>> GetAllAppointmentByVetId(Guid vetId);
+        Task<List<AppointmentWithCustName>> GetAllAppointmentByVetId(Guid vetId);
     }
 }
