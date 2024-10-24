@@ -35,6 +35,11 @@ public class AccountScheduleService : IAccountScheduleService
         {
             startTime = ConvertStringToTimeSpan(addAccountScheduleRequest.StartTime);
             endTime = ConvertStringToTimeSpan(addAccountScheduleRequest.EndTime);
+
+            if (startTime >= endTime)
+            {
+                throw new Exception("Start time must be earlier than end time.");
+            }
         }
         catch (FormatException ex)
         {
@@ -43,7 +48,6 @@ public class AccountScheduleService : IAccountScheduleService
 
         var workingSchedule = new WorkingSchedule
         {
-            Id = Guid.NewGuid(),
             StartTime = startTime,
             EndTime = endTime,
             WorkingDay = ConvertStringToDateTime(addAccountScheduleRequest.WorkingDay)
@@ -72,6 +76,7 @@ public class AccountScheduleService : IAccountScheduleService
 
         var response = new AccountScheduleResponse
         {
+            Id = accountSchedule.Id,
             VeterinarianId = addAccountScheduleRequest.VeterinarianId,
             StartTime = addAccountScheduleRequest.StartTime,
             EndTime = addAccountScheduleRequest.EndTime,
@@ -80,6 +85,7 @@ public class AccountScheduleService : IAccountScheduleService
 
         return response;
     }
+
 
 
 
@@ -94,6 +100,56 @@ public class AccountScheduleService : IAccountScheduleService
 
         return schedules.Select(schedule => new AccountScheduleResponse
         {
+            Id = schedule.Id,
+            VeterinarianId = schedule.AccountId,
+            StartTime = ConvertTimeSpanToString(schedule.WorkingSchedule.StartTime),
+            EndTime = ConvertTimeSpanToString(schedule.WorkingSchedule.EndTime),
+            WorkingDay = schedule.WorkingSchedule.WorkingDay.Date.ToString("yyyy-MM-dd")
+        });
+    }
+
+    public async Task<AccountScheduleResponse?> GetAccountScheduleByIdAsync(Guid id)
+    {
+        var accountSchedule = await _unitOfWork.AccountScheduleRepository.GetByIdAsync(id);
+        if (accountSchedule == null)
+        {
+            return null;
+        }
+
+        var schedule = await _unitOfWork.WorkingScheduleRepository.GetByIdAsync(accountSchedule.ScheduleId);
+        if (schedule == null)
+        {
+            throw new Exception($"Schedule with ID {accountSchedule.ScheduleId} not found.");
+        }
+
+        return new AccountScheduleResponse
+        {
+            Id = accountSchedule.Id,
+            VeterinarianId = accountSchedule.AccountId,
+            StartTime = ConvertTimeSpanToString(schedule.StartTime),
+            EndTime = ConvertTimeSpanToString(schedule.EndTime),
+            WorkingDay = schedule.WorkingDay.ToString("yyyy-MM-dd"),
+        };
+    }
+    public async Task<IEnumerable<AccountScheduleResponse>> GetAccountScheduleByCurrentUserAsync()
+    {
+        var id = _claimService.GetCurrentUserId;
+
+        if (id == null)
+        {
+            throw new Exception("User is not logged in.");
+        }
+
+        var schedules = await _unitOfWork.AccountScheduleRepository.GetSchedulesByAccountIdAsync(id);
+
+        if (schedules == null || !schedules.Any())
+        {
+            throw new Exception("No schedules found for this account.");
+        }
+
+        return schedules.Select(schedule => new AccountScheduleResponse
+        {
+            Id = schedule.Id,
             VeterinarianId = schedule.AccountId,
             StartTime = ConvertTimeSpanToString(schedule.WorkingSchedule.StartTime),
             EndTime = ConvertTimeSpanToString(schedule.WorkingSchedule.EndTime),
@@ -102,58 +158,77 @@ public class AccountScheduleService : IAccountScheduleService
     }
 
 
-    public async Task<AccountScheduleResponse?> GetAccountScheduleByIdAsync(Guid accountId, Guid scheduleId)
+    public async Task<AccountScheduleResponse> UpdateAccountScheduleAsync(Guid id, UpdateAccountScheduleRequest request)
     {
-        var accountSchedule = await _unitOfWork.AccountScheduleRepository
-            .GetByAccountAndScheduleAsync(accountId, scheduleId);
-
-        if (accountSchedule == null)
-        {
-            return null;
-        }
-
-        if (accountSchedule.WorkingSchedule == null)
-        {
-            throw new Exception("Working schedule not found for the specified account schedule.");
-        }
-
-        return new AccountScheduleResponse
-        {
-            VeterinarianId = accountSchedule.AccountId,
-            StartTime = ConvertTimeSpanToString(accountSchedule.WorkingSchedule.StartTime),
-            EndTime = ConvertTimeSpanToString(accountSchedule.WorkingSchedule.EndTime),
-            WorkingDay = accountSchedule.WorkingSchedule.WorkingDay.ToString("yyyy-MM-dd"),
-        };
-    }
-
-
-    public async Task UpdateAccountScheduleAsync(Guid accountId, Guid scheduleId, UpdateAccountScheduleRequest request)
-    {
-        var accountSchedule = await _unitOfWork.AccountScheduleRepository
-            .GetByAccountAndScheduleAsync(accountId, scheduleId);
-
+        var accountSchedule = await _unitOfWork.AccountScheduleRepository.GetByIdAsync(id);
         if (accountSchedule == null)
         {
             throw new Exception("Account schedule not found.");
         }
 
-        if (accountSchedule.WorkingSchedule == null)
+        var schedule = await _unitOfWork.WorkingScheduleRepository.GetByIdAsync(accountSchedule.ScheduleId);
+        if (schedule == null)
         {
-            throw new Exception("Working schedule not found for the specified account schedule.");
+            throw new Exception($"Schedule with ID {accountSchedule.ScheduleId} not found.");
         }
 
-        accountSchedule.WorkingSchedule.StartTime = ConvertStringToTimeSpan(request.StartTime);
-        accountSchedule.WorkingSchedule.EndTime = ConvertStringToTimeSpan(request.EndTime);
-        accountSchedule.WorkingSchedule.WorkingDay = ConvertStringToDateTime(request.WorkingDay);
+        if (request.VeterinarianId != Guid.Empty && request.VeterinarianId != accountSchedule.AccountId)
+        {
+            var account = await _unitOfWork.AccountRepository.GetByIdAsync(request.VeterinarianId);
+            if (account == null)
+            {
+                throw new Exception($"Account with ID {request.VeterinarianId} not found.");
+            }
+            accountSchedule.AccountId = request.VeterinarianId;
+        }
+
+        if (!string.IsNullOrWhiteSpace(request.StartTime))
+        {
+            var startTime = ConvertStringToTimeSpan(request.StartTime);
+            if (startTime >= schedule.EndTime)
+            {
+                throw new Exception("Start time must be earlier than end time.");
+            }
+            schedule.StartTime = startTime;
+        }
+
+        if (!string.IsNullOrWhiteSpace(request.EndTime))
+        {
+            var endTime = ConvertStringToTimeSpan(request.EndTime);
+            if (schedule.StartTime >= endTime)
+            {
+                throw new Exception("Start time must be earlier than end time.");
+            }
+            schedule.EndTime = endTime;
+        }
+
+        if (!string.IsNullOrWhiteSpace(request.WorkingDay))
+        {
+            schedule.WorkingDay = ConvertStringToDateTime(request.WorkingDay);
+        }
 
         _unitOfWork.AccountScheduleRepository.Update(accountSchedule);
+        _unitOfWork.WorkingScheduleRepository.Update(schedule);
         await _unitOfWork.SaveChangeAsync();
+
+        return new AccountScheduleResponse
+        {
+            Id = accountSchedule.Id,
+            VeterinarianId = accountSchedule.AccountId,
+            StartTime = ConvertTimeSpanToString(schedule.StartTime),
+            EndTime = ConvertTimeSpanToString(schedule.EndTime),
+            WorkingDay = schedule.WorkingDay.ToString("yyyy-MM-dd")
+        };
     }
 
-    public async Task DeleteAccountScheduleAsync(Guid accountId, Guid scheduleId)
+
+
+
+
+    public async Task DeleteAccountScheduleAsync(Guid id)
     {
         var accountSchedule = await _unitOfWork.AccountScheduleRepository
-            .GetByAccountAndScheduleAsync(accountId, scheduleId);
+            .GetByIdAsync(id);
 
         if (accountSchedule == null)
         {
@@ -175,6 +250,7 @@ public class AccountScheduleService : IAccountScheduleService
 
         return accountSchedules.Select(accountSchedule => new AccountScheduleResponse
         {
+            Id = accountSchedule.Id,
             VeterinarianId = accountSchedule.AccountId,
             StartTime = ConvertTimeSpanToString(accountSchedule.WorkingSchedule.StartTime),
             EndTime = ConvertTimeSpanToString(accountSchedule.WorkingSchedule.EndTime),
@@ -217,4 +293,3 @@ public class AccountScheduleService : IAccountScheduleService
 
 
 }
-

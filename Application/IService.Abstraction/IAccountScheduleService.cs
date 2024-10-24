@@ -12,9 +12,10 @@ namespace Application.IService.Abstraction
     {
         Task<AccountScheduleResponse> AddAccountToScheduleAsync(AddAccountScheduleRequest addAccountScheduleRequest);
         Task<IEnumerable<AccountScheduleResponse>> GetSchedulesByAccountIdAsync(Guid accountId);
-        Task<AccountScheduleResponse?> GetAccountScheduleByIdAsync(Guid accountId, Guid scheduleId);
-        Task UpdateAccountScheduleAsync(Guid accountId, Guid scheduleId, UpdateAccountScheduleRequest request);
-        Task DeleteAccountScheduleAsync(Guid accountId, Guid scheduleId);
+        Task<AccountScheduleResponse?> GetAccountScheduleByIdAsync(Guid id);
+        Task<IEnumerable<AccountScheduleResponse>> GetAccountScheduleByCurrentUserAsync();
+        Task<AccountScheduleResponse> UpdateAccountScheduleAsync(Guid id, UpdateAccountScheduleRequest request);
+        Task DeleteAccountScheduleAsync(Guid id);
         Task<IEnumerable<AccountScheduleResponse>> GetAllAccountSchedulesAsync();
     }
 }
