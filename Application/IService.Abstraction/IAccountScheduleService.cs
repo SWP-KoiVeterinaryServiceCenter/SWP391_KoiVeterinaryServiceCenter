@@ -16,6 +16,6 @@ namespace Application.IService.Abstraction
         Task<IEnumerable<AccountScheduleResponse>> GetAccountScheduleByCurrentUserAsync();
         Task<AccountScheduleResponse> UpdateAccountScheduleAsync(Guid id, UpdateAccountScheduleRequest request);
         Task DeleteAccountScheduleAsync(Guid id);
-        Task<IEnumerable<AccountScheduleResponse>> GetAllAccountSchedulesAsync();
+        Task<List<AccountScheduleResponse>> GetAllAccountSchedulesAsync();
     }
 }

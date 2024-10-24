@@ -9,7 +9,7 @@ namespace WebAPI.Controllers
 {
     public class WorkingScheduleController : BaseController
     {
-        private readonly IWorkingScheduleService _workingScheduleService;
+       /* private readonly IWorkingScheduleService _workingScheduleService;
 
         public WorkingScheduleController(IWorkingScheduleService workingScheduleService)
         {
@@ -84,6 +84,6 @@ namespace WebAPI.Controllers
         {
             var schedules = await _workingScheduleService.GetAllByAccountIdAsync(accountId);
             return Ok(schedules);
-        }
+        }*/
     }
 }

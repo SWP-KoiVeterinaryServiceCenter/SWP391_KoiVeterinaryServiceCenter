@@ -239,7 +239,7 @@ public class AccountScheduleService : IAccountScheduleService
         await _unitOfWork.SaveChangeAsync();
     }
 
-    public async Task<IEnumerable<AccountScheduleResponse>> GetAllAccountSchedulesAsync()
+    public async Task<List<AccountScheduleResponse>> GetAllAccountSchedulesAsync()
     {
         var accountSchedules = await _unitOfWork.AccountScheduleRepository.GetAllAsync();
 
@@ -255,7 +255,7 @@ public class AccountScheduleService : IAccountScheduleService
             StartTime = ConvertTimeSpanToString(accountSchedule.WorkingSchedule.StartTime),
             EndTime = ConvertTimeSpanToString(accountSchedule.WorkingSchedule.EndTime),
             WorkingDay = accountSchedule.WorkingSchedule.WorkingDay.Date.ToString("yyyy-MM-dd")
-        });
+        }).ToList();
     }
 
     public static TimeSpan ConvertStringToTimeSpan(string timeString)
