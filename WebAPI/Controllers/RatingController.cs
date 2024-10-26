@@ -1,5 +1,7 @@
-﻿using Application.IService.Abstraction;
+﻿using System;
+using System.Threading.Tasks;
 using Application.Model.RatingModel;
+using Application.IService.Abstraction;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -31,6 +33,13 @@ namespace WebAPI.Controllers
             return Ok(rating);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllRatingByCurrentUser()
+        {
+            var ratings = await _ratingService.GetallRatingByCurrentUser();
+            return Ok(ratings);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] AddRatingRequest request)
         {
@@ -40,11 +49,6 @@ namespace WebAPI.Controllers
             }
 
             var createdRating = await _ratingService.CreateAsync(request);
-            if (createdRating == null)
-            {
-                return BadRequest("Không thể tạo đánh giá.");
-            }
-
             return CreatedAtAction(nameof(GetById), new { id = createdRating.Id }, createdRating);
         }
 
@@ -62,8 +66,8 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
 
-            await _ratingService.UpdateAsync(id, request);
-            return NoContent();
+            var updatedRating = await _ratingService.UpdateAsync(id, request);
+            return Ok(updatedRating);
         }
 
         [HttpDelete("{id}")]

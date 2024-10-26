@@ -7,6 +7,7 @@ using Application.Model.RatingModel;
 using Application.IRepository;
 using Domain.Entities;
 using Application.IService.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repository
 {
@@ -17,6 +18,12 @@ namespace Infrastructure.Repository
             : base(appDbContext, claimService, currentTime)
         {
             _appDbContext = appDbContext;
+        }
+        public async Task<List<Rating>> GetAllByAccountIdAsync(Guid accountId)
+        {
+            return await _appDbContext.Ratings
+                .Where(r => r.RaterId == accountId)
+                .ToListAsync();
         }
 
     }
