@@ -7,6 +7,7 @@ using AutoMapper;
 using Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -198,6 +199,12 @@ namespace Application.Service.Abstraction
             if (findUser.IsDelete == true)
             {
                 throw new Exception("You have been banned");
+            }
+            if(findUser.ProfileImage.IsNullOrEmpty())
+            {
+                findUser.ProfileImage = defaultAvatarUrl;
+                _unitOfWork.AccountRepository.Update(findUser);
+                await _unitOfWork.SaveChangeAsync();
             }
             var accessToken = findUser.GenerateTokenString(_appConfiguration!.JwtSecretKey, _currentTime.GetCurrentTime());
             var refreshToken = RefreshToken.GetRefreshToken();

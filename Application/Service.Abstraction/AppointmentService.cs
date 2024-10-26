@@ -168,7 +168,7 @@ namespace Application.Service.Abstraction
             {
                 Location userLocation = await CalculateLatAndLong.CalculateLatLongByAddressAsync(appointment.Koi.Account.Location);
                 Location serviceLocation = await CalculateLatAndLong.CalculateLatLongByAddressAsync(appointment.Service.ServiceLocation);
-                if (appointment.Service.ServiceLocation == "Online")
+                if (appointment.Service.ServiceLocation == nameof(LocationEnum.Online)||appointment.Service.ServiceLocation==nameof(LocationEnum.Center))
                 {
                     travelFee = 0;
                 } else

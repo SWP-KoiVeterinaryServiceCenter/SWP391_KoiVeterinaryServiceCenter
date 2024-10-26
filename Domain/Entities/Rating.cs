@@ -12,8 +12,9 @@ namespace Domain.Entities
     {
         [Column(TypeName = "decimal(5, 2)")]
         public decimal RatingPoint { get; set; }
+        public string RatingContent { get; set; }
         public Guid? RaterId { get; set; }
-        public Account Rater {  get; set; }
+        public Account Rater { get; set; }
         public Guid? AppointmentId { get; set; }
         public Appointment RatingAppointment { get; set; }
         public Guid? CreatedBy { get; set; }
