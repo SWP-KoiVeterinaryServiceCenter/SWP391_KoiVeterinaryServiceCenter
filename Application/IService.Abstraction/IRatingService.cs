@@ -11,8 +11,9 @@ namespace Application.IService.Abstraction
     {
         Task<IEnumerable<RatingResponse>> GetAllAsync();
         Task<RatingResponse> GetByIdAsync(Guid id);
+        Task<IEnumerable<RatingResponse>> GetallRatingByCurrentUser();
         Task<RatingResponse> CreateAsync(AddRatingRequest request);
-        Task UpdateAsync(Guid id, UpdateRatingRequest request);
+        Task<RatingResponse> UpdateAsync(Guid id, UpdateRatingRequest request);
         Task DeleteAsync(Guid id);
     }
 }

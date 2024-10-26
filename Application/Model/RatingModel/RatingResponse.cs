@@ -10,7 +10,8 @@ namespace Application.Model.RatingModel
     {
         public Guid Id { get; set; }
         public decimal RatingPoint { get; set; }
-        public Guid? RaterId { get; set; }
+        public string RatingContent { get; set; }
+        public Guid? AccountId { get; set; }
         public Guid? AppointmentId { get; set; }
         public DateTime? CreationDate { get; set; }
     }

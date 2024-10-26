@@ -9,7 +9,8 @@ namespace Application.Model.RatingModel
     public class AddRatingRequest
     {
         public decimal RatingPoint { get; set; }
-        public Guid? RaterId { get; set; }
-        public Guid? AppointmentId { get; set; }
+        public string RatingContent { get; set; }
+        public Guid AccountId { get; set; }
+        public Guid AppointmentId { get; set; }
     }
 }
