@@ -26,6 +26,7 @@ namespace Infrastructure.Repository
             var medicalRecordList = await _appDbContext.MedicalRecords.Where(x => x.AppointmentId == appointmentId && x.IsDelete == false)
                                                                     .Select(x => new MedicalRecordListModel
                                                                     {
+                                                                        RecordId=x.Id,
                                                                         Symptoms = x.Symptoms,
                                                                         Diagnosis = x.Diagnosis,
                                                                         Notes = x.Notes,

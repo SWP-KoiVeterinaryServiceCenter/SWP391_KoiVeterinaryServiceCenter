@@ -9,6 +9,7 @@ namespace Application.Model.MedicalRecordModel
 {
     public class MedicalRecordListModel
     {
+        public Guid RecordId { get; set; }
         public string Symptoms { get; set; }
         public string Diagnosis { get; set; }
         public string TreatmentGiven { get; set; }

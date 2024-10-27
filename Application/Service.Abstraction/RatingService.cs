@@ -80,11 +80,15 @@ namespace Application.Service.Abstraction
             {
                 throw new ArgumentException("RaterId not found.");
             }
-
             var appointment = await _unitOfWork.AppointmentRepository.GetByIdAsync(request.AppointmentId);
             if (appointment == null)
             {
                 throw new ArgumentException("AppointmentId not found.");
+            }
+            var associatedRating=await _unitOfWork.RatingRepository.GetAssociateAppointmentId(request.AppointmentId);
+            if (associatedRating != null)
+            {
+                throw new Exception("This appointment already being rated");
             }
             var rating = new Rating
             {
@@ -93,10 +97,11 @@ namespace Application.Service.Abstraction
                 RaterId = request.AccountId,
                 AppointmentId = request.AppointmentId,
             };
-
             await _unitOfWork.RatingRepository.AddAsync(rating);
             await _unitOfWork.SaveChangeAsync();
-
+            appointment.RatingId = rating.Id;
+            _unitOfWork.AppointmentRepository.Update(appointment);
+            await _unitOfWork.SaveChangeAsync();
             return new RatingResponse
             {
                 Id = rating.Id,

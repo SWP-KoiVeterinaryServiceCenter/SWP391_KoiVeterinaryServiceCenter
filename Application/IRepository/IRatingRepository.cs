@@ -11,5 +11,6 @@ namespace Application.IRepository
     public interface IRatingRepository : IGenericRepository<Rating>
     {
         Task<List<Rating>> GetAllByAccountIdAsync(Guid accountId);
+        Task<Rating> GetAssociateAppointmentId(Guid appoitnmentId);
     }
 }

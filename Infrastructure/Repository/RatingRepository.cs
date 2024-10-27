@@ -26,5 +26,11 @@ namespace Infrastructure.Repository
                 .ToListAsync();
         }
 
+        public async Task<Rating> GetAssociateAppointmentId(Guid appoitnmentId)
+        {
+            var rating = await _appDbContext.Ratings.Where(x => x.AppointmentId == appoitnmentId)
+                                                  .SingleOrDefaultAsync();
+            return rating;
+        }
     }
 }

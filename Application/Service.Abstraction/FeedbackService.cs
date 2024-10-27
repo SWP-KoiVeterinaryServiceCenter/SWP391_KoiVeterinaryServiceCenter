@@ -60,10 +60,21 @@ namespace Application.Service.Abstraction
                 AppointmentId = request.AppointmentId,
                 CreationDate = DateTime.UtcNow
             };
-
+            var appointment=await _unitOfWork.AppointmentRepository.GetByIdAsync(request.AppointmentId);
+            if (appointment == null)
+            {
+                throw new ArgumentException("AppointmentId not found.");
+            }
+            var associatedFeedback = await _unitOfWork.FeedbackRepository.GetByAssociateAppointmentIdAsync(request.AppointmentId);
+            if (associatedFeedback != null)
+            {
+                throw new Exception("This appointment already have a feedback");
+            }
             await _unitOfWork.FeedbackRepository.AddAsync(feedback);
             await _unitOfWork.SaveChangeAsync();
-
+            appointment.FeedbackId = associatedFeedback.Id;
+            _unitOfWork.AppointmentRepository.Update(appointment);
+            await _unitOfWork.SaveChangeAsync();
             return new FeedbackResponse
             {
 

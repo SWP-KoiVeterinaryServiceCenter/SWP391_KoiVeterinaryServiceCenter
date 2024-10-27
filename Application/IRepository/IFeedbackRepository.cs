@@ -9,5 +9,6 @@ namespace Application.IRepository
 {
     public interface IFeedbackRepository:IGenericRepository<Feedback>
     {
+        Task<Feedback> GetByAssociateAppointmentIdAsync(Guid appointmentId);
     }
 }
