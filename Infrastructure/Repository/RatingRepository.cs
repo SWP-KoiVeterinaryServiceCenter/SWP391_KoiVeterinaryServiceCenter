@@ -22,13 +22,13 @@ namespace Infrastructure.Repository
         public async Task<List<Rating>> GetAllByAccountIdAsync(Guid accountId)
         {
             return await _appDbContext.Ratings
-                .Where(r => r.RaterId == accountId)
+                .Where(r => r.RaterId == accountId&&r.IsDelete==false)
                 .ToListAsync();
         }
 
         public async Task<Rating> GetAssociateAppointmentId(Guid appoitnmentId)
         {
-            var rating = await _appDbContext.Ratings.Where(x => x.AppointmentId == appoitnmentId)
+            var rating = await _appDbContext.Ratings.Where(x => x.AppointmentId == appoitnmentId&&x.IsDelete==false)
                                                   .SingleOrDefaultAsync();
             return rating;
         }
