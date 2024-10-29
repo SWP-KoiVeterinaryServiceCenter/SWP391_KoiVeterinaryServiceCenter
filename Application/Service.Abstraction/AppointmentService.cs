@@ -9,6 +9,7 @@ using Domain.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -249,6 +250,29 @@ namespace Application.Service.Abstraction
                 _unitOfWork.AppointmentRepository.Update(findAppointment);
             }
             return await _unitOfWork.SaveChangeAsync()>0;
+        }
+
+        public async Task<TotalAppointmentAmountViewModel> TotalAppointmentAsync()
+        {
+            var listAppointment = await _unitOfWork.AppointmentRepository.GetAllAppointment();
+            var totalAppointment = new TotalAppointmentAmountViewModel
+            {
+                TotalAppointment=listAppointment.Count()
+            };
+            
+           return totalAppointment;
+        }
+
+        public async Task<TotalAppointmentAmountViewModel> TotalConfirmedAppointmentAsync()
+        {
+            var listAppointment = await _unitOfWork.AppointmentRepository.GetAllAppointment();
+            var listConfirmedAppointment=listAppointment.Where(x=>x.Status == nameof(AppointmentStatus.Confirmed)).ToList();
+            var totalAppointment = new TotalAppointmentAmountViewModel
+            {
+                TotalAppointment = listConfirmedAppointment.Count()
+            };
+
+            return totalAppointment;
         }
 
         public async Task<bool> UpdateAppointment(Guid id, UpdateAppointmentModel updateAppointmentModel)

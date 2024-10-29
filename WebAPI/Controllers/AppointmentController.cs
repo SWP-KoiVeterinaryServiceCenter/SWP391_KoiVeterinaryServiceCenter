@@ -117,5 +117,17 @@ namespace WebAPI.Controllers
             }
             return Ok(listAppointment);
         }
+        [HttpGet]
+        public async Task<IActionResult> TotalAppointment()
+        {
+            var count=await _appointmentService.TotalAppointmentAsync();
+            return Ok(count);
+        }
+        [HttpGet]
+        public async Task<IActionResult> TotalConfirmedAppointment()
+        {
+            var count=await _appointmentService.TotalConfirmedAppointmentAsync();
+            return Ok(count);
+        }
     }
 }

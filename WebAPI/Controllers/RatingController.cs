@@ -52,7 +52,7 @@ namespace WebAPI.Controllers
             return CreatedAtAction(nameof(GetById), new { id = createdRating.Id }, createdRating);
         }
 
-        [HttpPatch("{id}")]
+      /*  [HttpPatch("{id}")]
         public async Task<IActionResult> Update(Guid id, [FromBody] UpdateRatingRequest request)
         {
             if (!ModelState.IsValid)
@@ -68,9 +68,9 @@ namespace WebAPI.Controllers
 
             var updatedRating = await _ratingService.UpdateAsync(id, request);
             return Ok(updatedRating);
-        }
+        }*/
 
-        [HttpDelete("{id}")]
+       /* [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
             var existingRating = await _ratingService.GetByIdAsync(id);
@@ -81,6 +81,6 @@ namespace WebAPI.Controllers
 
             await _ratingService.DeleteAsync(id);
             return NoContent();
-        }
+        }*/
     }
 }
