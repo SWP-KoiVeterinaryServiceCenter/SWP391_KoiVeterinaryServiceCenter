@@ -275,6 +275,18 @@ namespace Application.Service.Abstraction
             return totalAppointment;
         }
 
+        public async Task<TotalAppointmentAmountViewModel> TotalPendingAppointmentAsync()
+        {
+            var listAppointment = await _unitOfWork.AppointmentRepository.GetAllAppointment();
+            var listConfirmedAppointment = listAppointment.Where(x => x.Status == nameof(AppointmentStatus.Pending)).ToList();
+            var totalAppointment = new TotalAppointmentAmountViewModel
+            {
+                TotalAppointment = listConfirmedAppointment.Count()
+            };
+
+            return totalAppointment;
+        }
+
         public async Task<bool> UpdateAppointment(Guid id, UpdateAppointmentModel updateAppointmentModel)
         {
             var findAppointment = await _unitOfWork.AppointmentRepository.GetByIdAsync(id);

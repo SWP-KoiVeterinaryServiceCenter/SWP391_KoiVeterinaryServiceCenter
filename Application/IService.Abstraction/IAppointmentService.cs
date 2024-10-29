@@ -21,5 +21,6 @@ namespace Application.IService.Abstraction
         Task<List<AppointmentWithCustName>> GetAppointmentByVetId();
         Task<TotalAppointmentAmountViewModel> TotalAppointmentAsync();
         Task<TotalAppointmentAmountViewModel> TotalConfirmedAppointmentAsync();
+        Task<TotalAppointmentAmountViewModel> TotalPendingAppointmentAsync();
     }
 }
