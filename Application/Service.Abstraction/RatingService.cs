@@ -69,7 +69,8 @@ namespace Application.Service.Abstraction
                 RatingPoint = rating.RatingPoint,
                 AccountId = rating.RaterId,
                 AppointmentId = rating.AppointmentId,
-                CreationDate = rating.CreationDate
+                CreationDate = rating.CreationDate,
+                RatingContent= rating.RatingContent
             };
         }
 
