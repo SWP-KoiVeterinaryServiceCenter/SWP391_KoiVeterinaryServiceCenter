@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Entities;
 
 namespace Application.Service.Abstraction
 {
@@ -56,14 +57,20 @@ namespace Application.Service.Abstraction
                 else
                 {
                     Guid appointId = Guid.Parse(appointmentId);
-                    var appointment = await _unitOfWork.AppointmentRepository.GetByIdAsync(appointId);
+                    var appointment = await _unitOfWork.AppointmentRepository.GetByIdAsync(appointId,x=>x.Koi);
                     if (appointment == null)
                     {
                         throw new Exception("Appointment not found");
                     }
                     appointment.AppointmentStatus = nameof(AppointmentStatus.Confirmed);
                     _unitOfWork.AppointmentRepository.Update(appointment);
-
+                    var transaction = new Transaction
+                    {
+                        Amount = (decimal)response.vnp_Amount,
+                        AccountId=appointment.Koi.AccountId,
+                        Description=$"Purchase appointment"
+                    };
+                    await _unitOfWork.TransactionRepository.AddAsync(transaction);
                 }
             }
             else

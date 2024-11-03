@@ -28,5 +28,6 @@ namespace Domain.Entities
         public DateTime? DeletionDate { get; set; }
         public ICollection<Koi> KoiLists { get; set; }
         public ICollection<AccountSchedule> AccountSchedules { get; set; }
+        public ICollection<Transaction> Transactions { get; set; }
     }
 }

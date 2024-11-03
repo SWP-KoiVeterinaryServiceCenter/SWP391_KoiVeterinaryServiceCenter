@@ -50,10 +50,14 @@ namespace Application.Service.Abstraction
         {
             var koiList = await _unitOfWork.KoiRepository.FindAsync(k => k.AccountId == _claimService.GetCurrentUserId);
             var vetList = await _unitOfWork.AccountRepository.GetAllVeterinaryAccounts();
-            if(!vetList.Where(x=>x.Id==createAppointmentModel.VeterinarianId).Any())
+            if (createAppointmentModel.VeterinarianId != null)
             {
-                throw new Exception("Vet account does not exist");
+                if (!vetList.Where(x => x.Id == createAppointmentModel.VeterinarianId).Any())
+                {
+                    throw new Exception("Vet account does not exist");
+                }
             }
+          
             if(koiList.Where(x=>x.Id==createAppointmentModel.KoiId).Any())
             {
                 var newAppointment = _mapper.Map<Appointment>(createAppointmentModel);

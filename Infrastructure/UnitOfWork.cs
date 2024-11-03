@@ -26,6 +26,7 @@ namespace Infrastructure
         private readonly IMedicalPrescriptionRepository _medicalPrescriptionRepository;
         private readonly IAccountScheduleRepository _accountScheduleRepository;
         private readonly IFeedbackRepository _feedbackRepository;
+        private readonly ITransactionRepository _transactionRepository;
 
         public UnitOfWork(AppDbContext dbContext, IAccountRepository accountRepository,
             IKoiRepository koiRepository, IServiceTypeRepository serviceTypeRepository,
@@ -33,7 +34,7 @@ namespace Infrastructure
             IWorkingScheduleRepository workingScheduleRepository, IAppointmentRepository appointmentRepository,
             IRatingRepository ratingRepository, ITravelExpenseRepository travelExpenseRepository,
             IMedicalPrescriptionRepository medicalPrescriptionRepository, IMedicalRecordRepository medicalRecordRepository,
-            IAccountScheduleRepository accountScheduleRepository,IFeedbackRepository feedbackRepository)
+            IAccountScheduleRepository accountScheduleRepository,IFeedbackRepository feedbackRepository,ITransactionRepository transactionRepository)
         {
             _dbContext = dbContext;
             _accountRepository = accountRepository;
@@ -49,6 +50,7 @@ namespace Infrastructure
             _medicalPrescriptionRepository = medicalPrescriptionRepository;
             _medicalRecordRepository = medicalRecordRepository;
             _accountScheduleRepository = accountScheduleRepository;
+            _transactionRepository = transactionRepository;
         }
 
         public IAccountRepository AccountRepository => _accountRepository;
@@ -71,6 +73,8 @@ namespace Infrastructure
 
         public IAccountScheduleRepository AccountScheduleRepository => _accountScheduleRepository;
         public IFeedbackRepository FeedbackRepository => _feedbackRepository;
+
+        public ITransactionRepository TransactionRepository => _transactionRepository;
 
         public async Task<int> SaveChangeAsync()
         {

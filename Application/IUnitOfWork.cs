@@ -22,6 +22,7 @@ namespace Application
         public IMedicalPrescriptionRepository MedicalPrescriptionRepository { get; }
         public IAccountScheduleRepository AccountScheduleRepository { get; }
         public IFeedbackRepository FeedbackRepository { get; }
+        public ITransactionRepository TransactionRepository { get; }
         public Task<int> SaveChangeAsync();
     }
 }

@@ -33,6 +33,7 @@ namespace WebAPI
             services.AddScoped<IMedicalRecordService, MedicalRecordService>();
             services.AddScoped<IAccountScheduleService, AccountScheduleService>();
             services.AddScoped<IFeedbackService, FeedbackService>();
+            services.AddScoped<ITransactionService, TransactionService>();
             services.AddMemoryCache();
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
