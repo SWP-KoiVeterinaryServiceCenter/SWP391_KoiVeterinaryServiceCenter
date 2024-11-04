@@ -20,6 +20,7 @@ namespace Application.Service.Abstraction
             var listTransaction = await _unitOfWork.TransactionRepository.GetAllAsync();
             var listTransactionViewModel =listTransaction.Select(x=>new ListTransactionViewModel
             {
+                Id = x.Id,
                 Amount = x.Amount,
                 Description = x.Description,
                 CreationDate=DateOnly.FromDateTime(x.CreationDate.Value),

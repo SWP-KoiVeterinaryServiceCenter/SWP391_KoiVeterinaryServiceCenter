@@ -8,6 +8,7 @@ namespace Application.Model.TransactionModel
 {
     public class ListTransactionViewModel
     {
+        public Guid Id { get; set; }
         public decimal Amount { get; set; }
         public string Description { get; set; }
         public DateOnly CreationDate { get; set; }
