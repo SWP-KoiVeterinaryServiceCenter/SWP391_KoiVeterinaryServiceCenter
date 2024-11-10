@@ -14,6 +14,7 @@ namespace Infrastructure.EntityConfiguration
         public void Configure(EntityTypeBuilder<CenterService> builder)
         {
             builder.HasOne(x=>x.ServiceType).WithMany(x=>x.ListServices).HasForeignKey(x=>x.TypeId);
+            builder.HasOne(x=>x.Tank).WithMany(x=>x.ServiceList).HasForeignKey(x=>x.TankId);
         }
     }
 }

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace Infrastructure.Repository
 {
     public class CenterServiceRepository : GenericRepository<CenterService>, ICenterServiceRepository
-    {
+    { 
         private readonly AppDbContext _appDbContext;
         public CenterServiceRepository(AppDbContext appDbContext, IClaimService claimService, ICurrentTime currentTime) : base(appDbContext, claimService, currentTime)
         {

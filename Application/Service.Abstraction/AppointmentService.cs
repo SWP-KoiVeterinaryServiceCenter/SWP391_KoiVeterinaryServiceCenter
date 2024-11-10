@@ -78,7 +78,19 @@ namespace Application.Service.Abstraction
             {
                 throw new Exception("Appointment not found");
             }
+           /* var associateFeedback= await _unitOfWork.FeedbackRepository.GetByAssociateAppointmentIdAsync(id);
+            if(associateFeedback == null)
+            {
+                throw new Exception("Feedback not found");
+            }*/
+            var associateRating = await _unitOfWork.RatingRepository.GetAssociateAppointmentId(id);
+            if(associateRating == null)
+            {
+                throw new Exception("Rating not found");
+            }
             _unitOfWork.AppointmentRepository.SoftRemove(findAppointment);
+           /* _unitOfWork.FeedbackRepository.SoftRemove(associateFeedback);*/
+            _unitOfWork.RatingRepository.SoftRemove(associateRating);
             return await _unitOfWork.SaveChangeAsync() > 0;
         }
 
@@ -169,10 +181,25 @@ namespace Application.Service.Abstraction
             var listVet=await _unitOfWork.AccountRepository.GetAllVeterinaryAccounts();
             decimal travelFee;
             List<AppointmentViewModel> result = new List<AppointmentViewModel>();
+            Location userLocation = null;
+            Location serviceLocation = null; 
             foreach (var appointment in listAppointment)
             {
-                Location userLocation = await CalculateLatAndLong.CalculateLatLongByAddressAsync(appointment.Koi.Account.Location);
-                Location serviceLocation = await CalculateLatAndLong.CalculateLatLongByAddressAsync(appointment.Service.ServiceLocation);
+                try
+                {
+                   userLocation = await CalculateLatAndLong.CalculateLatLongByAddressAsync(appointment.Koi.Account.Location);
+                } catch(Exception ex)
+                {
+                    throw new Exception("Error when calculation user location");
+                }
+              try
+                {
+                  serviceLocation = await CalculateLatAndLong.CalculateLatLongByAddressAsync(appointment.Service.ServiceLocation);
+                } catch(Exception ex)
+                {
+                    throw new Exception("Error when calculation service location");
+                }
+               
                 if (appointment.Service.ServiceLocation == nameof(LocationEnum.Online)||appointment.Service.ServiceLocation==nameof(LocationEnum.Center))
                 {
                     travelFee = 0;
